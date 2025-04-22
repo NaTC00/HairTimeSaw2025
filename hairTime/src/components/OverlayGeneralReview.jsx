@@ -1,6 +1,8 @@
 import React from 'react';
-//import { Carousel } from 'react-bootstrap/Carousel';
+import { Container, Row, Col, Image, Carousel } from 'react-bootstrap';
 
+import './OverlayGeneralReviewStyle.css';
+import ReviewCarousel from '../components/ReviewCarousel.jsx'
 /*const reviews = [
     {
       text: "I could probably go into sales for you. Definitely worth the investment. We've used hair salon for the last five years.",
@@ -18,19 +20,23 @@ import React from 'react';
 
 function OverlayGeneralReview(){
     return(
-        <div className="position-relative" style={{ height: '100vh' }}>
-
-            <div style={{
-                backgroundColor: 'rgba(242, 230, 216,1)',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                zIndex: 1, 
-                }}/>
-
-            {/*<div
+            <Container fluid className="background-container">
+                <h2 className="text-center">Cosa dicono di noi</h2>
+                <Row className="justify-content-center align-items-center" >
+                    <Col sm={6} className="d-flex justify-content-center">
+                        <Image src="/images/quotation-mark.png" fluid className="image-left" />
+                    </Col>
+                    <Col sm={6} className="d-flex justify-content-center"> 
+                        <Image src="/images/quotation-mark.png" fluid className="image-right" />
+                    </Col>
+                </Row>
+                <Row className="carousel-row justify-content-center align-items-center">
+                    <Col  className="d-flex justify-content-center">
+                        <ReviewCarousel />
+                    </Col>
+                </Row>
+            </Container>
+            /*<div
                 className="position-absolute top-50 start-50 translate-middle"
                 style={{
                 zIndex: 5,
@@ -64,9 +70,9 @@ function OverlayGeneralReview(){
                         ))
                     }
                 </Carousel>
-            </div>*/}
+            </div>*/
 
-        </div>
+      
     );
    
 }

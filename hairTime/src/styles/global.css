@@ -1,5 +1,5 @@
 
- *{
+ /**{
     margin: 0;
     padding: 0;
    
@@ -9,7 +9,7 @@
   
   
   html, body {
-    height: 100%;  /* Ensure html and body take up the full height */
+    height: 100%; 
     width: 100%;
     overflow-x: hidden;
     font-family: sans-serif;
@@ -20,7 +20,12 @@
     flex-direction: column;
     text-align: center;
     width: 100vw;
-    min-height: 100vh;  /* Make sure it takes at least the full viewport height */
-    height: 100%;  /* Ensure it takes full height of the body */
+    min-height: 100vh;  
+    height: 100%; 
     overflow-x: hidden;
+  }*/
+
+  *{
+   
+    font-family: 'GrandCruLight';
   }

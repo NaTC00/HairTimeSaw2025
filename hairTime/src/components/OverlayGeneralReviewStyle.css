@@ -1,0 +1,21 @@
+@import '../styles/colors.css';
+.background-container {
+    background-color:  var(--background_cream); 
+    padding: 50px 0;
+  }
+  
+  
+  .image-row {
+    margin-bottom: 30px;
+    background-color:aqua
+   
+  }
+
+  .image-left, .image-right {
+    width: 15%;
+    height: auto;
+  }
+
+  .carousel-row {
+    margin-top: 30px;
+  }

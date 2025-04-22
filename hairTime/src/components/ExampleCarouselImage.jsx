@@ -1,16 +1,16 @@
 import React from 'react';
 
-import Image from 'react-bootstrap/Image';
+import {Image, Container} from 'react-bootstrap';
 
 
 // Mappa il nome della slide al percorso dell'immagine
 const images = {
-  "Il nostro salone": "/images/salon.JPG",
-  "La nostra piega da star": "/images/hair_styling.JPG",
-  "Il nostro taglio": "/images/cut_hair.JPG",
-  "Il nostro angolo relax": "/images/sinks.JPG",
-  "Le nostre schiariture": "/images/maches.JPG",
-  "Lavaggio": "/images/hair_washing.JPG",
+  "salon": "/images/salonHT.JPG",
+  "hair_styling": "/images/hair_stylingHT.JPG",
+  "cut_hair": "/images/hair_cutHT.JPG",
+  "sinks": "/images/sinksHT.JPG",
+  "maches": "/images/machesHT.JPG",
+  "hair_washing": "/images/hair_washingHT.JPG",
   
 };
 
@@ -19,18 +19,14 @@ const ExampleCarouselImage = ({ text }) => {
   const imagePath = images[text];
 
   return (
+
+    
     <Image 
+      fluid
       src={imagePath} // Usa solo il percorso dell'immagine senza '/500x500'
-      width={512}  // Imposta la larghezza
-      height={512}  // Imposta l'altezza
-      style={{ objectFit: 'cover' }}
+      style={{ objectFit: 'cover',  width: '500px', height: '500px'}}
     />
 
-   /* <img
-      className="d-block w-100"
-      src={imagePath} 
-      alt={text}
-    />*/
   );
 };
 

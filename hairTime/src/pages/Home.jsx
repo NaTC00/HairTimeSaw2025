@@ -1,25 +1,41 @@
 import React from 'react'
-import { useState, useEffect } from 'react';
 import './HomeStyle.css';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Fade from 'react-bootstrap/Fade';
-import CarouselFadeExample from '../components/CarouselFadeExample.jsx'
+import {Container, Row, Col} from 'react-bootstrap';
+import CarouselFadeExample from '../components/CarouselFadeExample.jsx';
 
+import OverlayGeneralReview from '../components/OverlayGeneralReview.jsx'
 export default function Home() {
    
-  const [open, setOpen] = useState(false);
-
-  // Attiva l'animazione quando il componente viene montato
-  useEffect(() => {
-    setOpen(true);  // Imposta `open` a true quando il componente viene caricato
-  }, []);  // Il secondo argomento `[]` fa sì che l'effetto venga eseguito solo una volta, al montaggio
-
   return (
 
+    <>
+      <Container>
+        <Row className='px-4 my-5'>
+          <Col sm={7} className="d-flex align-items-center justify-content-center">
 
-    <div className="box-container">
+          <CarouselFadeExample />
+          
+          </Col>
+          <Col sm={5} className='txt-container'>
+            <h1>BENVENUTO</h1>
+            <h2>NEL NOSTRO SALONE</h2>
+            <p className='font-weight-light mt-4'>
+              HairTime è il tuo spazio di bellezza!<br />
+              Siamo qui per esaltare il tuo stile con tagli alla moda, colori vibranti e trattamenti su misura.<br />
+              Prenota il tuo appuntamento e vivi un’esperienza da vera star.
+            </p>
+          </Col>
+        </Row>
+        <Row>
+          <OverlayGeneralReview/>
+        </Row>
+       
+      </Container>
+    </>
+    
+
+
+    /*<div className="box-container">
      
      <Container fluid className="d-flex align-items-center">
       <Row className="w-100">
@@ -43,7 +59,7 @@ export default function Home() {
         </Col>
       </Row>
     </Container>
-    </div>
+    </div>*/
   
   );
 }

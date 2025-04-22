@@ -10,12 +10,16 @@ import Stack from 'react-bootstrap/Stack';
 
 function App() {
   return(
+
+    <>
+      <header>
+        <Navigationbar />
+      </header>
+      <main>
+        <Home /> 
+      </main>
+      </>
    
-  <div className='App'>
-      <Navigationbar/>
-      <Home/>
-      <OverlayGeneralReview/>
-   </div>
   );
 }
 

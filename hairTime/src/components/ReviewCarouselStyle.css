@@ -1,0 +1,26 @@
+.review-item {
+    text-align: center;
+    padding: 20px;
+   
+  }
+  
+  blockquote {
+    font-style: italic;
+  }
+  
+  footer cite {
+    font-weight: bold;
+    color: #f76b1c; /* Colore arancione per la citazione */
+  }
+
+  .star-rating {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .star {
+    width: 20px; /* Puoi regolare la dimensione della stella */
+    height: auto;
+    margin: 0 2px; /* Spazio tra le stelle */
+  }
