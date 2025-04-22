@@ -1,0 +1,35 @@
+@import '../styles/colors.css';
+
+.bg-body-tertiary {
+  background-color: #C7B299 !important; 
+}
+  
+  
+.navbar-nav .nav-link {
+  color: white !important;
+  font-size: 1.5rem !important;
+  padding: 20px !important;
+}
+  
+  
+.navbar-nav .nav-link:hover {
+  color: var(--secondary) !important; 
+}
+  
+  
+.navbar-brand {
+  color: white !important;
+}
+  
+  
+.navbar-brand:hover {
+  color: var(--secondary) !important; 
+}
+
+#nav_conteiner{
+  background-color: #C7B299 !important;
+  width: 100vw !important;
+  position: 'fixed' !important;
+  z-Index: 10 !important;
+  top: 0 !important;
+}

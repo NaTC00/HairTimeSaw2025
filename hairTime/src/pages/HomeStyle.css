@@ -1,0 +1,34 @@
+@import '../styles/colors.css';
+
+.box-container{
+  padding-top: 50px;
+}
+
+/* Personalizzazione per l'immagine */
+.img-container img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px; /* Aggiunge bordi arrotondati all'immagine */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Aggiunge una leggera ombra */
+}
+
+.txt-container {
+  color: var(--secondary);
+}
+
+/* Personalizzazione per il testo */
+.txt-container h1 {
+  font-size: 2.5rem; /* Dimensione del titolo */
+  font-weight: bold;
+}
+
+.txt-container h2 {
+  font-size: 2rem; /* Dimensione del sottotitolo */
+  font-style: italic;
+}
+
+.txt-container p {
+  font-size: 1.5rem; /* Dimensione del testo */
+  line-height: 1.6; /* Distanza tra le righe del testo */
+}
+
