@@ -9,7 +9,7 @@ export default function Home() {
   return (
 
     <>
-      <Container>
+      <Container fluid>
         <Row className='px-4 my-5'>
           <Col sm={7} className="d-flex align-items-center justify-content-center">
 

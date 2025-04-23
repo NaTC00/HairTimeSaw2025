@@ -1,3 +1,4 @@
+@import '../styles/colors.css';
 .review-item {
     text-align: center;
     padding: 20px;
@@ -10,7 +11,7 @@
   
   footer cite {
     font-weight: bold;
-    color: #f76b1c; /* Colore arancione per la citazione */
+    color: var(--orange); 
   }
 
   .star-rating {
@@ -20,7 +21,7 @@
   }
   
   .star {
-    width: 20px; /* Puoi regolare la dimensione della stella */
+    width: 20px;
     height: auto;
-    margin: 0 2px; /* Spazio tra le stelle */
+    margin: 0 2px;
   }

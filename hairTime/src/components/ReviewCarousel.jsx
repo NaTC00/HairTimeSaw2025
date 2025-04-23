@@ -34,9 +34,9 @@ export default function ReviewCarousel() {
           return (
             <Carousel.Item key={index}>
               <Container>
-                <Row>
-                  <Col>
-                    <div className="review-item">
+                <Row className="justify-content-center align-items-center" >
+                  <Col sm className="d-flex justify-content-center align-items-center"  style={{height: '30vh', width:'90vw' }}>
+                    <div className="review-item text-center">
                       <blockquote>
                         <p>{review.text}</p>
                       </blockquote>
@@ -47,8 +47,8 @@ export default function ReviewCarousel() {
                     </div>
                   </Col>
                   {reviews[index + 1] && (
-                    <Col>
-                      <div className="review-item">
+                    <Col sm className="d-flex justify-content-center align-items-center" style={{height: '30vh',  width:'90vw' }}>
+                      <div className="review-item text-center">
                         <blockquote>
                           <p>{reviews[index + 1].text}</p>
                         </blockquote>
