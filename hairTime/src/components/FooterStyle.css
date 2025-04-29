@@ -1,0 +1,50 @@
+@import '../styles/colors.css';
+
+.footer-container {
+    background-color: #f8f9fa;
+    padding: 40px 0;
+}
+
+.footer-line {
+    border: 0;
+    border-top: 2px solid var(--orange); 
+    width: 100%;
+    margin-top: 20px;
+}
+
+
+.footer-logo {
+    margin-top: 10px;
+}
+  
+.footer-description {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 50px;
+    line-height: 1.6;
+}
+
+
+.location-icon {
+border-radius: 50%;
+background-color: var(--orange_opacity);  
+padding: 10px; 
+}
+  
+.location-title {
+font-size: 1.5rem;
+font-weight: bold;
+color: var(--secondary); 
+margin-top: 10px;
+}
+  
+.location-address {
+font-size: 1rem;
+color: #777; 
+margin-top: 5px;
+}
+
+.figure-container {
+display: flex;
+justify-content: center;
+}

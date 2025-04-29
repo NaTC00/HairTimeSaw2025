@@ -12,7 +12,7 @@ const images = {
   
 };
 
-const ExampleCarouselImage = ({ text }) => {
+const CarouselImage = ({ text }) => {
  
   const imagePath = images[text];
 
@@ -28,5 +28,5 @@ const ExampleCarouselImage = ({ text }) => {
   );
 };
 
-export default ExampleCarouselImage;
+export default CarouselImage;
 
