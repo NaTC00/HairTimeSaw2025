@@ -27,7 +27,7 @@ export default function Footer() {
                 </Row>
                 <Row className="text-center">
                     <Col>
-                        <p style={{fontFamily:'sans-serif', color: 'var(--orange)', fontWeight: 'bold', letterSpacing: '4px', textTransform: 'uppercase', marginBottom:'80px'}}>Dove trovarci</p>
+                        <p style={{fontFamily:'sans-serif', color: 'var(--orange)', fontWeight: 'bold', letterSpacing: '4px', textTransform: 'uppercase', marginBottom:'50px'}}>Dove trovarci</p>
                         
                     </Col>
                 </Row>
@@ -84,7 +84,7 @@ export default function Footer() {
                 </Row>
                 <Row>
 
-                <Stack gap={3} direction='horizontal' style={{marginTop: '80px'}}>
+                <Stack gap={3} direction='horizontal' style={{marginTop: '50px'}}>
                     <Stack gap={3}>
 
                         <Container fluid>
