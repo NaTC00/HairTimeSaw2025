@@ -1,10 +1,12 @@
 import React from "react" 
 import "./LoginResterStyle.css"
+import { Container, Row, Col, Figure } from 'react-bootstrap';
 function LoginRegister({ onClose }) {
     
     return (
       <div className="modal_overlay">
         <div className="modal_content d-flex justify-content-center align-items-center " id="modal_content">
+            <button className="close-button" onClick={onClose}>×</button>
           {/* ----------- Left side - Create Account ----------- */}
             <div className="p-4">
                 <form>
@@ -21,10 +23,36 @@ function LoginRegister({ onClose }) {
                     <input type="password" placeholder="Password" className="form-control form-control-lg bg-light fs-6" />
                 </div>
                 <div className="input-group mb-3 justify-content-center">
-                    <button type="submit" className="btn btn-primary w-50 fs-6">Register</button>
+                    <button type="submit" className="btn  w-50 fs-6">Register</button>
                 </div>
-                <button className="btn btn-link text-danger" onClick={onClose}>Close</button>
+                
                 </form>
+                <Container fluid>
+                    <p className="text-center">Oppure accedi con:</p>
+                   <Row className="align-items-center justify-content-center" >
+                   
+                       <Col md="auto" className="d-flex justify-content-center align-items-center">
+                           <Figure>
+                               <Figure.Image
+                                   width={40}
+                                   height={40}
+                                   src="/icons/facebook.png"
+                                   className="auth2-icon"
+                               />
+                           </Figure>
+                       </Col>
+                       <Col md="auto" className="d-flex justify-content-center align-items-center">
+                       <Figure>
+                               <Figure.Image
+                                   width={40}
+                                   height={40}
+                                   src="/icons/ic_google.png"
+                                   className="auth2-icon"
+                               />
+                           </Figure>
+                       </Col>
+                   </Row>
+               </Container>
             </div>
   
             {/* ----------- Right side - Sign In ----------- */}
@@ -42,14 +70,43 @@ function LoginRegister({ onClose }) {
                 <div className="form-check mb-3">
                     <input className="form-check-input" type="checkbox" />
                     <label className="form-check-label">Remember me</label>
-                    <a href="#" className="ms-2 text-decoration-none">Forgot password?</a>
+
                 </div>
+                
                 <div className="input-group mb-3 justify-content-center">
-                    <button type="submit" className="btn btn-success w-50 fs-6">Login</button>
+                    <button type="submit" className="btn w-50 fs-6">Login</button>
                 </div>
-                <button className="btn btn-link text-danger" onClick={onClose}>Close</button>
+        
                 </form>
+                <Container fluid>
+                   
+                    <Row className="align-items-center justify-content-center" >
+                        <p className="text-center">Oppure accedi con:</p>
+                        <Col md="auto" className="d-flex justify-content-center align-items-center">
+                            <Figure>
+                                <Figure.Image
+                                    width={40}
+                                    height={40}
+                                    src="/icons/facebook.png"
+                                    className="auth2-icon"
+                                />
+                            </Figure>
+                        </Col>
+                        <Col md="auto" className="d-flex justify-content-center align-items-center">
+                        <Figure>
+                                <Figure.Image
+                                    width={40}
+                                    height={40}
+                                    src="/icons/ic_google.png"
+                                    className="auth2-icon"
+                                />
+                            </Figure>
+                        </Col>
+                    </Row>
+                </Container>
             </div>
+
+            
 
           {/* ---------- switch panel ----------*/}
            <div className="switch-content">
@@ -57,7 +114,7 @@ function LoginRegister({ onClose }) {
                     <div className="switch-panel switch-left">
                         <h1>Hello, Again</h1>
                         <p>We are happy to see you back</p>
-                        <button className="hidden btn text-white w-50 fs-6" id="login" onClick={() => {document.getElementById("modal_content").classList.remove("active");}}>Login</button>
+                        <button className="hidden btn border-white text-white w-50 fs-6" id="login" onClick={() => {document.getElementById("modal_content").classList.remove("active");}}>Login</button>
                     </div>
                     <div className="switch-panel switch-right">
                         <h1>Welcome</h1>

@@ -28,21 +28,25 @@
   padding: 40px 30px 40px 40px;
 }
 
-.modal_content button{
-  background-color: var(--orange);
+.modal_content button {
+  background-color: var(--primary);
   color: white;
-  padding: 10px 10px;
-  border: 1px solid transparent;
+  padding: 10px;
+  border: 2px solid transparent;
   border-radius: 8px;
-  font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   margin-top: 10px;
+  transition: all 0.3s ease;
 }
 
-.btn:hover{
-  background-color: var(--orange)
+.modal_content button:hover {
+  background-color: var(--primary);
+  border-color: var(--secondary);
+  color: var(--secondary);
+  cursor: pointer;
 }
+
 
 
 .switch-content{
@@ -63,7 +67,7 @@
 }
 
 .switch{
-  background-color: var(--orange);
+  background-color: var(--primary);
   color: white;
   position: relative;
   left: -100%;
@@ -111,4 +115,39 @@
 .modal_content.active .switch-right{
   transform: translateX(200%);
   
+}
+
+.auth2-icon {
+  border-radius: 50%;
+  background-color: var(--orange_opacity);  
+  padding: 10px; 
+  border: 1px solid transparent; /* ← aggiunto */
+  transition: border-color 0.3s ease;
+}
+
+.auth2-icon:hover {
+  border-color: var(--secondary);
+  cursor: pointer;
+}
+
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  background-color: transparent;
+  border: 2px solid var(--primary);
+  z-index: 1100;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.close-button:hover {
+  background-color: var(--orange_opacity); /* o altro colore di sfondo */
+  border-color: var(--secondary);
 }
