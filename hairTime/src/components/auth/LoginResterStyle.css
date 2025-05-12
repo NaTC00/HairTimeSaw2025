@@ -1,4 +1,4 @@
-@import '../styles/colors.css';
+@import '../../styles/colors.css';
 .modal_overlay {
   position: fixed;
   top: 0;

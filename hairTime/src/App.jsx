@@ -7,7 +7,7 @@ import OverlayGeneralReview from './components/OverlayGeneralReview.jsx'
 import './styles/global.css' 
 import Stack from 'react-bootstrap/Stack';
 import { useState } from 'react'
-import LoginRegister from './components/LoginRegister';
+import LoginRegister from './components/auth/LoginRegister.jsx';
 
 
 

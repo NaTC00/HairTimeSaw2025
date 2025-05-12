@@ -1,7 +1,65 @@
-import React from "react" 
+/* eslint-disable no-unused-vars */
+import React, { useState } from "react" 
 import "./LoginResterStyle.css"
-import { Container, Row, Col, Figure } from 'react-bootstrap';
+import { Container, Row, Col, Figure } from 'react-bootstrap'
+import {doCreateUserWithEmailAndPassword, doSignInWithEmailAndPassword, doSignInWithGoogle} from '../../firebase/auth'
+import { useAuth } from "contexts/authContext/AuthContext"
+
 function LoginRegister({ onClose }) {
+    const {userLoggedIn} = useAuth()
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [username, setUsername] = useState('')
+    const [isSigningIn, setIsSigningIn] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
+
+    const onSubmitSignUp = async (e) => {
+        e.preventDefault();
+        try {
+          await doCreateUserWithEmailAndPassword(email, password, username);
+        } catch (error) {
+          setErrorMessage(error.message);
+        }
+      };
+    
+      const onSubmitSignIn = async (e) => {
+        e.preventDefault();
+        if (!isSigningIn) {
+          setIsSigningIn(true);
+          await doSignInWithEmailAndPassword(email, password).catch((err) => {
+            setErrorMessage(err.message);
+            setIsSigningIn(false);
+          });
+        }
+      };
+    
+      const onGoogleSignIn = async (e) => {
+        e.preventDefault();
+        if (!isSigningIn) {
+          setIsSigningIn(true);
+          await doSignInWithGoogle().catch((err) => {
+            setErrorMessage(err.message);
+            setIsSigningIn(false);
+          });
+        }
+      };
+
+      const resetFormFields = () => {
+        setEmail('');
+        setPassword('');
+        setUsername('');
+      };
+
+      const handleSwitchToLogin = () => {
+        document.getElementById("modal_content").classList.remove("active");
+        resetFormFields();
+      };
+    
+      const handleSwitchToRegister = () => {
+        document.getElementById("modal_content").classList.add("active");
+        resetFormFields();
+      };
     
     return (
       <div className="modal_overlay">
@@ -14,16 +72,16 @@ function LoginRegister({ onClose }) {
                     <h1>Crea account</h1>
                 </div>
                 <div className="input-group mb-3">
-                    <input type="text" placeholder="Nome" className="form-control form-control-lg bg-light fs-6" />
+                    <input type="text" placeholder="Username" className="form-control form-control-lg bg-light fs-6" value={username} onChange={(e) => setUsername(e.target.value)} />
                 </div>
                 <div className="input-group mb-3">
-                    <input type="email" placeholder="Email" className="form-control form-control-lg bg-light fs-6" />
+                    <input type="email" placeholder="Email" className="form-control form-control-lg bg-light fs-6" value={email} onChange={(e) => setUsername(e.target.value)}/>
                 </div>
                 <div className="input-group mb-3">
-                    <input type="password" placeholder="Password" className="form-control form-control-lg bg-light fs-6" />
+                    <input type="password" placeholder="Password" className="form-control form-control-lg bg-light fs-6" value={password} onChange={(e) => setUsername(e.target.value)}/>
                 </div>
                 <div className="input-group mb-3 justify-content-center">
-                    <button type="submit" className="btn  w-50 fs-6">Register</button>
+                    <button type="submit" className="btn  w-50 fs-6" onClick={onSubmitSignUp}>Register</button>
                 </div>
                 
                 </form>
@@ -48,6 +106,7 @@ function LoginRegister({ onClose }) {
                                    height={40}
                                    src="/icons/ic_google.png"
                                    className="auth2-icon"
+                                   onClick={onGoogleSignIn}
                                />
                            </Figure>
                        </Col>
@@ -62,10 +121,10 @@ function LoginRegister({ onClose }) {
                     <h1>Login</h1>
                 </div>
                 <div className="input-group mb-3">
-                    <input type="email" placeholder="Email" className="form-control form-control-lg bg-light fs-6" />
+                    <input type="email" placeholder="Email" className="form-control form-control-lg bg-light fs-6" value={email} onChange={(e) => setUsername(e.target.value)}/>
                 </div>
                 <div className="input-group mb-3">
-                    <input type="password" placeholder="Password" className="form-control form-control-lg bg-light fs-6" />
+                    <input type="password" placeholder="Password" className="form-control form-control-lg bg-light fs-6" value={password} onChange={(e) => setUsername(e.target.value)}/>
                 </div>
                 <div className="form-check mb-3">
                     <input className="form-check-input" type="checkbox" />
@@ -74,7 +133,7 @@ function LoginRegister({ onClose }) {
                 </div>
                 
                 <div className="input-group mb-3 justify-content-center">
-                    <button type="submit" className="btn w-50 fs-6">Login</button>
+                    <button type="submit" className="btn w-50 fs-6" onClick={onSubmitSignIn}>Login</button>
                 </div>
         
                 </form>
@@ -99,6 +158,7 @@ function LoginRegister({ onClose }) {
                                     height={40}
                                     src="/icons/ic_google.png"
                                     className="auth2-icon"
+                                    onClick={onGoogleSignIn}
                                 />
                             </Figure>
                         </Col>
@@ -114,13 +174,12 @@ function LoginRegister({ onClose }) {
                     <div className="switch-panel switch-left">
                         <h1>Hello, Again</h1>
                         <p>We are happy to see you back</p>
-                        <button className="hidden btn border-white text-white w-50 fs-6" id="login" onClick={() => {document.getElementById("modal_content").classList.remove("active");}}>Login</button>
+                        <button className="hidden btn border-white text-white w-50 fs-6" id="login" onClick={handleSwitchToLogin}>Login</button>
                     </div>
                     <div className="switch-panel switch-right">
                         <h1>Welcome</h1>
                         <p>Join Our Platform</p>
-                        <button className="hidden btn border-white text-white w-50 fs-6" id="register" onClick={() => {
-                            document.getElementById("modal_content").classList.add("active");}}>Register</button>
+                        <button className="hidden btn border-white text-white w-50 fs-6" id="register" onClick={handleSwitchToRegister}>Register</button>
                     </div>
                 </div>
             </div>
