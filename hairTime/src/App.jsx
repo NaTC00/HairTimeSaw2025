@@ -7,8 +7,8 @@ import OverlayGeneralReview from './components/OverlayGeneralReview.jsx'
 import './styles/global.css' 
 import Stack from 'react-bootstrap/Stack';
 import { useState } from 'react'
-import LoginRegister from './components/auth/LoginRegister.jsx';
-
+import LoginRegister from './components/authentication/LoginRegister.jsx';
+import { AuthProvider } from 'contexts/authContext/AuthContext';
 
 
 function App() {
@@ -24,7 +24,10 @@ function App() {
         <Home /> 
       </main>
       <Footer/>
-      {showLoginRegister && <LoginRegister onClose = {() => setShowLogin((isVisible) => !isVisible)}/>}
+      {showLoginRegister && 
+      <AuthProvider>
+        <LoginRegister onClose = {() => setShowLogin((isVisible) => !isVisible)}/>
+      </AuthProvider> }
       </>
 
    
