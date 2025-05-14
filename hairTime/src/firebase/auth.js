@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile} from "firebase/auth";
-import { auth } from "./firebase";
+import { auth } from "./firebase"
 
 // Funzione per registrare un nuovo utente con username
 export const doCreateUserWithEmailAndPassword = async (email, password, username) => {
