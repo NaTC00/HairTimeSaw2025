@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+
 import React, { useState } from "react" 
 import "./LoginResterStyle.css"
 import { Container, Row, Col, Figure } from 'react-bootstrap'
@@ -15,35 +16,49 @@ function LoginRegister({ onClose }) {
     const [errorMessage, setErrorMessage] = useState('')
 
     const onSubmitSignUp = async (e) => {
-        e.preventDefault();
-        try {
-          await doCreateUserWithEmailAndPassword(email, password, username);
-        } catch (error) {
-          setErrorMessage(error.message);
-        }
-      };
+      
+      e.preventDefault();
+      try {
+        await doCreateUserWithEmailAndPassword(email, password, username);
+        console.log(`Registrazione utente ${username} andata a buon fine`);
+      } catch (error) {
+        console.error(`Errore registrazione utente ${username}: ${error.message}`);
+        setErrorMessage(error.message);
+      }
+    };
+    
     
       const onSubmitSignIn = async (e) => {
         e.preventDefault();
         if (!isSigningIn) {
           setIsSigningIn(true);
-          await doSignInWithEmailAndPassword(email, password).catch((err) => {
-            setErrorMessage(err.message);
+          try{
+            await doSignInWithEmailAndPassword(email, password)
+            console.log(`Login utente ${username} andata a buon fine`);
+          }catch(error){
+            console.log(`Errore login utente ${username}: ${error.message}`);
+            setErrorMessage(error.message);
             setIsSigningIn(false);
-          });
+          }
         }
       };
     
       const onGoogleSignIn = async (e) => {
         e.preventDefault();
-        if (!isSigningIn) {
+        if (isSigningIn) return;
+
+      
+
+        try {
+          await doSignInWithGoogle();
           setIsSigningIn(true);
-          await doSignInWithGoogle().catch((err) => {
-            setErrorMessage(err.message);
-            setIsSigningIn(false);
-          });
+        } catch (err) {
+          setErrorMessage(err.message);
+        } finally {
+          setIsSigningIn(false);
         }
       };
+
 
       const resetFormFields = () => {
         setEmail('');
@@ -75,17 +90,17 @@ function LoginRegister({ onClose }) {
                     <input type="text" placeholder="Username" className="form-control form-control-lg bg-light fs-6" value={username} onChange={(e) => setUsername(e.target.value)} />
                 </div>
                 <div className="input-group mb-3">
-                    <input type="email" placeholder="Email" className="form-control form-control-lg bg-light fs-6" value={email} onChange={(e) => setUsername(e.target.value)}/>
+                    <input type="email" placeholder="Email" className="form-control form-control-lg bg-light fs-6" value={email} onChange={(e) => setEmail(e.target.value)}/>
                 </div>
                 <div className="input-group mb-3">
-                    <input type="password" placeholder="Password" className="form-control form-control-lg bg-light fs-6" value={password} onChange={(e) => setUsername(e.target.value)}/>
+                    <input type="password" placeholder="Password" className="form-control form-control-lg bg-light fs-6" value={password} onChange={(e) => setPassword(e.target.value)}/>
                 </div>
                 <div className="input-group mb-3 justify-content-center">
                     <button type="submit" className="btn  w-50 fs-6" onClick={onSubmitSignUp}>Register</button>
                 </div>
                 
                 </form>
-                <Container fluid>
+                <Container fluid hidden>
                     <p className="text-center">Oppure accedi con:</p>
                    <Row className="align-items-center justify-content-center" >
                    
@@ -96,19 +111,23 @@ function LoginRegister({ onClose }) {
                                    height={40}
                                    src="/icons/facebook.png"
                                    className="auth2-icon"
+                                
                                />
                            </Figure>
                        </Col>
                        <Col md="auto" className="d-flex justify-content-center align-items-center">
-                       <Figure>
-                               <Figure.Image
-                                   width={40}
-                                   height={40}
-                                   src="/icons/ic_google.png"
-                                   className="auth2-icon"
-                                   onClick={onGoogleSignIn}
-                               />
-                           </Figure>
+                        
+                           <div onClick={onGoogleSignIn} style={{ cursor: "pointer" }}>
+                            <Figure>
+                              <Figure.Image
+                                width={40}
+                                height={40}
+                                src="/icons/ic_google.png"
+                                className="auth2-icon"
+                              />
+                            </Figure>
+                          </div>
+
                        </Col>
                    </Row>
                </Container>
@@ -121,10 +140,10 @@ function LoginRegister({ onClose }) {
                     <h1>Login</h1>
                 </div>
                 <div className="input-group mb-3">
-                    <input type="email" placeholder="Email" className="form-control form-control-lg bg-light fs-6" value={email} onChange={(e) => setUsername(e.target.value)}/>
+                    <input type="email" placeholder="Email" className="form-control form-control-lg bg-light fs-6" value={email} onChange={(e) => setEmail(e.target.value)}/>
                 </div>
                 <div className="input-group mb-3">
-                    <input type="password" placeholder="Password" className="form-control form-control-lg bg-light fs-6" value={password} onChange={(e) => setUsername(e.target.value)}/>
+                    <input type="password" placeholder="Password" className="form-control form-control-lg bg-light fs-6" value={password} onChange={(e) => setPassword(e.target.value)}/>
                 </div>
                 <div className="form-check mb-3">
                     <input className="form-check-input" type="checkbox" />

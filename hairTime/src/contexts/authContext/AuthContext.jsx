@@ -21,7 +21,7 @@ export function AuthProvider({children}){
         const unsubscribe = onAuthStateChanged(auth, initializeUser);
         //rimuovo il listner
         return unsubscribe;
-    })
+    }, [])
 
     //inizializzazione utente
     async function initializeUser(user) {

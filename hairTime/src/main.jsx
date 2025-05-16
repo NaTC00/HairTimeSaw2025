@@ -5,10 +5,19 @@ import App from './App';
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa il CSS di Bootstrap
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Importa il JS di Bootstrap
+import { AuthProvider } from 'contexts/authContext/AuthContext';
 // Usa createRoot invece di render per React 18
-const root = ReactDOM.createRoot(document.getElementById('root'));
+/*const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>
+);*/
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  </React.StrictMode>,
 );

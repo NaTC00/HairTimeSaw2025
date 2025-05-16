@@ -5,30 +5,32 @@ import Navigationbar from './components/Navigationbar.jsx'
 import Footer from './components/Footer.jsx'
 import OverlayGeneralReview from './components/OverlayGeneralReview.jsx'
 import './styles/global.css' 
-import Stack from 'react-bootstrap/Stack';
+import Stack from 'react-bootstrap/Stack'
 import { useState } from 'react'
-import LoginRegister from './components/authentication/LoginRegister.jsx';
-import { AuthProvider } from 'contexts/authContext/AuthContext';
+import LoginRegister from './components/authentication/LoginRegister.jsx'
+import BookAppointment from './components/appointment/BookAppointment.jsx'
+
 
 
 function App() {
   const [showLoginRegister, setShowLogin] = useState(false);
+  const [currentView, setCurrentView] = useState("home");
 
   return(
 
     <>
       <header>
-        <Navigationbar onLoginRegisterClick={() => setShowLogin((isVisible) => !isVisible)} />
+        <Navigationbar 
+          onLoginRegisterClick={() => setShowLogin((isVisible) => !isVisible)}
+          onAppointmentClick={() => setCurrentView("appointment")} />
       </header>
       <main>
-        <Home /> 
+        {currentView === "home" && <Home/>}
+        {currentView === "appointment" && <BookAppointment />}
       </main>
       <Footer/>
-      {showLoginRegister && 
-      <AuthProvider>
-        <LoginRegister onClose = {() => setShowLogin((isVisible) => !isVisible)}/>
-      </AuthProvider> }
-      </>
+      {showLoginRegister && <LoginRegister onClose = {() => setShowLogin((isVisible) => !isVisible)}/>}
+    </>
 
    
   );

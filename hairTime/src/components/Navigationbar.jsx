@@ -4,7 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import './NavigationbarStyle.css';
 
-function Navigationbar({onLoginRegisterClick}) {
+function Navigationbar({onLoginRegisterClick, onAppointmentClick}) {
   return (
     <Navbar expand="lg" className="bg-body-tertiary" id='nav_conteiner'>
       <Container>
@@ -17,7 +17,7 @@ function Navigationbar({onLoginRegisterClick}) {
           <Nav className="ms-auto">
             <Nav.Link href="#home" >Home</Nav.Link>
             <Nav.Link href="#link">I nostri lavori</Nav.Link>
-            <Nav.Link href="#link">Appuntamenti</Nav.Link>
+            <Nav.Link href="#link" onClick={onAppointmentClick}>Appuntamenti</Nav.Link>
             <NavDropdown title="Login" id="basic-nav-dropdown">
               <NavDropdown.Item onClick={onLoginRegisterClick}>Accedi /Registrati</NavDropdown.Item>
             </NavDropdown>
