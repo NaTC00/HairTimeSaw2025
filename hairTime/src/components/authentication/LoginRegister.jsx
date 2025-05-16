@@ -5,6 +5,7 @@ import "./LoginResterStyle.css"
 import { Container, Row, Col, Figure } from 'react-bootstrap'
 import {doCreateUserWithEmailAndPassword, doSignInWithEmailAndPassword, doSignInWithGoogle} from '../../firebase/authHelper'
 import { useAuth } from "contexts/authContext/AuthContext"
+import EditInputText from "../EditInputText";
 
 function LoginRegister({ onClose }) {
     const {userLoggedIn} = useAuth()
@@ -15,6 +16,14 @@ function LoginRegister({ onClose }) {
     const [isSigningIn, setIsSigningIn] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
 
+    const commonProps = {
+      borderColor: "var(--secondary)",
+      focusColor: "var(--orange)",
+      backgroundColor: "var(--background_cream)",
+      textColor: "var(--secondary)",
+      size: "lg",
+      onSubmit: {},
+    };
     const onSubmitSignUp = async (e) => {
       
       e.preventDefault();
@@ -86,14 +95,14 @@ function LoginRegister({ onClose }) {
                 <div className="header-text mb-4">
                     <h1>Crea account</h1>
                 </div>
-                <div className="input-group mb-3">
-                    <input type="text" placeholder="Username" className="form-control form-control-lg bg-light fs-6" value={username} onChange={(e) => setUsername(e.target.value)} />
+                <div >
+                    <EditInputText {...commonProps} backgroundColor="white" label="Username" placeholder="Username" inputType="text" value={username} onChange={(e) => setUsername(e.target.value)} />
                 </div>
-                <div className="input-group mb-3">
-                    <input type="email" placeholder="Email" className="form-control form-control-lg bg-light fs-6" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                <div >
+                    <EditInputText {...commonProps} backgroundColor="white" label="Email" placeholder="Email" inputType="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
-                <div className="input-group mb-3">
-                    <input type="password" placeholder="Password" className="form-control form-control-lg bg-light fs-6" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                <div >
+                    <EditInputText {...commonProps} backgroundColor="white" label="Password" placeholder="Password" inputType="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>
                 <div className="input-group mb-3 justify-content-center">
                     <button type="submit" className="btn  w-50 fs-6" onClick={onSubmitSignUp}>Register</button>
@@ -139,11 +148,11 @@ function LoginRegister({ onClose }) {
                 <div className="header-text mb-4">
                     <h1>Login</h1>
                 </div>
-                <div className="input-group mb-3">
-                    <input type="email" placeholder="Email" className="form-control form-control-lg bg-light fs-6" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                <div >
+                    <EditInputText {...commonProps} backgroundColor="white" label="Email" placeholder="Email" inputType="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
-                <div className="input-group mb-3">
-                    <input type="password" placeholder="Password" className="form-control form-control-lg bg-light fs-6" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                <div >
+                    <EditInputText {...commonProps} backgroundColor="white" label="Password" placeholder="Password" inputType="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>
                 <div className="form-check mb-3">
                     <input className="form-check-input" type="checkbox" />

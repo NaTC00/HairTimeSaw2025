@@ -1,6 +1,7 @@
+import EditCalendar from 'components/EditCalendar';
 import '../../styles/colors.css';
 import EditInputText from "../EditInputText";
-import React from "react";
+import React, { useState } from "react";
 import { Col, Row, Container } from "react-bootstrap";
 
 function BookAppointment() {
@@ -8,6 +9,18 @@ function BookAppointment() {
     e.preventDefault();
     alert('Form inviato!');
   };
+
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [showCalendar, setShowCalendar] = useState(false)
+
+  const handleDateChanged = (date) => {
+    setSelectedDate(date)
+    setShowCalendar(false)
+  }
+
+  const formattedDate = selectedDate
+    ?  selectedDate.toLocaleDateString("it-IT")
+    : "";
 
   const commonProps = {
     borderColor: "var(--secondary)",
@@ -33,10 +46,10 @@ function BookAppointment() {
         <Col lg={8}>
           <Row className="mb-3">
             <Col md={4}>
-              <EditInputText {...commonProps} label="Nome" placeholder="Es. Mario" inputType="text" />
+              <EditInputText {...commonProps} label="Nome" placeholder="Nome" inputType="text" />
             </Col>
             <Col md={4}>
-              <EditInputText {...commonProps} label="Email" placeholder="esempio@email.com" inputType="email" />
+              <EditInputText {...commonProps} label="Email" placeholder="email" inputType="email" />
             </Col>
             <Col md={4}>
               <EditInputText {...commonProps} label="Numero di telefono" placeholder="(083) 632-5556" inputType="tel" />
@@ -60,7 +73,19 @@ function BookAppointment() {
               />
             </Col>
             <Col md={4}>
-              <EditInputText {...commonProps} label="Data" placeholder="gg/mm/aaaa" inputType="date" />
+              <EditInputText 
+              {...commonProps} 
+              label="Data" 
+              placeholder="gg/mm/aaaa" 
+              inputType="date" 
+              readOnly 
+              value={formattedDate} 
+              onClick={() => setShowCalendar(!showCalendar)}
+              showCustomComponent={showCalendar}
+              customComponent={
+              <EditCalendar
+              value={selectedDate || new Date}
+              onChange={handleDateChanged}/>}/>
             </Col>
             <Col md={4}>
               <EditInputText {...commonProps} label="Orario" placeholder="--:--" inputType="time" />

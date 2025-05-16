@@ -9,24 +9,28 @@ function EditInputText({
     backgroundColor,
     textColor,
     size,
-    onSubmit,
-    inputType,
-    showDropdown,
-    dropdownOptions})
+    inputType = "text",
+    value,
+    onClick,
+    onChange,
+    readOnly = false,
+    customComponent = null,
+    showCustomComponent = false})
     {
         const [isHovered, setIsHovered] = useState(false);
-        const handleSubmit = (e) => {
-        e.preventDefault();
-            if (onSubmit) onSubmit(e);
-        };
+    
+       
         return(
-            <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3">
+            <Form.Group className="mb-3" style={{ position: "relative" }}>
                     <Form.Label style={{color: textColor, textTransform: "uppercase", fontFamily:'sans-serif', fontWeight: 'bold', fontSize: '12px'}}>{label}</Form.Label>
                     <Form.Control
                         type={inputType}
                         placeholder={placeholder}
                         size={size}
+                        readOnly={readOnly}
+                        value={value}
+                        onClick={onClick}
+                        onChange={onChange}
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}
                         style={{
@@ -36,8 +40,12 @@ function EditInputText({
                             color: textColor
                         }}
                     />
+                    {showCustomComponent && customComponent && (
+                        <div style={{ position: "absolute", zIndex: 1000 }}>
+                        {customComponent}
+                        </div>
+                    )}
                 </Form.Group>
-            </Form>
 
              
         );
