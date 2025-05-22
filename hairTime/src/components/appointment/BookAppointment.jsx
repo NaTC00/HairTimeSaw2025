@@ -1,15 +1,13 @@
 import EditCalendar from 'components/EditCalendar';
-import TimeSlotSelector from 'components/TimeSlotSelector';
+import OptionsSelector from 'components/OptionsSelector';
 import '../../styles/colors.css';
 import EditInputText from "../EditInputText";
 import React, { useState } from "react";
 import { Col, Row, Container } from "react-bootstrap";
-
+import MultiSelectDropdown from "../MultiSelectDropdown"
+import DropDown from "../DropDown"
 function BookAppointment() {
-    const handleFormSubmit = (e) => {
-    e.preventDefault();
-    alert('Form inviato!');
-  };
+   
 
     const [selectedDate, setSelectedDate] = useState(null);
     const [showCalendar, setShowCalendar] = useState(false);
@@ -46,6 +44,18 @@ function BookAppointment() {
         "17:00 - 18:00"
     ];
 
+    const [selectedServices, setselectedServices] = useState([]);
+    const [showMenuServices, setshowMenuServices] = useState(false);
+
+
+    const services=[ "Taglio", "Piega", "Colore", "Trattamento", "Tonalizzante"]
+
+
+    const handleServiceChange = (selected) => {
+      setselectedServices(selected); 
+    };
+
+
     const commonProps = {
     borderColor: "var(--secondary)",
     focusColor: "var(--orange)",
@@ -81,19 +91,26 @@ function BookAppointment() {
 
           <Row className="mb-3">
             <Col md={4}>
-              <EditInputText
-                {...commonProps}
-                label="Servizio"
-                placeholder="Seleziona servizio"
-                inputType="text"
-                showDropdown={true}
-                dropdownLabel="Servizio"
-                dropdownOptions={[
-                  { label: "Taglio", value: "taglio" },
-                  { label: "Barba", value: "barba" },
-                  { label: "Colorazione", value: "colorazione" },
-                ]}
-              />
+              {/*<OptionsSelector {...commonProps} label="Servizi" placeholder="Seleziona servizio" values={services} onSelect={handleSelectedServices} isMulti={true} buttonLabel={"Invia"} onConfirmSelection={
+                (selectedServices) => {
+                  console.log("Servizi confermati:", selectedServices);
+                }}/>*/}
+              <MultiSelectDropdown
+                  {...commonProps}
+                  label="Servizi"
+                  placeholder="Seleziona servizio"
+                  options={services}
+                  onChange={handleServiceChange}
+                  value={selectedServices}
+                  buttonLabel={"Invia"} onConfirmSelection={
+                  (selectedServices) => {
+                    console.log("Servizi confermati:", selectedServices);
+                  }}
+                />
+
+              
+
+            
             </Col>
             <Col md={4}>
               <EditInputText 
@@ -111,7 +128,7 @@ function BookAppointment() {
                 onChange={handleDateChanged}/>}/>
             </Col>
             <Col md={4}>
-                <TimeSlotSelector {...commonProps} label="Orario" placeholder="Seleziona una fascia oraria" values={fakeTimeSlots} onSelect={handleTimeSlotChange} />
+                <OptionsSelector {...commonProps} label="Orario" placeholder="Seleziona una fascia oraria" values={fakeTimeSlots} onSelect={handleTimeSlotChange} />
             </Col>
           </Row>
         </Col>
