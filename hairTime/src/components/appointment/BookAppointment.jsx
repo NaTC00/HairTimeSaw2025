@@ -2,15 +2,27 @@ import EditCalendar from 'components/EditCalendar';
 import OptionsSelector from 'components/OptionsSelector';
 import '../../styles/colors.css';
 import EditInputText from "../EditInputText";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row, Container } from "react-bootstrap";
 import MultiSelectDropdown from "../MultiSelectDropdown"
+import {useServices} from "../../contexts/ServicesContext"
 import DropDown from "../DropDown"
 function BookAppointment() {
    
 
     const [selectedDate, setSelectedDate] = useState(null);
     const [showCalendar, setShowCalendar] = useState(false);
+    const [sectedTimeSlot, setSelectedTimeSlot] = useState(null);
+    const [showSelectedTimeSlot, setShowSelectedTimeSlot] = useState(false);
+    const [selectedServices, setselectedServices] = useState([]);
+    const [showMenuServices, setshowMenuServices] = useState(false);
+    const { services, loadServices } = useServices();
+
+    useEffect(() => {
+      loadServices();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []); // ✅ solo alla prima esecuzione
+
 
 
     const handleDateChanged = (date) => {
@@ -28,8 +40,7 @@ function BookAppointment() {
 
     const formattedDate = formatDate(selectedDate);
 
-    const [sectedTimeSlot, setSelectedTimeSlot] = useState(null);
-    const [showSelectedTimeSlot, setShowSelectedTimeSlot] = useState(false);
+    
 
     const handleTimeSlotChange = (slot) => {
         setSelectedTimeSlot(slot)
@@ -44,11 +55,7 @@ function BookAppointment() {
         "17:00 - 18:00"
     ];
 
-    const [selectedServices, setselectedServices] = useState([]);
-    const [showMenuServices, setshowMenuServices] = useState(false);
-
-
-    const services=[ "Taglio", "Piega", "Colore", "Trattamento", "Tonalizzante"]
+    
 
 
     const handleServiceChange = (selected) => {

@@ -6,6 +6,8 @@ import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa il CSS di Bootstrap
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Importa il JS di Bootstrap
 import { AuthProvider } from 'contexts/authContext/AuthContext';
+import { ServicesProvider } from 'contexts/ServicesContext';
+
 // Usa createRoot invece di render per React 18
 /*const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -17,7 +19,9 @@ root.render(
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
-      <App />
+      <ServicesProvider>
+         <App />
+      </ServicesProvider>
     </AuthProvider>
   </React.StrictMode>,
 );

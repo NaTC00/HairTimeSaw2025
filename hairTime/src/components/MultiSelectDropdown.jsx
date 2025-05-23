@@ -74,7 +74,7 @@ function MultiSelectDropdown ({
   </Dropdown.Toggle>
 
   <Dropdown.Menu  style={{ display: 'flex', flexDirection: 'column', minWidth: '200px' }}>
-    {options.map((option) => (
+    {/*{options.map((option) => (
       <div key={option} className="dropdown-item px-3 py-1">
         <Form.Check type="checkbox">
           <Form.Check.Input
@@ -85,7 +85,21 @@ function MultiSelectDropdown ({
           <Form.Check.Label>{option}</Form.Check.Label>
         </Form.Check>
       </div>
+    ))}*/}
+
+    {options.map((service) => (
+      <div key={service.name} className="dropdown-item px-3 py-1">
+        <Form.Check type="checkbox">
+          <Form.Check.Input
+            type="checkbox"
+            checked={selectedOptions.includes(service.name)}
+            onChange={() => handleToggle(service.name)} 
+          />
+          <Form.Check.Label>{service.name}</Form.Check.Label>
+        </Form.Check>
+      </div>
     ))}
+
 
     {buttonLabel && onConfirmSelection && (
       <Button
