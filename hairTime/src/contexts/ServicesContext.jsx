@@ -17,21 +17,18 @@ export const ServicesProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const fetchedRef = useRef(false);
 
-  // 👇 Funzione stabile: nessuna dipendenza
+ 
   const loadServices = async () => {
   if (fetchedRef.current || loading) return;
 
-  // 🔐 blocca immediatamente ulteriori chiamate
   fetchedRef.current = true;
 
   setLoading(true);
   try {
-    console.log("Richiesta tutti i servizi");
     const data = await getAllServices();
     setServices(data);
   } catch (err) {
     setError(err);
-    // ❗ se errore, sblocca per tentare di nuovo
     fetchedRef.current = false;
   } finally {
     setLoading(false);

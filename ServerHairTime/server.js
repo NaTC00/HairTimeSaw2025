@@ -10,6 +10,9 @@ app.use(express.json());
 const appointmentsRouter = require('./routes/appointments');
 app.use('/appointments', appointmentsRouter);
 
+const {authRouter} = require('./routes/auth');
+app.use('/auth', authRouter);
+
 app.get('/', (req, res) => {
   res.send('HairTime backend is running!');
 });
