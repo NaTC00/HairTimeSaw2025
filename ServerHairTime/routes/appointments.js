@@ -4,13 +4,15 @@ const pool = require('../db');
 const admin = require('firebase-admin');
 const { verifyToken } = require('./auth');
 const { error, group } = require('console');
-const { getAppoinmentsUser, getTotalDuration, getAppointmentsByDate, deleteAppointmentUser } = require('../sql/queries');
+const { getAppoinmentsUser, getTotalDuration, getAppoinmentByDate, deleteAppointmentUser } = require('../sql/queries');
+const { toTime, parseTimeSlot } = require('../utils');
 const { start } = require('repl');
 const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc');
 const timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
+
 
 
 // POST /appointments/create-service → crea un servizio
@@ -51,7 +53,6 @@ router.get('/services', async (req, res) => {
   }
 });
 
-// TODO: controllare prima la disponibilità della data e la fascia oraria
 router.post('/book', verifyToken, async (req, res) => {
   console.log("Richiesta prenotazione appuntamento");
 
@@ -59,10 +60,22 @@ router.post('/book', verifyToken, async (req, res) => {
   const userId = req.user.uid;
 
   if (!Array.isArray(services) || services.length === 0) {
-    return res.status(400).json({ error: 'Lista servizi richiesta' });
+    return res.status(400).json({ error: 'Lista servizi richiesta' })
   }
 
-  const client = await pool.connect();
+  const {from, to} = parseTimeSlot(time_slot)
+  const existingAppointments = await getAppoinmentByDate(date)
+
+  const overlap = existingAppointments.some(slot => {
+    const {from: f, to: t} = parseTimeSlot(slot.time_slot);
+    return !(t <= f || from >= t)
+  })
+
+  if(overlap){
+    return res.status(400).json({ error: 'Fascia oraria non disponibile' });
+  }
+
+  const client = await pool.connect()
 
   try {
     await client.query('BEGIN');
@@ -120,37 +133,33 @@ router.get('/user', verifyToken, async (req, res) => {
       date: dayjs.utc(appt.date).tz("Europe/Rome").format("YYYY-MM-DD")
     }));
 
-
-
-  
     return res.status(200).json(formattedAppointments);
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message })
   }
 });
 
 
-function toTime(minutes) {
-  const h = String(Math.floor(minutes / 60)).padStart(2, '0');
-  const m = String(minutes % 60).padStart(2, '0');
-  return `${h}:${m}`;
-}
-
 router.post('/availability', async (req, res) => {
   const {services} = req.body
   if(!Array.isArray(services) || services.length === 0){
-    return res.status(400).json({error: 'Servizi richiesti non validi'});
+    return res.status(400).json({error: 'Servizi richiesti non validi'})
   }
   try{
-    const totalDuration = parseInt(await getTotalDuration(services), 10);
-    if(!totalDuration) return res.status(500).json({ error: err.message }); 
+    const totalDuration = parseInt(await getTotalDuration(services), 10)
+    if(!totalDuration) return res.status(500).json({ error: err.message })
 
-    const availability = {};
+    const availability = {}
     const today = new Date()
 
-    for(let dayOffset = 0; dayOffset < 60; dayOffset++){
+    for(let dayOffset = 0; dayOffset < 32; dayOffset++){
       const date = new Date(today);
       date.setDate(today.getDate() + dayOffset)
+
+      const dayOfWeek = date.getDay();
+      if (dayOfWeek === 0 || dayOfWeek === 1) {
+        continue; //salta lunedì e domenica
+      }
 
       const dateStr = date.toISOString().split('T')[0]
       const dayAvailability = []
@@ -160,24 +169,21 @@ router.post('/availability', async (req, res) => {
         {start: 14 * 60, end: 18 *60}
       ]
 
-      const existingAppointments = await getAppointmentsByDate(dateStr)
+     const existingAppointments = await getAppoinmentByDate(dateStr)
 
-      const occupiedSlots = existingAppointments.map(row => {
-        const [from, to] = row.time_slot.split('-').map(hm => {
-          const [h, m] = hm.split(':').map(Number)
-          return h * 60 + m
-        })
-        return {from, to}
-      })
+    const occupiedSlots = existingAppointments.map(row => parseTimeSlot(row.time_slot))
 
-      for (const block of timeBlocks){
-        for(let t = block.start; t + totalDuration <= block.end; t+=30){
-          const from = t;
-          const to = t + totalDuration;
-          const overlap = occupiedSlots.some(slot => !(to <= slot.from || from >= slot.to))
-          if(!overlap) dayAvailability.push(`${toTime(from)}-${toTime(to)}`)
+    for (const block of timeBlocks) {
+      for (let t = block.start; t + totalDuration <= block.end; t += 30) {
+        const from = t
+        const to = t + totalDuration
+        const overlap = occupiedSlots.some(slot => !(to <= slot.from || from >= slot.to))
+        if (!overlap) {
+          dayAvailability.push(`${toTime(from)}-${toTime(to)}`)
         }
       }
+    }
+
 
       if(dayAvailability.length > 0){
         availability[dateStr] = dayAvailability
@@ -189,7 +195,7 @@ router.post('/availability', async (req, res) => {
     return res.json(availability)
 
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message })
   }
 });
 
