@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Dropdown, Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function MultiSelectDropdown ({
+/*function MultiSelectDropdown ({
     label,
     placeholder,
     borderColor,
@@ -74,18 +74,7 @@ function MultiSelectDropdown ({
   </Dropdown.Toggle>
 
   <Dropdown.Menu  style={{ display: 'flex', flexDirection: 'column', minWidth: '200px' }}>
-    {/*{options.map((option) => (
-      <div key={option} className="dropdown-item px-3 py-1">
-        <Form.Check type="checkbox">
-          <Form.Check.Input
-            type="checkbox"
-            checked={selectedOptions.includes(option)}
-            onChange={() => handleToggle(option)}
-          />
-          <Form.Check.Label>{option}</Form.Check.Label>
-        </Form.Check>
-      </div>
-    ))}*/}
+
 
     {options.map((service) => (
       <div key={service.name} className="dropdown-item px-3 py-1">
@@ -125,6 +114,115 @@ function MultiSelectDropdown ({
         
     </Form>
   );
-};
+};*/
+
+function MultiSelectDropdown ({
+  label,
+  placeholder,
+  borderColor,
+  focusColor,
+  backgroundColor,
+  textColor,
+  size,
+  options,
+  onChange,
+  value,
+  buttonLabel,
+  onConfirmSelection
+}) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState(value || []);
+
+  const handleToggle = (optionId) => {
+    const newSelected = selectedOptions.includes(optionId)
+      ? selectedOptions.filter(id => id !== optionId)
+      : [...selectedOptions, optionId];
+
+    setSelectedOptions(newSelected);
+    if (onChange) {
+      onChange(newSelected);
+    }
+  };
+
+  return (
+    <Form>
+      <Form.Label
+        style={{
+          color: textColor,
+          textTransform: 'uppercase',
+          fontFamily: 'sans-serif',
+          fontWeight: 'bold',
+          fontSize: '12px',
+          marginBottom: '0.5rem'
+        }}
+      >
+        {label}
+      </Form.Label>
+
+      <Dropdown style={{ width: '100%' }}>
+        <Dropdown.Toggle
+          size={size}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          style={{
+            width: '100%',
+            fontSize: '12px',
+            border: `2px solid ${isHovered ? focusColor : borderColor}`,
+            backgroundColor,
+            color: textColor,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            textAlign: 'left',
+            padding: '0.375rem 0.75rem'
+          }}
+        >
+          <span>
+            {selectedOptions.length === 0
+              ? placeholder
+              : options
+                  .filter(service => selectedOptions.includes(service.id))
+                  .map(service => service.name)
+                  .join(', ')
+            }
+          </span>
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu style={{ display: 'flex', flexDirection: 'column', minWidth: '200px' }}>
+          {options.map((service) => (
+            <div key={service.id} className="dropdown-item px-3 py-1">
+              <Form.Check type="checkbox">
+                <Form.Check.Input
+                  type="checkbox"
+                  checked={selectedOptions.includes(service.id)}
+                  onChange={() => handleToggle(service.id)}
+                />
+                <Form.Check.Label>{service.name}</Form.Check.Label>
+              </Form.Check>
+            </div>
+          ))}
+
+          {buttonLabel && onConfirmSelection && (
+            <Button
+              variant="outline-secondary"
+              onClick={() => onConfirmSelection(selectedOptions)} // Passa solo gli ID
+              style={{
+                alignSelf: 'center',
+                padding: '0.25rem 0.75rem',
+                fontSize: '12px',
+                width: 'auto',
+                background: focusColor,
+                color: 'white'
+              }}
+            >
+              {buttonLabel}
+            </Button>
+          )}
+        </Dropdown.Menu>
+      </Dropdown>
+    </Form>
+  );
+}
+
 
 export default MultiSelectDropdown;

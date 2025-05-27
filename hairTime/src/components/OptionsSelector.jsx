@@ -15,6 +15,8 @@ function OptionsSelector({
   onConfirmSelection,
   buttonLabel = null
 }) {
+
+  console.log(`values: ${values}`)
   const [isHovered, setIsHovered] = useState(false);
  
   const handleChange = (e) => {
