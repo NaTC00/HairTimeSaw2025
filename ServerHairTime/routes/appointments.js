@@ -140,62 +140,70 @@ router.get('/user', verifyToken, async (req, res) => {
 });
 
 
-router.post('/availability', async (req, res) => {
-  const {services} = req.body
-  if(!Array.isArray(services) || services.length === 0){
-    return res.status(400).json({error: 'Servizi richiesti non validi'})
+// GET /availability?services=1&services=2
+router.get('/availability', async (req, res) => {
+ 
+  const services = req.query.services || req.query['services[]'];
+
+
+  const serviceArray = Array.isArray(services)
+    ? services.map(id => parseInt(id, 10))
+    : services
+    ? [parseInt(services, 10)]
+    : []
+
+   console.log('Servizi ricevuti:', serviceArray)
+  if (serviceArray.length === 0 || serviceArray.some(isNaN)) {
+    return res.status(400).json({ error: 'Servizi richiesti non validi' })
   }
-  try{
-    const totalDuration = parseInt(await getTotalDuration(services), 10)
-    if(!totalDuration) return res.status(500).json({ error: err.message })
 
-    const availability = {}
-    const today = new Date()
+ 
 
-    for(let dayOffset = 0; dayOffset < 32; dayOffset++){
+  try {
+    const totalDuration = parseInt(await getTotalDuration(serviceArray), 10);
+    if (!totalDuration) return res.status(500).json({ error: 'Errore nel calcolo della durata totale' });
+
+    const availability = {};
+    const today = new Date();
+
+    for (let dayOffset = 0; dayOffset < 32; dayOffset++) {
       const date = new Date(today);
-      date.setDate(today.getDate() + dayOffset)
+      date.setDate(today.getDate() + dayOffset);
 
       const dayOfWeek = date.getDay();
-      if (dayOfWeek === 0 || dayOfWeek === 1) {
-        continue; //salta lunedì e domenica
-      }
+      if (dayOfWeek === 0 || dayOfWeek === 1) continue; // Salta domenica e lunedì
 
-      const dateStr = date.toISOString().split('T')[0]
-      const dayAvailability = []
+      const dateStr = date.toISOString().split('T')[0];
+      const dayAvailability = [];
 
       const timeBlocks = [
-        {start: 9 * 60, end: 13 * 60},
-        {start: 14 * 60, end: 18 *60}
-      ]
+        { start: 9 * 60, end: 13 * 60 },
+        { start: 14 * 60, end: 18 * 60 }
+      ];
 
-     const existingAppointments = await getAppoinmentByDate(dateStr)
+      const existingAppointments = await getAppoinmentByDate(dateStr);
+      const occupiedSlots = existingAppointments.map(row => parseTimeSlot(row.time_slot));
 
-    const occupiedSlots = existingAppointments.map(row => parseTimeSlot(row.time_slot))
+      for (const block of timeBlocks) {
+        for (let t = block.start; t + totalDuration <= block.end; t += 30) {
+          const from = t;
+          const to = t + totalDuration;
 
-    for (const block of timeBlocks) {
-      for (let t = block.start; t + totalDuration <= block.end; t += 30) {
-        const from = t
-        const to = t + totalDuration
-        const overlap = occupiedSlots.some(slot => !(to <= slot.from || from >= slot.to))
-        if (!overlap) {
-          dayAvailability.push(`${toTime(from)}-${toTime(to)}`)
+          const overlap = occupiedSlots.some(slot => !(to <= slot.from || from >= slot.to));
+          if (!overlap) {
+            dayAvailability.push(`${toTime(from)}-${toTime(to)}`);
+          }
         }
       }
-    }
 
-
-      if(dayAvailability.length > 0){
-        availability[dateStr] = dayAvailability
+      if (dayAvailability.length > 0) {
+        availability[dateStr] = dayAvailability;
       }
-
-
     }
 
-    return res.json(availability)
-
+    return res.json(availability);
   } catch (err) {
-    return res.status(500).json({ error: err.message })
+    return res.status(500).json({ error: err.message });
   }
 });
 
