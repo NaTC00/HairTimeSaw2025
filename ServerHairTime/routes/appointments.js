@@ -167,39 +167,47 @@ router.get('/availability', async (req, res) => {
     const today = new Date();
 
     for (let dayOffset = 0; dayOffset < 32; dayOffset++) {
-      const date = new Date(today);
-      date.setDate(today.getDate() + dayOffset);
+  const date = new Date(today);
+  date.setDate(today.getDate() + dayOffset);
 
-      const dayOfWeek = date.getDay();
-      if (dayOfWeek === 0 || dayOfWeek === 1) continue; // Salta domenica e lunedì
+  const dayOfWeek = date.getDay();
+  if (dayOfWeek === 0 || dayOfWeek === 1) continue; // Salta domenica e lunedì
 
-      const dateStr = date.toISOString().split('T')[0];
-      const dayAvailability = [];
+  const dateStr = date.toISOString().split('T')[0];
+  const dayAvailability = [];
 
-      const timeBlocks = [
-        { start: 9 * 60, end: 13 * 60 },
-        { start: 14 * 60, end: 18 * 60 }
-      ];
+  const timeBlocks = [
+    { start: 9 * 60, end: 13 * 60 },
+    { start: 14 * 60, end: 18 * 60 }
+  ];
 
-      const existingAppointments = await getAppoinmentByDate(dateStr);
-      const occupiedSlots = existingAppointments.map(row => parseTimeSlot(row.time_slot));
+  const existingAppointments = await getAppoinmentByDate(dateStr);
+  const occupiedSlots = existingAppointments.map(row => parseTimeSlot(row.time_slot));
 
-      for (const block of timeBlocks) {
-        for (let t = block.start; t + totalDuration <= block.end; t += 30) {
-          const from = t;
-          const to = t + totalDuration;
+  const now = new Date();
+  const isToday = dateStr === today.toISOString().split('T')[0];
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
-          const overlap = occupiedSlots.some(slot => !(to <= slot.from || from >= slot.to));
-          if (!overlap) {
-            dayAvailability.push(`${toTime(from)}-${toTime(to)}`);
-          }
+    for (const block of timeBlocks) {
+      for (let t = block.start; t + totalDuration <= block.end; t += 30) {
+        const from = t;
+        const to = t + totalDuration;
+
+        // Se oggi, esclude slot prima dell'orario attuale
+        if (isToday && from < currentMinutes) continue;
+
+        const overlap = occupiedSlots.some(slot => !(to <= slot.from || from >= slot.to));
+        if (!overlap) {
+          dayAvailability.push(`${toTime(from)}-${toTime(to)}`);
         }
       }
-
-      if (dayAvailability.length > 0) {
-        availability[dateStr] = dayAvailability;
-      }
     }
+
+    if (dayAvailability.length > 0) {
+      availability[dateStr] = dayAvailability;
+    }
+  }
+
 
     return res.json(availability);
   } catch (err) {
