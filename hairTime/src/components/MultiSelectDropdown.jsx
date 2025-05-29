@@ -1,122 +1,9 @@
 import React, { useState } from 'react';
-import { Dropdown, Form, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Dropdown from 'react-bootstrap/Dropdown';
+import Form from 'react-bootstrap/Form';
+import CloseButton from 'react-bootstrap/CloseButton';
 
-/*function MultiSelectDropdown ({
-    label,
-    placeholder,
-    borderColor,
-    focusColor,
-    backgroundColor,
-    textColor,
-    size,
-    options,
-    onChange,
-    value,
-    buttonLabel,
-    onConfirmSelection
-}){
-    const [isHovered, setIsHovered] = useState(false);
-    const [selectedOptions, setSelectedOptions] = useState(value || []);
-
-    const handleToggle = (option) => {
-        const newSelected = selectedOptions.includes(option)
-            ? selectedOptions.filter(o => o !== option)
-            : [...selectedOptions, option];
-
-        setSelectedOptions(newSelected);
-
-       
-        if (onChange) {
-            onChange(newSelected);
-        }
-    };
-   
-
-
-  return (
-    <Form>
-      <Form.Label
-        style={{
-          color: textColor,
-          textTransform: 'uppercase',
-          fontFamily: 'sans-serif',
-          fontWeight: 'bold',
-          fontSize: '12px',
-          marginBottom: '0.5rem'
-        }}
-      >
-        {label}
-      </Form.Label>
-
-      <Dropdown
-        style={{ width: '100%' }}
-        >
-  <Dropdown.Toggle
-    size={size}
-   
-    onMouseEnter={() => setIsHovered(true)}
-    onMouseLeave={() => setIsHovered(false)}
-    style={{
-      width: '100%',
-      fontSize: '12px',
-      border: `2px solid ${isHovered ? focusColor : borderColor}`,
-      backgroundColor,
-      color: textColor,
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      textAlign: 'left',
-      padding: '0.375rem 0.75rem'
-    }}
-  >
-    <span>{placeholder}</span>
-  </Dropdown.Toggle>
-
-  <Dropdown.Menu  style={{ display: 'flex', flexDirection: 'column', minWidth: '200px' }}>
-
-
-    {options.map((service) => (
-      <div key={service.name} className="dropdown-item px-3 py-1">
-        <Form.Check type="checkbox">
-          <Form.Check.Input
-            type="checkbox"
-            checked={selectedOptions.includes(service.name)}
-            onChange={() => handleToggle(service.name)} 
-          />
-          <Form.Check.Label>{service.name}</Form.Check.Label>
-        </Form.Check>
-      </div>
-    ))}
-
-
-    {buttonLabel && onConfirmSelection && (
-      <Button
-        variant="outline-secondary"
-        onClick={() => {
-            onConfirmSelection(selectedOptions)
-           
-        }}
-        style={{
-          alignSelf: 'center',
-          padding: '0.25rem 0.75rem',
-          fontSize: '12px',
-          width: 'auto',
-          background: focusColor,
-          color: 'white'
-        }}
-      >
-        {buttonLabel}
-      </Button>
-    )}
-    </Dropdown.Menu>
-    </Dropdown>
-        
-    </Form>
-  );
-};*/
-
-function MultiSelectDropdown ({
+function MultiSelectDropdown({
   label,
   placeholder,
   borderColor,
@@ -125,104 +12,145 @@ function MultiSelectDropdown ({
   textColor,
   size,
   options,
-  onChange,
-  value,
-  buttonLabel,
-  onConfirmSelection
+  onChange
 }) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState(value || []);
+  const [selected, setSelected] = useState([]);
+  
 
-  const handleToggle = (optionId) => {
-    const newSelected = selectedOptions.includes(optionId)
-      ? selectedOptions.filter(id => id !== optionId)
-      : [...selectedOptions, optionId];
+  const toggleItem = (itemId) => {
+    const item = options.find((opt) => opt.id === itemId);
+    if (!item) return;
 
-    setSelectedOptions(newSelected);
+    const exists = selected.some((i) => i.id === itemId);
+    const newSelected = exists
+      ? selected.filter((i) => i.id !== itemId)
+      : [...selected, item];
+
+    setSelected(newSelected);
     if (onChange) {
       onChange(newSelected);
     }
   };
 
+  const removeItem = (item) => {
+    const updated = selected.filter((i) => i.id !== item.id);
+    setSelected(updated);
+    if (onChange) {
+      onChange(updated);
+    }
+  };
+
+   const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <Form>
+    <Form.Group className="mb-3" style={{ position: 'relative' }}>
       <Form.Label
         style={{
           color: textColor,
           textTransform: 'uppercase',
           fontFamily: 'sans-serif',
           fontWeight: 'bold',
-          fontSize: '12px',
-          marginBottom: '0.5rem'
+          fontSize: '12px'
         }}
       >
         {label}
       </Form.Label>
 
-      <Dropdown style={{ width: '100%' }}>
+      <Dropdown autoClose={false}  onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}>
         <Dropdown.Toggle
-          size={size}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+          variant="outline-primary"
+          className="w-100 text-start d-flex align-items-center justify-between dropdown-toggle no-caret"
           style={{
-            width: '100%',
-            fontSize: '12px',
+            minHeight: '38px',
             border: `2px solid ${isHovered ? focusColor : borderColor}`,
-            backgroundColor,
+            backgroundColor: backgroundColor,
             color: textColor,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            textAlign: 'left',
+            fontSize: '12px',
             padding: '0.375rem 0.75rem'
           }}
         >
-          <span>
-            {selectedOptions.length === 0
-              ? placeholder
-              : options
-                  .filter(service => selectedOptions.includes(service.id))
-                  .map(service => service.name)
-                  .join(', ')
-            }
-          </span>
+          <style>{`.dropdown-toggle::after { display: none !important; }`}</style>
+
+          <div
+            className="d-flex flex-wrap gap-1 flex-grow-1"
+            style={{
+            
+              overflow: 'hidden',
+              alignItems: 'center'
+            }}
+          >
+            {selected.length === 0 ? (
+              <span style={{ color: borderColor, fontSize: '12px' }}>
+                {placeholder}
+              </span>
+            ) : (
+              selected.map((item) => (
+                <span
+                  key={item.id}
+                  className="d-flex align-items-center"
+                  style={{
+                    backgroundColor: focusColor,
+                    color: 'white',
+                    padding: '0.4em',
+                    borderRadius: '0.5em',
+                    fontSize: '12px'
+                  }}
+                >
+                  {item.name}
+                  <CloseButton
+                    className="ms-2"
+                    variant="white"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeItem(item);
+                    }}
+                  />
+                </span>
+              ))
+            )}
+          </div>
+
+          <i className="bi bi-chevron-down ms-2" />
         </Dropdown.Toggle>
 
-        <Dropdown.Menu style={{ display: 'flex', flexDirection: 'column', minWidth: '200px' }}>
-          {options.map((service) => (
-            <div key={service.id} className="dropdown-item px-3 py-1">
-              <Form.Check type="checkbox">
-                <Form.Check.Input
+        <Dropdown.Menu
+          className="w-100 p-2"
+          style={{
+          
+            overflowY: 'auto',
+            fontSize: '12px',
+            color: textColor
+          }}
+        >
+          {options.map((item) => {
+            const isSelected = selected.some((i) => i.id === item.id);
+            return (
+              <Dropdown.Item
+                key={item.id}
+                as="button"
+                onClick={() => toggleItem(item.id)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontWeight: isSelected ? '600' : 'normal'
+                }}
+              >
+                <Form.Check
                   type="checkbox"
-                  checked={selectedOptions.includes(service.id)}
-                  onChange={() => handleToggle(service.id)}
+                  className="me-2"
+                  checked={isSelected}
+                  onChange={() => {}}
+                  readOnly
                 />
-                <Form.Check.Label>{service.name}</Form.Check.Label>
-              </Form.Check>
-            </div>
-          ))}
-
-          {buttonLabel && onConfirmSelection && (
-            <Button
-              variant="outline-secondary"
-              onClick={() => onConfirmSelection(selectedOptions)} // Passa solo gli ID
-              style={{
-                alignSelf: 'center',
-                padding: '0.25rem 0.75rem',
-                fontSize: '12px',
-                width: 'auto',
-                background: focusColor,
-                color: 'white'
-              }}
-            >
-              {buttonLabel}
-            </Button>
-          )}
+                {item.name}
+              </Dropdown.Item>
+            );
+          })}
         </Dropdown.Menu>
       </Dropdown>
-    </Form>
+    </Form.Group>
   );
 }
-
 
 export default MultiSelectDropdown;

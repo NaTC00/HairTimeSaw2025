@@ -4,10 +4,9 @@ import '../../styles/colors.css';
 import EditInputText from "../EditInputText";
 import React, { useEffect, useState } from "react";
 import { Col, Row, Container } from "react-bootstrap";
-import MultiSelectDropdown from "../MultiSelectDropdown"
 import {useServices} from "../../contexts/ServicesContext"
 import {getSlotAvailable} from "../../httpManager/request"
-import DropDown from "../DropDown"
+import MultiSelectDropdown from "../MultiSelectDropdown"
 function BookAppointment() {
    
 
@@ -71,8 +70,9 @@ function BookAppointment() {
    
     const handleServiceConfirm = async (selected) => {
       try{
-
-        const slotData = await getSlotAvailable(selected)
+        
+        const selectedIds = selected.map(item => item.id)
+        const slotData = await getSlotAvailable(selectedIds)
         setAvailableSlots(slotData)
 
        const enabledDates = Object.keys(slotData).map(dateStr => new Date(dateStr));
@@ -87,7 +87,18 @@ function BookAppointment() {
 
 
     const handleServiceChange = (selected) => {
-      setselectedServices(selected); 
+      setselectedServices(selected);
+      
+      setSelectedDate(null);
+      setSelectedTimeSlot(null);
+      setTimeSlots([]);
+
+       if (selected.length > 0) {
+        handleServiceConfirm(selected);
+      } else {
+        setAvailableSlots({});
+        setEnabledDates([]);
+      }
     };
 
 
@@ -126,21 +137,14 @@ function BookAppointment() {
 
           <Row className="mb-3">
             <Col md={4}>
-            
-              <MultiSelectDropdown
+               <MultiSelectDropdown 
                   {...commonProps}
                   label="Servizi"
                   placeholder="Seleziona servizio"
                   options={services}
                   onChange={handleServiceChange}
-                  value={selectedServices}
-                  buttonLabel={"Invia"}
-                  onConfirmSelection={handleServiceConfirm}
                 />
-
-              
-
-            
+          
             </Col>
             <Col md={4}>
               <EditInputText 
@@ -167,7 +171,9 @@ function BookAppointment() {
             <Col md={4}>
                 <OptionsSelector {...commonProps} label="Orario" placeholder="Seleziona una fascia oraria" values={timeSlots} onSelect={handleTimeSlotChange} />
             </Col>
+             
           </Row>
+          
         </Col>
       </Row>
     </Container>
