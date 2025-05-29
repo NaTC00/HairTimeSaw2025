@@ -1,51 +1,56 @@
-import React, { useContext, useEffect, useState, createContext } from "react";
-import { auth } from "../../firebase/firebase"
-import { onAuthStateChanged } from "firebase/auth";
+import React, { useContext, useState, useEffect, createContext } from "react";
+import { signInApi } from "../../httpManager/request"; 
 
-//creo un contesto per l'autenticazione
 const AuthContext = createContext();
 
-//hook per accedere al contesto
-export function useAuth(){
-    return useContext(AuthContext);
+export function useAuth() {
+  return useContext(AuthContext);
 }
 
-//componente che fornisce il contesto di autenticazione
-export function AuthProvider({children}){
-    const [currentUser, setCurrentuser] = useState(null); //utente corrente
-    const [userLoggedIn, setUserLoggedIn] = useState(false); //stato login
-    const [loading, setLoading] = useState(true); //stato di caricamento
+export function AuthProvider({ children }) {
+  const [token, setToken] = useState(null);
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(()=>{
-        //si attiva quando cambia lo stato di autenticazione
-        const unsubscribe = onAuthStateChanged(auth, initializeUser);
-        //rimuovo il listner
-        return unsubscribe;
-    }, [])
-
-    //inizializzazione utente
-    async function initializeUser(user) {
-        if(user){
-            //se esiste un utente loggato lo inserisco nell'utente corrente
-            setCurrentuser({ ...user});
-            setUserLoggedIn(true);
-        }else{
-            //altrimenti resetto lo stato
-            setCurrentuser(null);
-            setUserLoggedIn(false);
-        }
-        setLoading(false);
+  
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+      setUserLoggedIn(true);
     }
+    setLoading(false);
+  }, []);
 
-    const value = {
-        currentUser,
-        userLoggedIn,
-        loading
+
+  const login = async (email, password) => {
+    try {
+      const { token } = await signInApi(email, password); 
+      setToken(token);
+      setUserLoggedIn(true);
+      localStorage.setItem("token", token);
+    } catch (error) {
+      console.error("Errore login:", error.response?.data || error.message);
+      throw error;
     }
-    return(
-        // Fornisce il contesto ai componenti figli
-        <AuthContext.Provider value={value}>
-            {!loading && children}
-        </AuthContext.Provider>
-    )
+  };
+
+  const logout = () => {
+    setToken(null);
+    setUserLoggedIn(false);
+    localStorage.removeItem("token");
+  };
+
+  const value = {
+    token,
+    userLoggedIn,
+    login,
+    logout,
+  };
+
+  return (
+    <AuthContext.Provider value={value}>
+      {!loading && children}
+    </AuthContext.Provider>
+  );
 }
