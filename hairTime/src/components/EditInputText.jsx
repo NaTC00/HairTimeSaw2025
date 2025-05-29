@@ -41,8 +41,15 @@ function EditInputText({
                         }}
                     />
                     {showCustomComponent && customComponent && (
-                        <div style={{ position: "absolute", zIndex: 1000 }}>
-                        {customComponent}
+                       <div
+                            style={{
+                            position: "absolute",
+                            zIndex: 1000,
+                            width: "100%", 
+                            maxWidth: '100%' 
+                            }}
+                        >
+                            {customComponent}
                         </div>
                     )}
                 </Form.Group>

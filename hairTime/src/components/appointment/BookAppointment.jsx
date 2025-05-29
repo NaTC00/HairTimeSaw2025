@@ -112,71 +112,79 @@ function BookAppointment() {
 
   return (
     <Container fluid className="py-5">
-      <Row className="align-items-start">
-        {/* Colonna sinistra - Testo */}
-        <Col lg={4} className="mb-4">
+      <Row className="align-items-center">
+      
+        <Col
+          xs={12}
+          lg={4}
+          className="d-flex flex-column justify-content-start text-start mb-4 mb-lg-0"
+        >
           <h1 className="mb-3">Prenota un appuntamento online</h1>
-          <p className="mb-4">
-            Compila i campi per prenotare il tuo servizio.
-          </p>
+          <p className="mb-4">Compila i campi per prenotare il tuo servizio.</p>
         </Col>
 
-        {/* Colonna destra - Form */}
-        <Col lg={8}>
-          <Row className="mb-3">
-            <Col md={4}>
-              <EditInputText {...commonProps} label="Nome" placeholder="Nome" inputType="text" />
-            </Col>
-            <Col md={4}>
-              <EditInputText {...commonProps} label="Email" placeholder="email" inputType="email" />
-            </Col>
-            <Col md={4}>
-              <EditInputText {...commonProps} label="Numero di telefono" placeholder="(083) 632-5556" inputType="tel" />
-            </Col>
-          </Row>
-
-          <Row className="mb-3">
-            <Col md={4}>
-               <MultiSelectDropdown 
-                  {...commonProps}
-                  label="Servizi"
-                  placeholder="Seleziona servizio"
-                  options={services}
-                  onChange={handleServiceChange}
-                />
+      
+        <Col
+          xs={12}
+          lg={8}
+          className="d-flex flex-column justify-content-center"
+        >
           
-            </Col>
-            <Col md={4}>
-              <EditInputText 
-              {...commonProps} 
-              label="Data" 
-              placeholder="gg-mm-aaaa" 
-              inputType="text" 
-              readOnly 
-              value={formattedDate} 
-              onClick={() => setShowCalendar(true)}
-              showCustomComponent={showCalendar}
-              customComponent={
-                <EditCalendar
-                  value={selectedDate || new Date()}
-                  onChange={handleDateChanged}
-                  enabledDates={enabledDates}
-                />
-
-                
-
-              }
+          <Row className="mb-3">
+            <Col xs={12} md={4} lg={4} className="mb-3 mb-md-0">
+              <MultiSelectDropdown
+                {...commonProps}
+                label="Servizi"
+                placeholder="Seleziona servizio"
+                options={services}
+                onChange={handleServiceChange}
               />
             </Col>
-            <Col md={4}>
-                <OptionsSelector {...commonProps} label="Orario" placeholder="Seleziona una fascia oraria" values={timeSlots} onSelect={handleTimeSlotChange} />
+            <Col xs={12} md={4} lg={4}>
+              <EditInputText
+                {...commonProps}
+                label="Numero di telefono"
+                placeholder="(083) 632-5556"
+                inputType="tel"
+              />
             </Col>
-             
           </Row>
-          
+
+          {/* Seconda riga del form */}
+          <Row className="mb-3">
+            <Col xs={12} md={4} lg={4} className="mb-3 mb-md-0">
+              <EditInputText
+                {...commonProps}
+                label="Data"
+                placeholder="gg-mm-aaaa"
+                inputType="text"
+                readOnly
+                value={formattedDate}
+                onClick={() => setShowCalendar(prev => !prev)}
+                showCustomComponent={showCalendar}
+                customComponent={
+                  <EditCalendar
+                    value={selectedDate || new Date()}
+                    onChange={handleDateChanged}
+                    enabledDates={enabledDates}
+                  />
+                }
+              />
+            </Col>
+            <Col xs={12} md={4} lg={4}>
+              <OptionsSelector
+                {...commonProps}
+                label="Orario"
+                placeholder="Seleziona una fascia oraria"
+                values={timeSlots}
+                onSelect={handleTimeSlotChange}
+              />
+            </Col>
+          </Row>
         </Col>
       </Row>
     </Container>
+
   );
 }
 

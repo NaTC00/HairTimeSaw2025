@@ -18,7 +18,8 @@ function EditCalendar({ value, onChange, enabledDates = [] }) {
       <Calendar
         onChange={onChange}
         value={value}
-        tileDisabled={({ date }) => !isDateEnabled(date)} // 🔒 disabilita i giorni non presenti
+        tileDisabled={({ date }) => !isDateEnabled(date)}
+        className="w-100"
       />
     </div>
   );
