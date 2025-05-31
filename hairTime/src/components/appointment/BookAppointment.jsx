@@ -3,7 +3,7 @@ import OptionsSelector from 'components/OptionsSelector';
 import '../../styles/colors.css';
 import EditInputText from "../EditInputText";
 import React, { useEffect, useState } from "react";
-import { Col, Row, Container } from "react-bootstrap";
+import { Col, Row, Container, Button } from "react-bootstrap";
 import {useServices} from "../../contexts/ServicesContext"
 import {getSlotAvailable} from "../../httpManager/request"
 import MultiSelectDropdown from "../MultiSelectDropdown"
@@ -20,6 +20,8 @@ function BookAppointment() {
     const [availableSlots, setAvailableSlots] = useState({});
     const [enabledDates, setEnabledDates] = useState([]);
     const [timeSlots, setTimeSlots] = useState([]);
+    const [phoneNumber, setPhoneNumber] = useState('');
+
 
 
     useEffect(() => {
@@ -59,13 +61,7 @@ function BookAppointment() {
         setShowSelectedTimeSlot(false)
     }
 
-    const fakeTimeSlots = [
-        "10:00 - 11:00",
-        "11:00 - 12:00",
-        "12:00 - 13:00",
-        "16:00 - 17:00",
-        "17:00 - 18:00"
-    ];
+   
 
    
     const handleServiceConfirm = async (selected) => {
@@ -110,6 +106,14 @@ function BookAppointment() {
     size: "lg"
     };
 
+
+    const isFormComplete =
+    selectedDate &&
+    sectedTimeSlot &&
+    selectedServices.length > 0 &&
+    phoneNumber.trim() !== '';
+
+
   return (
     <Container fluid className="py-5">
       <Row className="align-items-center">
@@ -146,7 +150,10 @@ function BookAppointment() {
                 label="Numero di telefono"
                 placeholder="(083) 632-5556"
                 inputType="tel"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
               />
+
             </Col>
           </Row>
 
@@ -181,6 +188,19 @@ function BookAppointment() {
               />
             </Col>
           </Row>
+           <Row className="mb-3">
+            <Col xs={12} md={4} lg={4}>
+              <Button
+                variant="primary"
+                size="lg"
+                disabled={!isFormComplete}
+                className="w-100" // per occupare tutta la colonna, non l’intero schermo
+              >
+                PRENOTA
+              </Button>
+            </Col>
+          </Row>
+
         </Col>
       </Row>
     </Container>

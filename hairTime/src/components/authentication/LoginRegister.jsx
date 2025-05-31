@@ -3,7 +3,6 @@
 import React, { useState } from "react" 
 import "./LoginResterStyle.css"
 import { Container, Row, Col, Figure } from 'react-bootstrap'
-import {doCreateUserWithEmailAndPassword, doSignInWithEmailAndPassword, doSignInWithGoogle} from '../../firebase/authHelper'
 import { useAuth } from "contexts/authContext/AuthContext"
 import EditInputText from "../EditInputText";
 import {signUp} from "../../httpManager/request"

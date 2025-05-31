@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
 
 function OptionsSelector({
@@ -10,27 +10,26 @@ function OptionsSelector({
   textColor,
   size,
   values = [],
-  onSelect,
-  isMulti = false,
-  onConfirmSelection,
-  buttonLabel = null
+  onSelect
 }) {
 
-  console.log(`values: ${values}`)
+   const [selected, setSelected] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
- 
-  const handleChange = (e) => {
-    if(isMulti){
-      const selected = Array.from(e.target.selectedOptions).map(
-        (option) => option.value);
-      onSelect(selected)
-    }else{
-      const selected = e.target.value;
-      onSelect(selected)
+
+   useEffect(() => {
+    if (values.length > 0 && !selected) {
+      setSelected(values[0]);
+      onSelect(values[0]);
     }
-      
-   
-  }
+  }, [values]);
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setSelected(value);
+    onSelect(value);
+  };
+ 
+
 
   return (
     <Form>
@@ -49,7 +48,6 @@ function OptionsSelector({
       <InputGroup className="mb-3">
         <Form.Select
           onChange={handleChange}
-          multiple={isMulti}
           placeholder={placeholder}
           size={size}
           onMouseEnter={() => setIsHovered(true)}
@@ -68,17 +66,7 @@ function OptionsSelector({
             </option>
           ))}
         </Form.Select>
-        
-        {buttonLabel!= null && onConfirmSelection && (
-          <Button
-            variant="outline-secondary"
-            onClick={onConfirmSelection}
-            id="button-addon2"
-          >
-            {buttonLabel}
-          </Button>
-        )}
-      
+       
       </InputGroup>
 
      
