@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../db');
+const pool = require('../db/db');
 const admin = require('firebase-admin');
 const { verifyToken } = require('./auth');
 const { error, group } = require('console');
-const { getAppoinmentsUser, getTotalDuration, getAppoinmentByDate, deleteAppointmentUser } = require('../sql/queries');
+const { getAppoinmentsUser, getTotalDuration, getAppoinmentByDate, deleteAppointmentUser } = require('../db/sql/queries');
 const { toTime, parseTimeSlot } = require('../utils');
 const { start } = require('repl');
 const dayjs = require('dayjs');

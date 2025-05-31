@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const pool = require('../db');
+const pool = require('../db/db');
 
 const router = express.Router();
 
@@ -13,6 +13,8 @@ router.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
+
+
     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     if (result.rows.length > 0) {
       return res.status(400).json({ error: 'Utente già registrato con questa email' });

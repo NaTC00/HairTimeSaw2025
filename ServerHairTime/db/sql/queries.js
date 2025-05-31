@@ -1,5 +1,8 @@
 const pool = require('../db')
 
+
+
+
 async function getAppoinmentsUser(userId){
     const result = await pool.query(
        `SELECT 

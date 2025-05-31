@@ -1,10 +1,20 @@
 const express = require('express');
 const cors = require('cors');
+
+
+const initializeDatabase = require('./db/initDb');
+
+initializeDatabase();
+
+
 const app = express();
 const port = 3000;
 
 app.use(cors());
 app.use(express.json());
+
+
+
 
 // Importa il router delle rotte
 const appointmentsRouter = require('./routes/appointments');

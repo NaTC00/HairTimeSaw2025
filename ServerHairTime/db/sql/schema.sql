@@ -18,13 +18,14 @@ CREATE TABLE IF NOT EXISTS services (
 
 CREATE TABLE IF NOT EXISTS appointments (
   id SERIAL PRIMARY KEY,
-  user_id INTEGER NOT NULL,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   date DATE NOT NULL,
   time_slot TEXT NOT NULL,
+  phone_number TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE  IF NOT EXISTS appointment_services (
+CREATE TABLE IF NOT EXISTS appointment_services (
   appointment_id INTEGER REFERENCES appointments(id) ON DELETE CASCADE, --Se un appuntamento viene cancellato, anche tutte le righe corrispondenti in appointment_services verranno eliminate automaticamente--
   service_id INTEGER REFERENCES services(id),
   PRIMARY KEY (appointment_id, service_id)
