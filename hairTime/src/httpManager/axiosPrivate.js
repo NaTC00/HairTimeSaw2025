@@ -2,7 +2,7 @@ import axios from 'axios';
 import { auth } from '../firebase/firebase';
 
 const axiosPrivate = axios.create({
-    baseURL:'http://localhost:3000/appointments/',
+    baseURL:'http://localhost:3000/',
     headers:{
         'Content-Type': 'application/json',
     }

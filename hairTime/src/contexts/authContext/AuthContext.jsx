@@ -35,6 +35,7 @@ export function AuthProvider({ children }) {
     }
   };
 
+
   const logout = () => {
     setToken(null);
     setUserLoggedIn(false);

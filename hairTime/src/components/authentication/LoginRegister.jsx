@@ -6,9 +6,10 @@ import { Container, Row, Col, Figure } from 'react-bootstrap'
 import {doCreateUserWithEmailAndPassword, doSignInWithEmailAndPassword, doSignInWithGoogle} from '../../firebase/authHelper'
 import { useAuth } from "contexts/authContext/AuthContext"
 import EditInputText from "../EditInputText";
+import {signUp} from "../../httpManager/request"
 
 function LoginRegister({ onClose }) {
-    const {userLoggedIn} = useAuth()
+    const {userLoggedIn, login} = useAuth()
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -28,7 +29,8 @@ function LoginRegister({ onClose }) {
       
       e.preventDefault();
       try {
-        await doCreateUserWithEmailAndPassword(email, password, username);
+       
+        await signUp(username, email, password)
         console.log(`Registrazione utente ${username} andata a buon fine`);
       } catch (error) {
         console.error(`Errore registrazione utente ${username}: ${error.message}`);
@@ -42,7 +44,7 @@ function LoginRegister({ onClose }) {
         if (!isSigningIn) {
           setIsSigningIn(true);
           try{
-            await doSignInWithEmailAndPassword(email, password)
+             await login(email, password);
             console.log(`Login utente ${username} andata a buon fine`);
           }catch(error){
             console.log(`Errore login utente ${username}: ${error.message}`);
@@ -52,21 +54,7 @@ function LoginRegister({ onClose }) {
         }
       };
     
-      const onGoogleSignIn = async (e) => {
-        e.preventDefault();
-        if (isSigningIn) return;
-
-      
-
-        try {
-          await doSignInWithGoogle();
-          setIsSigningIn(true);
-        } catch (err) {
-          setErrorMessage(err.message);
-        } finally {
-          setIsSigningIn(false);
-        }
-      };
+    
 
 
       const resetFormFields = () => {
@@ -90,7 +78,7 @@ function LoginRegister({ onClose }) {
         <div className="modal_content d-flex justify-content-center align-items-center " id="modal_content">
             <button className="close-button" onClick={onClose}>×</button>
           {/* ----------- Left side - Create Account ----------- */}
-            <div className="p-4">
+            <div className="p-5">
                 <form>
                 <div className="header-text mb-4">
                     <h1>Crea account</h1>
@@ -105,41 +93,11 @@ function LoginRegister({ onClose }) {
                     <EditInputText {...commonProps} backgroundColor="white" label="Password" placeholder="Password" inputType="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>
                 <div className="input-group mb-3 justify-content-center">
-                    <button type="submit" className="btn  w-50 fs-6" onClick={onSubmitSignUp}>Register</button>
+                    <button type="submit" className="btn  p-2" onClick={onSubmitSignUp}>Register</button>
                 </div>
                 
                 </form>
-                <Container fluid hidden>
-                    <p className="text-center">Oppure accedi con:</p>
-                   <Row className="align-items-center justify-content-center" >
-                   
-                       <Col md="auto" className="d-flex justify-content-center align-items-center">
-                           <Figure>
-                               <Figure.Image
-                                   width={40}
-                                   height={40}
-                                   src="/icons/facebook.png"
-                                   className="auth2-icon"
-                                
-                               />
-                           </Figure>
-                       </Col>
-                       <Col md="auto" className="d-flex justify-content-center align-items-center">
-                        
-                           <div onClick={onGoogleSignIn} style={{ cursor: "pointer" }}>
-                            <Figure>
-                              <Figure.Image
-                                width={40}
-                                height={40}
-                                src="/icons/ic_google.png"
-                                className="auth2-icon"
-                              />
-                            </Figure>
-                          </div>
-
-                       </Col>
-                   </Row>
-               </Container>
+              
             </div>
   
             {/* ----------- Right side - Sign In ----------- */}
@@ -161,37 +119,12 @@ function LoginRegister({ onClose }) {
                 </div>
                 
                 <div className="input-group mb-3 justify-content-center">
-                    <button type="submit" className="btn w-50 fs-6" onClick={onSubmitSignIn}>Login</button>
+                    <button type="submit" className="btn p-2" onClick={onSubmitSignIn}>Login</button>
                 </div>
         
                 </form>
-                <Container fluid>
-                   
-                    <Row className="align-items-center justify-content-center" >
-                        <p className="text-center">Oppure accedi con:</p>
-                        <Col md="auto" className="d-flex justify-content-center align-items-center">
-                            <Figure>
-                                <Figure.Image
-                                    width={40}
-                                    height={40}
-                                    src="/icons/facebook.png"
-                                    className="auth2-icon"
-                                />
-                            </Figure>
-                        </Col>
-                        <Col md="auto" className="d-flex justify-content-center align-items-center">
-                        <Figure>
-                                <Figure.Image
-                                    width={40}
-                                    height={40}
-                                    src="/icons/ic_google.png"
-                                    className="auth2-icon"
-                                    onClick={onGoogleSignIn}
-                                />
-                            </Figure>
-                        </Col>
-                    </Row>
-                </Container>
+                
+               
             </div>
 
             
@@ -202,12 +135,12 @@ function LoginRegister({ onClose }) {
                     <div className="switch-panel switch-left">
                         <h1>Hello, Again</h1>
                         <p>We are happy to see you back</p>
-                        <button className="hidden btn border-white text-white w-50 fs-6" id="login" onClick={handleSwitchToLogin}>Login</button>
+                        <button className="hidden btn border-white text-white p-2" id="login" onClick={handleSwitchToLogin}>Login</button>
                     </div>
                     <div className="switch-panel switch-right">
                         <h1>Welcome</h1>
                         <p>Join Our Platform</p>
-                        <button className="hidden btn border-white text-white w-50 fs-6" id="register" onClick={handleSwitchToRegister}>Register</button>
+                        <button className="hidden btn border-white text-white  p-2" id="register" onClick={handleSwitchToRegister}>Register</button>
                     </div>
                 </div>
             </div>
