@@ -9,14 +9,17 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
+  const [username, setUsername] = useState(null);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
 
   
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
+    const storedUsername = localStorage.getItem("username");
     if (storedToken) {
       setToken(storedToken);
+      setUsername(storedUsername)
       setUserLoggedIn(true);
     }
     setLoading(false);
@@ -25,10 +28,12 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     try {
-      const { token } = await signInApi(email, password); 
+      const { token, username } = await signInApi(email, password); 
       setToken(token);
+      setUsername(username)
       setUserLoggedIn(true);
       localStorage.setItem("token", token);
+      localStorage.setItem("username", username);
     } catch (error) {
       console.error("Errore login:", error.response?.data || error.message);
       throw error;
@@ -40,11 +45,13 @@ export function AuthProvider({ children }) {
     setToken(null);
     setUserLoggedIn(false);
     localStorage.removeItem("token");
+    localStorage.removeItem("username");
   };
 
   const value = {
     token,
     userLoggedIn,
+    username,
     login,
     logout,
   };

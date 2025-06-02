@@ -9,7 +9,7 @@ import Stack from 'react-bootstrap/Stack'
 import { useState } from 'react'
 import LoginRegister from './components/authentication/LoginRegister.jsx'
 import BookAppointment from './components/appointment/BookAppointment.jsx'
-
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 
 function App() {
