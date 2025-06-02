@@ -5,23 +5,27 @@ import EditInputText from "../EditInputText";
 import React, { useEffect, useState } from "react";
 import { Col, Row, Container, Button } from "react-bootstrap";
 import {useServices} from "../../contexts/ServicesContext"
-import {getSlotAvailable} from "../../httpManager/request"
+import {getSlotAvailable, bookAppointment} from "../../httpManager/request"
+import useAxiosPrivate from '../../httpManager/useAxiosPrivate'
 import MultiSelectDropdown from "../MultiSelectDropdown"
+import FailureAlert from "../alert/FailureAlert"
+import SuccessAlert from "../alert/SuccessAlert"
 function BookAppointment() {
    
 
     const [selectedDate, setSelectedDate] = useState(null);
     const [showCalendar, setShowCalendar] = useState(false);
-    const [sectedTimeSlot, setSelectedTimeSlot] = useState(null);
+    const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
     const [showSelectedTimeSlot, setShowSelectedTimeSlot] = useState(false);
     const [selectedServices, setselectedServices] = useState([]);
-    const [showMenuServices, setshowMenuServices] = useState(false);
     const { services, loadServices } = useServices();
     const [availableSlots, setAvailableSlots] = useState({});
     const [enabledDates, setEnabledDates] = useState([]);
     const [timeSlots, setTimeSlots] = useState([]);
     const [phoneNumber, setPhoneNumber] = useState('');
-
+    const axiosPrivate = useAxiosPrivate();
+    const [alertError, setAlertError] = useState(null);
+    const [alertSucces, setAlertSuccess] = useState(null);
 
 
     useEffect(() => {
@@ -98,6 +102,45 @@ function BookAppointment() {
     };
 
 
+
+
+
+    const handleBook = async () => {
+      
+      try{
+        
+        const selectedIds = selectedServices.map(item => item.id)
+        const date = formatDate(selectedDate)
+        const result = await bookAppointment(
+          axiosPrivate,
+          selectedIds,
+          phoneNumber,
+          date,
+          selectedTimeSlot
+
+        );
+        console.debug("prenotazione completata:", result)
+        const content = {heading: "Prenotazione appuntamento completata",  message: "La tua prenotazione è stata creata con successo."}
+        setAlertSuccess({ ...content });
+        setTimeout(() => setAlertSuccess(null), 5000);
+
+
+        setSelectedDate(null);
+        setSelectedTimeSlot(null);
+        setselectedServices([]);
+        setPhoneNumber('');
+        setTimeSlots([]);
+        setEnabledDates([]);
+        setAvailableSlots({});
+      }catch(error){
+        console.error(error.response?.data?.error);
+        setAlertError(error)
+        setTimeout(() => setAlertError(null), 5000);
+
+      }
+    }
+
+
     const commonProps = {
     borderColor: "var(--secondary)",
     focusColor: "var(--orange)",
@@ -109,9 +152,11 @@ function BookAppointment() {
 
     const isFormComplete =
     selectedDate &&
-    sectedTimeSlot &&
+    selectedTimeSlot &&
     selectedServices.length > 0 &&
     phoneNumber.trim() !== '';
+
+
 
 
   return (
@@ -131,8 +176,15 @@ function BookAppointment() {
         <Col
           xs={12}
           lg={8}
-          className="d-flex flex-column justify-content-center"
-        >
+          className="d-flex flex-column justify-content-center">
+
+           <Row className="mb-3">
+             <Col xs={12} md={6} lg={6} className="mb-3 mb-md-0">
+              {alertError && <FailureAlert error={alertError} title = "Prenotazione appuntamento non andata a buon fine" />}
+              {alertSucces && <SuccessAlert content={alertSucces}/>}
+             </Col>
+
+           </Row>
           
           <Row className="mb-3">
             <Col xs={12} md={4} lg={4} className="mb-3 mb-md-0">
@@ -142,6 +194,7 @@ function BookAppointment() {
                 placeholder="Seleziona servizio"
                 options={services}
                 onChange={handleServiceChange}
+                value={selectedServices}
               />
             </Col>
             <Col xs={12} md={4} lg={4}>
@@ -194,7 +247,8 @@ function BookAppointment() {
                 variant="primary"
                 size="lg"
                 disabled={!isFormComplete}
-                className="w-100" // per occupare tutta la colonna, non l’intero schermo
+                onClick={handleBook}
+                className="w-100" 
               >
                 PRENOTA
               </Button>

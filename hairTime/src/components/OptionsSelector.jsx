@@ -9,7 +9,7 @@ function OptionsSelector({
   backgroundColor,
   textColor,
   size,
-  values = [],
+  values,
   onSelect
 }) {
 
@@ -17,7 +17,7 @@ function OptionsSelector({
   const [isHovered, setIsHovered] = useState(false);
 
    useEffect(() => {
-    if (values.length > 0 && !selected) {
+    if (values.length > 0) {
       setSelected(values[0]);
       onSelect(values[0]);
     }
@@ -47,6 +47,7 @@ function OptionsSelector({
 
       <InputGroup className="mb-3">
         <Form.Select
+          value={selected || ''}
           onChange={handleChange}
           placeholder={placeholder}
           size={size}

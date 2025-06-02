@@ -1,15 +1,52 @@
 import { useState, useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
 
-function FailureAlert({ error }) {
+function FailureAlert({ error, title }) {
   const [show, setShow] = useState(true);
+  const [heading, setHeading] = useState('');
+  const [message, setMessage] = useState('');
+
+
+  const getErrorMessageFromStatus = () => {
+    const status = error?.response?.status || 0;
+    const msg =
+        typeof error?.response?.data === 'object' && error.response.data?.error
+        ? error.response.data.error
+        : 'Errore sconosciuto.';
+
+    switch (status) {
+        case 400:
+        case 409:
+        return {
+            heading: title,
+            message: msg,
+        };
+        case 500:
+        return {
+            heading: title,
+            message: "Qualcosa è andato storto. Riprova più tardi.",
+        };
+        default:
+        return {
+            heading: title,
+            message: "Si è verificato un errore. Controlla la connessione e riprova.",
+        };
+    }
+    };
 
   
   useEffect(() => {
-    if (error) setShow(true);
-  }, [error]);
+    if (error){
+        const { heading, message } = getErrorMessageFromStatus(error, title);
+        setShow(true);
+        setHeading(heading);
+        setMessage(message);
+    } 
+  }, [error, title]);
 
   if (!show || !error) return null;
+
+   
 
   return (
     <div
@@ -24,8 +61,8 @@ function FailureAlert({ error }) {
       }}
     >
       <Alert variant="danger" onClose={() => setShow(false)} dismissible className="text-center">
-        <Alert.Heading>{error.heading}</Alert.Heading>
-        <p>{error.message}</p>
+        <Alert.Heading>{heading}</Alert.Heading>
+        <p>{message}</p>
       </Alert>
     </div>
   );

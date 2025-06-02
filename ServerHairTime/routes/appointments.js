@@ -56,12 +56,26 @@ router.get('/services', async (req, res) => {
 router.post('/book', verifyToken, async (req, res) => {
   console.log("Richiesta prenotazione appuntamento");
 
-  const { services, date, time_slot } = req.body;
+  const { services, phone_number, date, time_slot } = req.body;
   const userId = req.user.uid;
 
+
   if (!Array.isArray(services) || services.length === 0) {
-    return res.status(400).json({ error: 'Lista servizi richiesta' })
+    return res.status(400).json({ error: 'La lista dei servizi è obbligatoria.' });
   }
+
+  if (!phone_number || typeof phone_number !== 'string' || phone_number.trim() === '') {
+    return res.status(400).json({ error: 'Il numero di telefono è obbligatorio.' });
+  }
+
+  if (!date || typeof date !== 'string' || isNaN(Date.parse(date))) {
+    return res.status(400).json({ error: 'La data fornita non è valida.' });
+  }
+
+  if (!time_slot || typeof time_slot !== 'string' || !time_slot.includes('-')) {
+    return res.status(400).json({ error: 'La fascia oraria non è valida. Usa il formato "HH:mm-HH:mm".' });
+  }
+
 
   const {from, to} = parseTimeSlot(time_slot)
   const existingAppointments = await getAppoinmentByDate(date)
@@ -80,9 +94,11 @@ router.post('/book', verifyToken, async (req, res) => {
   try {
     await client.query('BEGIN');
 
-    const appointmentResult = await client.query(
-      'INSERT INTO appointments (user_id, date, time_slot) VALUES ($1, $2, $3) RETURNING id',
-      [userId, date, time_slot]
+      const appointmentResult = await client.query(
+      `INSERT INTO appointments (user_id, date, time_slot, phone_number)
+       VALUES ($1, $2, $3, $4)
+       RETURNING id`,
+      [userId, date, time_slot, phone_number]
     );
 
     const appointmentId = appointmentResult.rows[0].id;

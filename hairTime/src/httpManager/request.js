@@ -54,3 +54,18 @@ export const signInApi = async (email, password) => {
   });
   return response.data;
 }
+
+export const bookAppointment = async (axiosPrivate,services, phone_number, date, time_slot) => {
+    try {
+      const response = await axiosPrivate.post('appointments/book', {
+        services,
+        phone_number,
+        date,
+        time_slot,
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Errore nella prenotazione:", error.response?.data || error.message);
+      throw error;
+    }
+  };

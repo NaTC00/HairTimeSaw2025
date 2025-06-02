@@ -39,39 +39,12 @@ function LoginRegister({ onClose }) {
         setAlertSuccess({...content})
       } catch (error) {
         console.error(`Errore registrazione utente ${username}: ${error.message}`);
-        const status = error.response?.status || 0;
-        const data = error.response?.data;
-        const content = getErrorMessageFromStatus(status, data)
-        setAlertError({ ...content });
+        setAlertError({ ...error });
       }
     };
 
 
-    const getErrorMessageFromStatus = (status, data) => {
-      const msg = typeof data === 'object' && data?.error ? data.error : String(data);
-      switch (status) {
-        case 400:
-          return {
-            heading: "Registrazione fallita",
-            message: msg,
-          };
-        case 409:
-          return {
-            heading: "Registrazione fallita",
-            message: msg,
-          };
-        case 500:
-          return {
-            heading: "Registrazione fallita",
-            message: "Qualcosa è andato storto. Riprova più tardi.",
-          };
-        default:
-          return {
-            heading: "Registrazione fallita",
-            message: "Si è verificato un errore. Controlla la connessione e riprova.",
-          };
-      }
-    };
+  
 
     
 
@@ -111,7 +84,7 @@ function LoginRegister({ onClose }) {
 
   return (
     <div className="modal_overlay">
-       {alertError && <FailureAlert error={alertError} />}
+       {alertError && <FailureAlert error={alertError} title = "Registrazione fallita" />}
        {alertSucces && <SuccessAlert content={alertSucces}/>}
       <div className="modal_content d-flex justify-content-center align-items-center" id="modal_content">
         <button className="close-button" onClick={onClose}>×</button>

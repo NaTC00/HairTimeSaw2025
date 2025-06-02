@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 import CloseButton from 'react-bootstrap/CloseButton';
@@ -12,9 +12,15 @@ function MultiSelectDropdown({
   textColor,
   size,
   options,
-  onChange
+  onChange,
+  value
 }) {
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState(value);
+
+  useEffect(() => {
+    setSelected(value || []);
+  }, [value]);
+
   
 
   const toggleItem = (itemId) => {

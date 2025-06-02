@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useAuth } from '../contexts/authContext/AuthContext';
 import axiosPrivate from './axiosPrivate';
 
-export default function useAxiosPrivate() {
+function useAxiosPrivate() {
   const { token } = useAuth();
 
   useEffect(() => {
@@ -25,3 +25,5 @@ export default function useAxiosPrivate() {
 
   return axiosPrivate;
 }
+
+export default useAxiosPrivate;
