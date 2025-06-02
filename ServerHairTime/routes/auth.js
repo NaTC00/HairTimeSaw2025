@@ -12,12 +12,21 @@ const router = express.Router();
 router.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
 
+   if (!username || !email || !password) {
+    return res.status(400).json({ error: 'Controlla che tutti i campi siano compilati correttamente.' });
+  }
+
+  if (!email.includes('@')) {
+    return res.status(400).json({ error: "L'indirizzo email non è valido." });
+  }
+
+
   try {
 
 
     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     if (result.rows.length > 0) {
-      return res.status(400).json({ error: 'Utente già registrato con questa email' });
+      return res.status(409).json({ error: 'Utente già registrato con questa email' });
     }
 
     const hashed = await bcrypt.hash(password, 10);
