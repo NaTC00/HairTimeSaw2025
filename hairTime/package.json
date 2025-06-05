@@ -20,7 +20,7 @@
     "react-bootstrap": "^2.10.9",
     "react-calendar": "^5.1.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.5.0",
+    "react-router-dom": "^7.6.2",
     "react-time-picker": "^7.0.0"
   },
   "devDependencies": {

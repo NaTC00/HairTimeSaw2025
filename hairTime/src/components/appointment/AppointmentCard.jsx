@@ -51,7 +51,14 @@ export default function AppointmentCard({ appointment, onDeleteAppointment }) {
           </div>
         </Col>
         <Col className="p-3 d-flex flex-column justify-content-center align-items-end">
-            <Button size="sm" onClick={handleClick}>Disdici</Button>
+            <Button size="lg" 
+            active 
+            onClick={handleClick}  
+            style={{
+                  backgroundColor: 'var(--primary)',
+                  borderColor: 'var(--primary)',
+                  outline: 'none',
+                  boxShadow: 'none'}}>Disdici</Button>
         </Col>
 
       </Row>

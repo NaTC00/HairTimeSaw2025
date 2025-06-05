@@ -160,7 +160,7 @@ function BookAppointment() {
 
 
   return (
-    <Container fluid className="py-5">
+    <Container fluid className="py-5" style={{backgroundColor: 'var(--background)'}}>
       <Row className="align-items-center">
       
         <Col

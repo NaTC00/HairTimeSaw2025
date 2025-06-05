@@ -74,6 +74,9 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
+
+
+
 @media (max-width: 1024px) {
   .modal_content.large {
     width: 90vw;

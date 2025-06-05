@@ -1,6 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home.jsx' 
-
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navigationbar from './components/Navigationbar.jsx'
 import Footer from './components/Footer.jsx'
 import OverlayGeneralReview from './components/OverlayGeneralReview.jsx'
@@ -21,20 +20,26 @@ function App() {
   return(
 
     <>
-      <header>
+    <Router>
+
+    <header>
         <Navigationbar 
           onLoginRegisterClick={() => setShowLogin((isVisible) => !isVisible)}
-          onMyAppointmentsClick={() => setShowMyAppointments((isVisible) => !isVisible) }
-          onAppointmentClick={() => setCurrentView("appointment")} />
+          />
       </header>
       <main>
-        {currentView === "home" && <Home/>}
-        {currentView === "appointment" && <BookAppointment />}
-        {currentView === ""}
+        <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/appuntamenti" element={<BookAppointment />} />
+            <Route path="/mie-prenotazioni" element={<MyAppointments />} />
+        </Routes>
       </main>
       <Footer/>
       {showLoginRegister && <LoginRegister onClose = {() => setShowLogin((isVisible) => !isVisible)}/>}
       {showMyAppointments && <MyAppointments onClose = {() => setShowMyAppointments ((isVisible) => !isVisible)}/>}
+
+    </Router>
+     
     </>
 
    

@@ -1,9 +1,6 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
 import './NavigationbarStyle.css';
-
+import { Link } from 'react-router-dom';
 import { useAuth } from "contexts/authContext/AuthContext"
 
 function Navigationbar({onLoginRegisterClick, onMyAppointmentsClick, onAppointmentClick}) {
@@ -17,19 +14,19 @@ function Navigationbar({onLoginRegisterClick, onMyAppointmentsClick, onAppointme
   return (
     <Navbar expand="lg" className="bg-body-tertiary" id='nav_conteiner'>
       <Container>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand as={Link} to="/">
           <img src="/icons/logo.png" alt="Logo" style={{ height: '100px', width: 'auto', objectFit: 'contain' }}  />
         </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link href="#home" >Home</Nav.Link>
+            <Nav.Link as={Link} to="/" >Home</Nav.Link>
             <Nav.Link href="#link">I nostri lavori</Nav.Link>
-            <Nav.Link href="#link" onClick={onAppointmentClick}>Appuntamenti</Nav.Link>
-             {userLoggedIn ? (
+            <Nav.Link  as={Link} to="/appuntamenti">Appuntamenti</Nav.Link>
+             {true ? (
               <NavDropdown title={`Benvenuta, ${username || "User"}`} id="user-nav-dropdown">
-                <NavDropdown.Item href="#myaccount" onClick={onMyAppointmentsClick}>
+                <NavDropdown.Item as={Link} to="/mie-prenotazioni">
                   <i className="bi bi-gear me-2" />Le mie prenotazioni
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
