@@ -14,7 +14,7 @@ function FailureAlert({ error, title }) {
         ? error.response.data.error
         : 'Errore sconosciuto.';
 
-    console.log(`Codice http: ${error?.response?.status}`)
+   
     switch (status) {
         case 400:
         case 409:

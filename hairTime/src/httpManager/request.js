@@ -69,3 +69,24 @@ export const bookAppointment = async (axiosPrivate,services, phone_number, date,
       throw error;
     }
   };
+
+export const getAllAppointments = async (axiosPrivate) => {
+  try{
+    const response = await axiosPrivate.get('appointments/user');
+    return response.data;
+  }catch(error){
+    console.error("Errore durante il recupero delle prenotazioni:", error.response?.data || error.message)
+    throw error;
+  }
+}
+
+export const deleteAppointment = async (axiosPrivate, appointmentId) => {
+  try{
+    const response = await axiosPrivate.delete(`appointments/${appointmentId}`);
+    return response.data;
+
+  }catch(error){
+    console.error("Errore durante l'eliminazione della prenotazione:", error.response?.data || error.message)
+    throw error;
+  }
+}

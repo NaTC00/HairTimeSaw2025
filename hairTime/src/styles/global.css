@@ -25,7 +25,90 @@
     overflow-x: hidden;
   }*/
 
+  @import '../styles/colors.css';
+
   *{
    
     font-family: 'GrandCruLight';
   }
+
+  
+.modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.modal_content{
+  background-color: var(--background_cream);
+  border-radius: 40px;
+  position: relative;
+  overflow: hidden;
+  gap: 2rem;
+  max-width: 100%;
+}
+
+.modal_content.large {
+  background-color: var(--background_cream);
+  border-radius: 40px;
+  position: relative;
+  overflow: hidden;
+  gap: 2rem;
+
+  /* Dimensione simile alla modale login */
+  width: 900px;
+  height: 600px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 2rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 1024px) {
+  .modal_content.large {
+    width: 90vw;
+    height: 90vh;
+  }
+}
+
+
+
+
+
+  .location-icon {
+    border-radius: 50%;
+    background-color: var(--orange_opacity);  
+    padding: 10px; 
+    }
+
+    .appointment-timeline-card {
+      border-left: 4px solid var(--bs-warning); /* o un colore a tema */
+      border-radius: 8px;
+    }
+    
+    .date-box {
+      background-color: var(--orange);
+      padding: 1rem 0;
+      border-right: 1px solid #ddd;
+    }
+    
+    .day-number {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    
+    .weekday {
+      font-size: 0.9rem;
+      color: #888;
+    }
+    

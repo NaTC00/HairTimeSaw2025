@@ -25,11 +25,11 @@
 }
 
 
-.location-icon {
+/*.location-icon {
 border-radius: 50%;
 background-color: var(--orange_opacity);  
 padding: 10px; 
-}
+}*/
   
 .location-title {
 font-size: 1.5rem;

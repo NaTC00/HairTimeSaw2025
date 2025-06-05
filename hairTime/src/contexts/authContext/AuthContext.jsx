@@ -17,13 +17,27 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     const storedUsername = localStorage.getItem("username");
-    if (storedToken) {
-      setToken(storedToken);
-      setUsername(storedUsername)
-      setUserLoggedIn(true);
+    const storedTimestamp = localStorage.getItem("tokenTimestamp");
+  
+    if (storedToken && storedTimestamp) {
+      const tokenAge = Date.now() - parseInt(storedTimestamp, 10);
+      const twoHours = 2 * 60 * 60 * 1000; 
+  
+      if (tokenAge < twoHours) {
+        setToken(storedToken);
+        setUsername(storedUsername);
+        setUserLoggedIn(true);
+      } else {
+        // Token scaduto
+        localStorage.removeItem("token");
+        localStorage.removeItem("username");
+        localStorage.removeItem("tokenTimestamp");
+      }
     }
+  
     setLoading(false);
   }, []);
+  
 
 
   const login = async (email, password) => {

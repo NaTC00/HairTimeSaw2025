@@ -122,7 +122,7 @@ function BookAppointment() {
         console.debug("prenotazione completata:", result)
         const content = {heading: "Prenotazione appuntamento completata",  message: "La tua prenotazione è stata creata con successo."}
         setAlertSuccess({ ...content });
-        setTimeout(() => setAlertSuccess(null), 5000);
+        setTimeout(() => setAlertSuccess(null), 3000);
 
 
         setSelectedDate(null);
@@ -135,7 +135,7 @@ function BookAppointment() {
       }catch(error){
         console.error(error.response?.data?.error);
         setAlertError(error)
-        setTimeout(() => setAlertError(null), 5000);
+        setTimeout(() => setAlertError(null), 3000);
 
       }
     }
@@ -244,12 +244,15 @@ function BookAppointment() {
            <Row className="mb-3">
             <Col xs={12} md={4} lg={4}>
               <Button
-                variant="primary"
                 size="lg"
                 disabled={!isFormComplete}
                 onClick={handleBook}
-                className="w-100" 
-              >
+                className="w-100 no-focus"
+                style={{
+                  backgroundColor: 'var(--orange)',
+                  borderColor: 'var(--orange)',
+                  outline: 'none',
+                  boxShadow: 'none'}}>
                 PRENOTA
               </Button>
             </Col>

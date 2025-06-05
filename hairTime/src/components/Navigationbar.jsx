@@ -6,7 +6,7 @@ import './NavigationbarStyle.css';
 
 import { useAuth } from "contexts/authContext/AuthContext"
 
-function Navigationbar({onLoginRegisterClick, onAppointmentClick}) {
+function Navigationbar({onLoginRegisterClick, onMyAppointmentsClick, onAppointmentClick}) {
 
   const { userLoggedIn, username, logout } = useAuth();
 
@@ -29,12 +29,12 @@ function Navigationbar({onLoginRegisterClick, onAppointmentClick}) {
             <Nav.Link href="#link" onClick={onAppointmentClick}>Appuntamenti</Nav.Link>
              {userLoggedIn ? (
               <NavDropdown title={`Benvenuta, ${username || "User"}`} id="user-nav-dropdown">
-                <NavDropdown.Item href="#myaccount">
-                  <i className="bi bi-gear me-2" /> My Account
+                <NavDropdown.Item href="#myaccount" onClick={onMyAppointmentsClick}>
+                  <i className="bi bi-gear me-2" />Le mie prenotazioni
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item onClick={handleLogout}>
-                  <i className="bi bi-power me-2" /> Logout
+                  <i className="bi bi-power me-2"/> Logout
                 </NavDropdown.Item>
               </NavDropdown>
             ) : (

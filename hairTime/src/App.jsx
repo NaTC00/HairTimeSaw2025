@@ -10,11 +10,13 @@ import { useState } from 'react'
 import LoginRegister from './components/authentication/LoginRegister.jsx'
 import BookAppointment from './components/appointment/BookAppointment.jsx'
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import MyAppointments from 'components/appointment/MyAppointments.jsx'
 
 
 function App() {
   const [showLoginRegister, setShowLogin] = useState(false);
   const [currentView, setCurrentView] = useState("home");
+  const [showMyAppointments, setShowMyAppointments] = useState(false)
 
   return(
 
@@ -22,14 +24,17 @@ function App() {
       <header>
         <Navigationbar 
           onLoginRegisterClick={() => setShowLogin((isVisible) => !isVisible)}
+          onMyAppointmentsClick={() => setShowMyAppointments((isVisible) => !isVisible) }
           onAppointmentClick={() => setCurrentView("appointment")} />
       </header>
       <main>
         {currentView === "home" && <Home/>}
         {currentView === "appointment" && <BookAppointment />}
+        {currentView === ""}
       </main>
       <Footer/>
       {showLoginRegister && <LoginRegister onClose = {() => setShowLogin((isVisible) => !isVisible)}/>}
+      {showMyAppointments && <MyAppointments onClose = {() => setShowMyAppointments ((isVisible) => !isVisible)}/>}
     </>
 
    
