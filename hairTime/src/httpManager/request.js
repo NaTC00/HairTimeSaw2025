@@ -90,3 +90,17 @@ export const deleteAppointment = async (axiosPrivate, appointmentId) => {
     throw error;
   }
 }
+
+export const submitReview = async (axiosPrivate, rating, comment) => {
+  try{
+    const response = await axiosPrivate.post('reviews/sumbit_review', {
+      rating,
+      comment
+    })
+    console.log("Invio recensione andato a buon fine")
+    return response.data;
+  }catch(error){
+    console.error("Errore durante l'invio della recensione", error.response?.data || error.message)
+    throw error;
+  }
+}

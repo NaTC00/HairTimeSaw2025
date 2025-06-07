@@ -24,7 +24,7 @@ function Navigationbar({onLoginRegisterClick, onMyAppointmentsClick, onAppointme
             <Nav.Link as={Link} to="/" >Home</Nav.Link>
             <Nav.Link href="#link">I nostri lavori</Nav.Link>
             <Nav.Link  as={Link} to="/appuntamenti">Appuntamenti</Nav.Link>
-             {true ? (
+             {userLoggedIn ? (
               <NavDropdown title={`Benvenuta, ${username || "User"}`} id="user-nav-dropdown">
                 <NavDropdown.Item as={Link} to="/mie-prenotazioni">
                   <i className="bi bi-gear me-2" />Le mie prenotazioni

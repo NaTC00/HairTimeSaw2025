@@ -10,6 +10,7 @@ function EditInputText({
     textColor,
     size,
     inputType = "text",
+    isTextArea = false,
     value,
     onClick,
     onChange,
@@ -33,6 +34,7 @@ function EditInputText({
                         onChange={onChange}
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}
+                        as={isTextArea ? "textarea" : undefined}
                         style={{
                             fontSize: '12px',
                             border: `2px solid ${isHovered ? focusColor : borderColor}`,

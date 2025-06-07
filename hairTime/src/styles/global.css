@@ -86,7 +86,11 @@
 
 
 
-
+.star {
+  width: 20px;
+  height: auto;
+  margin: 0 2px;
+}
 
   .location-icon {
     border-radius: 50%;
@@ -95,7 +99,7 @@
     }
 
     .appointment-timeline-card {
-      border-left: 4px solid var(--bs-warning); /* o un colore a tema */
+      border-left: 4px solid var(--bs-warning); 
       border-radius: 8px;
     }
     

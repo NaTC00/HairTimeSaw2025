@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import AppointmentCard from "./AppointmentCard";
-import { getAllAppointments, deleteAppointment } from "../../httpManager/request";
+import { getAllAppointments, deleteAppointment, submitReview } from "../../httpManager/request";
 import MonthCarousel from "./MonthCarousel"
 import useAxiosPrivate from '../../httpManager/useAxiosPrivate'
 import {ListGroup, Container, Row, Col, Button } from "react-bootstrap";
 import FailureAlert from "../alert/FailureAlert"
+import SubmitReviews from "./SubmitReviews"
 import '../../styles/colors.css';
 export default function MyAppointment({ onClose }){
     const currentMonth = new Date().getMonth();
@@ -62,7 +63,10 @@ export default function MyAppointment({ onClose }){
             setAllAppointments(newAppointments)
         }catch(error){
             console.error(error.response?.data?.error);
-            setAlertError(error)
+            setAlertError({
+                error: error,
+                title: "Eliminazione prenotazione fallita"
+            })
             setTimeout(() => setAlertError(null), 5000);
         }
     }
@@ -75,12 +79,26 @@ export default function MyAppointment({ onClose }){
         return date.getMonth() === selectedMonth;
       });
     console.log("Appuntamenti filtrati:", filteredAppointments);
+
+
+    const handleSubmitReview = async (rating, comment) => {
+        try{
+            await submitReview(axiosPrivate, rating, comment)
+        }catch(error){
+            console.error(error.response?.data?.error);
+            setAlertError({
+                error: error,
+                title: "Invio recensione fallita"
+            })
+            setTimeout(() => setAlertError(null), 5000);
+        }
+    }
       return (
         <Container fluid className="p-5" style={{backgroundColor: 'var(--background)'}}>
                 
         <Row className="mb-3">
             <Col xs={12} md={6} lg={6} className="mb-3 mb-md-0">
-            {alertError && <FailureAlert error={alertError} title = "Eliminazione prenotazione non andata a buon fine" />}
+            {alertError && <FailureAlert error={alertError.error} title={alertError.title} />}
             </Col>
 
         </Row>
@@ -130,6 +148,13 @@ export default function MyAppointment({ onClose }){
                 LASCIA RECENSIONE
                 </Button>
             </Col>
+        </Row>
+
+        <Row>
+            <Col>
+            <SubmitReviews onSubmitReview={handleSubmitReview}/>
+            </Col>
+
         </Row>
         </Container>
         

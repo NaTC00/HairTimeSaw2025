@@ -49,9 +49,27 @@ async function getAppoinmentByDate(date) {
     return result.rows
 }
 
+async function submitReview(user_id, rating, comment) {
+    return await pool.query(
+      `INSERT INTO reviews (user_id, rating, comment) VALUES ($1, $2, $3) RETURNING *`,
+      [user_id, rating, comment]
+    );
+  }
+  
+
+  async function getReviews() {
+    return await pool.query(
+        `SELECT * FROM reviews`
+    );
+    
+  }
+  
+
 module.exports = {
     getAppoinmentsUser,
     getTotalDuration,
     getAppoinmentByDate,
-    deleteAppointmentUser
+    deleteAppointmentUser,
+    submitReview,
+    getReviews
 }
