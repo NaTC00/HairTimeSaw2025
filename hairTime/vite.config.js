@@ -13,6 +13,9 @@ export default defineConfig({
         open: true,
       },
       registerType: 'autoUpdate',
+      devOptions: {
+        enabled: true // abilita SW anche in dev preview
+      },
       includeAssets: ['favicon.svg', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
         name: 'HairTime',
@@ -40,7 +43,14 @@ export default defineConfig({
             purpose: 'any maskable'
           }
         ]
-      }
+      },
+      workbox: {
+        globDirectory: 'dist',
+        globPatterns: [
+          '**/*.{js,css,html,ico,png,svg,jpg,jpeg,JPG,webp}'
+        ],
+        navigateFallback: 'index.html'
+      }      
     })
   ]
 })
