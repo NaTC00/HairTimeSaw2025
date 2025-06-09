@@ -1,32 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Image, Carousel } from 'react-bootstrap';
 import './ReviewCarouselStyle.css';
+import {getReviews} from '../httpManager/request'
 
 import Review from '../models/Review';
 
-export default function ReviewCarousel() {
-    const reviews = [
-        new Review(
-          "Probabilmente potrei lavorare nel reparto vendite per te. Ne è valsa decisamente la pena. Utilizziamo il salone da cinque anni.",
-          "Jessica Zhang",
-          4
-        ),
-        new Review(
-          "Assolutamente fantastico! Non riusciamo a capire come abbiamo vissuto senza questo salone. Sono completamente sbalordita.",
-          "Leanna May",
-          5
-        ),
-        new Review(
-          "Servizio eccellente e personale cordiale. Lo consiglio sicuramente a tutti!",
-          "Giovanni Rossi",
-          3
-        ),
-        new Review(
-          "Un’esperienza veramente straordinaria! Ora sono una cliente fedele.",
-          "Sara Bianchi",
-          5
-        ),
-      ];
+function ReviewCarousel() {
+  const [reviews, setReviews] = useState([])
+  const [error, setError] = useState(false)
+  const fetchReviews = async () => {
+    try{
+      const reviesList = await getReviews()
+      setReviews(reviesList)
+      setError(false)
+    }catch(error){
+      setError(true)
+    }
+  }
+
+  useEffect(() => {
+    fetchReviews()
+  }, [])
+
+  const renderStars = (rating) => {
+    const starsArray = [];
+    for (let i = 0; i < 5; i++) {
+      starsArray.push(
+        <Image
+          key={i}
+          src={i < rating ? "/icons/star-filled.png" : "/icons/star-empty.png"}
+          alt="star"
+          className="star"
+        />
+      );
+    }
+    return starsArray;
+  };
+   
   return (
     <Carousel>
       {reviews.map((review, index) => {
@@ -38,11 +48,11 @@ export default function ReviewCarousel() {
                   <Col sm className="d-flex justify-content-center align-items-center"  style={{height: '30vh', width:'90vw' }}>
                     <div className="review-item text-center">
                       <blockquote>
-                        <p>{review.text}</p>
+                        <p>{review.comment}</p>
                       </blockquote>
                       <footer>
-                        <cite>{review.user}, Customer</cite>
-                        <div className="star-rating">{review.renderStars()}</div>
+                        <cite>{review.username}</cite>
+                        <div className="star-rating">{renderStars(review.rating)}</div>
                       </footer>
                     </div>
                   </Col>
@@ -50,11 +60,11 @@ export default function ReviewCarousel() {
                     <Col sm className="d-flex justify-content-center align-items-center" style={{height: '30vh',  width:'90vw' }}>
                       <div className="review-item text-center">
                         <blockquote>
-                          <p>{reviews[index + 1].text}</p>
+                          <p>{reviews[index + 1].comment}</p>
                         </blockquote>
                         <footer>
-                          <cite>{reviews[index + 1].user}, Customer</cite>
-                          <div className="star-rating">{reviews[index + 1].renderStars()}</div>
+                          <cite>{reviews[index + 1].username}</cite>
+                          <div className="star-rating">{renderStars(reviews[index + 1].rating)}</div>
                         </footer>
                       </div>
                     </Col>
@@ -64,9 +74,9 @@ export default function ReviewCarousel() {
             </Carousel.Item>
           );
         }
-        return null;
       })}
     </Carousel>
   );
 }
 
+export default ReviewCarousel;

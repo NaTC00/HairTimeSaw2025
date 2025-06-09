@@ -3,7 +3,7 @@ import AppointmentCard from "./AppointmentCard";
 import { getAllAppointments, deleteAppointment, submitReview } from "../../httpManager/request";
 import MonthCarousel from "./MonthCarousel"
 import useAxiosPrivate from '../../httpManager/useAxiosPrivate'
-import {ListGroup, Container, Row, Col, Button } from "react-bootstrap";
+import {ListGroup, Container, Row, Col, Button, Fade } from "react-bootstrap";
 import FailureAlert from "../alert/FailureAlert"
 import SubmitReviews from "./SubmitReviews"
 import '../../styles/colors.css';
@@ -13,6 +13,11 @@ export default function MyAppointment({ onClose }){
     const [allAppointments, setAllAppointments] = useState([]);
     const [alertError, setAlertError] = useState(null);
     const axiosPrivate = useAxiosPrivate();
+    const [showSubmitForm, setShowSubmitForm] = useState(false);
+
+    const handleToggle = () => {
+        setShowSubmitForm(prev => !prev);
+    };
     const mockAppointments = [
         {
           id: 1,
@@ -139,20 +144,22 @@ export default function MyAppointment({ onClose }){
         <Row className="justify-content-center">
             <Col  xs="auto" className="text-center">
                 <Button
-                size="lg"
-                style={{
-                    backgroundColor: 'var(--orange)',
-                    borderColor: 'var(--orange)',
-                    outline: 'none',
-                    boxShadow: 'none'}}>
-                LASCIA RECENSIONE
+                size="sm"
+                variant="primary"
+                onClick={handleToggle}
+                >
+                LASCIA UNA RECENSIONE
                 </Button>
             </Col>
         </Row>
 
-        <Row>
+        <Row >
             <Col>
-            <SubmitReviews onSubmitReview={handleSubmitReview}/>
+            <Fade in={showSubmitForm} mountOnEnter unmountOnExit>
+                <div className="mt-4"> {/* margine per stacco visivo */}
+                <SubmitReviews onSubmitReview={handleSubmitReview} />
+                </div>
+            </Fade>
             </Col>
 
         </Row>

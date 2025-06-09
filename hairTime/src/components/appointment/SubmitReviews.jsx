@@ -27,12 +27,12 @@ export default function SubmitReviews({onSubmitReview}){
         }
       };
     return(
-        <Container>
+        <Container fluid>
             <h1>
                 Condividi la tua esperienza
             </h1>
            <Row>
-           <Col>
+           <Col  >
                 <Form.Label style={{color: "var(--secondary)", textTransform: "uppercase", fontFamily:'sans-serif', fontWeight: 'bold', fontSize: '12px'}}>Punteggio</Form.Label>
                 <Stack direction="horizontal" gap={3}>
                     {[...Array(5)].map((_, i) => (
@@ -52,7 +52,7 @@ export default function SubmitReviews({onSubmitReview}){
                 <EditInputText label="Commento" {...commonProps}  value={comment} onChange={(e) => setComment(e.target.value)}></EditInputText>
 
             </Col>
-            <Col>
+            <Col  style={{backgroundColor: 'blu'}}>
             <p>Raccontaci la tua esperienza nel salone! Hai fatto un taglio, colore o altro?<br />
                 Il tuo feedback può aiutare altri a scegliere con più sicurezza.</p>
             <Button onClick={handleSubmitClick}>Invia recensione</Button>

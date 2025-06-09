@@ -39,7 +39,9 @@ function EditInputText({
                             fontSize: '12px',
                             border: `2px solid ${isHovered ? focusColor : borderColor}`,
                             backgroundColor,
-                            color: textColor
+                            color: textColor,
+                            ...(isTextArea ? { maxWidth: '400px' } : {})
+        
                         }}
                     />
                     {showCustomComponent && customComponent && (

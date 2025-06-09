@@ -12,11 +12,11 @@ export default function AppointmentCard({ appointment, onDeleteAppointment }) {
   };
 
   return (
-    <Card className="shadow-sm" style={{ borderRadius: '12px' }}>
+    <Card className="shadow-sm" style={{ borderRadius: '12px'}}>
       <Row className="g-0">
        
         <Col xs={2} className="d-flex flex-column align-items-center justify-content-center bg-light border-end position-relative" style={{ borderRadius: '12px' }}>
-          <div style={{ fontSize: '2rem', fontWeight: 'bold' }}>{day}</div>
+          <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>{day}</div>
           <div>{weekday}</div>
          
           {<div
@@ -26,7 +26,7 @@ export default function AppointmentCard({ appointment, onDeleteAppointment }) {
         </Col>
 
         
-        <Col className="p-3">
+        <Col className="p-2">
           <div className="d-flex flex-column">
             
             <div className="d-flex gap-3 flex-wrap text-start">
@@ -50,8 +50,9 @@ export default function AppointmentCard({ appointment, onDeleteAppointment }) {
             <div className="text-muted text-start small mt-2">{appointment.time_slot}</div>
           </div>
         </Col>
-        <Col className="p-3 d-flex flex-column justify-content-center align-items-end">
-            <Button size="lg" 
+        <Col className="p-2 d-flex flex-column justify-content-center align-items-end">
+            <Button 
+            size="sm"
             active 
             onClick={handleClick}  
             style={{

@@ -104,3 +104,14 @@ export const submitReview = async (axiosPrivate, rating, comment) => {
     throw error;
   }
 }
+
+export const getReviews = async () => {
+  try{
+    const response = await axiosPublic.get('reviews')
+    console.log("Recupero recensioni andato a buon fine")
+    return response.data;
+  }catch(error){
+    console.error("Errore durante il recupero recensioni")
+    throw error;
+  }
+}

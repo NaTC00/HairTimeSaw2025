@@ -58,11 +58,17 @@ async function submitReview(user_id, rating, comment) {
   
 
   async function getReviews() {
-    return await pool.query(
-        `SELECT * FROM reviews`
-    );
-    
+    return await pool.query(`
+      SELECT 
+        reviews.id,
+        reviews.rating,
+        reviews.comment,
+        users.username
+      FROM reviews
+      JOIN users ON reviews.user_id = users.id
+    `);
   }
+  
   
 
 module.exports = {
