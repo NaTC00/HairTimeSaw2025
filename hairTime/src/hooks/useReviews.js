@@ -26,6 +26,12 @@ export function useReviews({ useAxiosPrivate }) {
 
   useEffect(() => {
     fetchReviews();
+
+    const interval = setInterval(() => {
+      fetchReviews();
+    }, 60 * 1000); // ogni 60 secondi
+
+    return () => clearInterval(interval);
   }, [fetchReviews]);
 
   return {

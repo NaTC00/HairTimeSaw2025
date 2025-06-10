@@ -1,15 +1,15 @@
 import EditCalendar from 'components/EditCalendar';
 import OptionsSelector from 'components/OptionsSelector';
-import '../../styles/colors.css';
-import EditInputText from "../EditInputText";
+import '../styles/colors.css'
+import EditInputText from "../components/EditInputText";
 import React, { useEffect, useState } from "react";
 import { Col, Row, Container, Button } from "react-bootstrap";
-import {useServices} from "../../contexts/ServicesContext"
-import {getSlotAvailable, bookAppointment} from "../../httpManager/request"
-import useAxiosPrivate from '../../httpManager/useAxiosPrivate'
-import MultiSelectDropdown from "../MultiSelectDropdown"
-import FailureAlert from "../alert/FailureAlert"
-import SuccessAlert from "../alert/SuccessAlert"
+import {useServices} from "../contexts/ServicesContext"
+import {getSlotAvailable, bookAppointment} from "../httpManager/request"
+import useAxiosPrivate from '../httpManager/useAxiosPrivate'
+import MultiSelectDropdown from "../components/MultiSelectDropdown"
+import FailureAlert from "../components/alert/FailureAlert"
+import SuccessAlert from "../components/alert/SuccessAlert"
 function BookAppointment() {
    
 

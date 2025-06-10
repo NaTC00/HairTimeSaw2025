@@ -103,6 +103,7 @@ export default function UserAppointmentsPage(){
 
 
     const handleSubmitReview = async (rating, comment) => {
+      
 
         const success = await submit(rating, comment)
         if (success) {
