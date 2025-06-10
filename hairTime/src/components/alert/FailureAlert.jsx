@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
 
-function FailureAlert({ error, title }) {
+function FailureAlert({ error, title, onClose }) {
   const [show, setShow] = useState(true);
   const [heading, setHeading] = useState('');
   const [message, setMessage] = useState('');
@@ -47,8 +47,19 @@ function FailureAlert({ error, title }) {
         setShow(true);
         setHeading(heading);
         setMessage(message);
+    }else{
+      setShow(false);
+      setHeading('');
+      setMessage('');
     } 
   }, [error, title]);
+
+  const handleClose = () => {
+    setShow(false)
+    if (onClose) { 
+      onClose()
+    }
+  }
 
   if (!show || !error) return null;
 
@@ -66,7 +77,7 @@ function FailureAlert({ error, title }) {
         maxWidth: "500px",
       }}
     >
-      <Alert variant="danger" onClose={() => setShow(false)} dismissible className="text-center">
+      <Alert variant="danger" onClose={handleClose} dismissible className="text-center">
         <Alert.Heading>{heading}</Alert.Heading>
         <p>{message}</p>
       </Alert>

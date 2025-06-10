@@ -4,7 +4,7 @@ export function getServiceIcon(serviceName) {
       "Taglio": "/icons/hair-cut.png",
       "Piega": "/icons/curling-hair.png",
       "Colore": "/icons/hair-color.png",
-      "Tonalizzante": "/icons/curling-hair.png",
+      "Tonalizzante": "/icons/toner.png",
       "Maschera": "/icons/hair-mask.png",
     };
   

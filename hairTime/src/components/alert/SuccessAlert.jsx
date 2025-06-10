@@ -1,13 +1,20 @@
 import { useState, useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
 
-function SuccessAlert({ content }) {
+function SuccessAlert({ content, onClose }) {
   const [show, setShow] = useState(true);
 
   
   useEffect(() => {
     if (content) setShow(true);
   }, [content]);
+
+  const handleClose = () => {
+    setShow(false)
+    if (onClose) { 
+      onClose()
+    }
+  }
 
   if (!show || !content) return null;
 
@@ -23,7 +30,7 @@ function SuccessAlert({ content }) {
         maxWidth: "500px",
       }}
     >
-      <Alert variant="success" onClose={() => setShow(false)} dismissible className="text-center">
+      <Alert variant="success" onClose={handleClose} dismissible className="text-center">
         <Alert.Heading>{content.heading}</Alert.Heading>
         <p>{content.message}</p>
       </Alert>

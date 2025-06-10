@@ -9,7 +9,7 @@ import { useState } from 'react'
 import LoginRegister from './components/authentication/LoginRegister.jsx'
 import BookAppointment from './components/appointment/BookAppointment.jsx'
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import MyAppointments from 'components/appointment/MyAppointments.jsx'
+import UserAppointmentsPage from 'pages/UserAppointmentsPage.jsx'
 
 
 function App() {
@@ -31,7 +31,7 @@ function App() {
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/appuntamenti" element={<BookAppointment />} />
-            <Route path="/mie-prenotazioni" element={<MyAppointments />} />
+            <Route path="/mie-prenotazioni" element={<UserAppointmentsPage />} />
         </Routes>
       </main>
       <Footer/>

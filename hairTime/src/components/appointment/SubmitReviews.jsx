@@ -55,7 +55,7 @@ export default function SubmitReviews({onSubmitReview}){
             <Col  style={{backgroundColor: 'blu'}}>
             <p>Raccontaci la tua esperienza nel salone! Hai fatto un taglio, colore o altro?<br />
                 Il tuo feedback può aiutare altri a scegliere con più sicurezza.</p>
-            <Button onClick={handleSubmitClick}>Invia recensione</Button>
+            <Button  onClick={handleSubmitClick}>Invia recensione</Button>
             </Col>
 
            </Row>
