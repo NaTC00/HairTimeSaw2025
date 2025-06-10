@@ -103,17 +103,6 @@ export default function UserAppointmentsPage(){
 
 
     const handleSubmitReview = async (rating, comment) => {
-       /* try{
-            await submitReview(axiosPrivate, rating, comment)
-            setAlertSuccess({heading: "Recensione inviata!", messsage: "Recensione inviata con successo! Grazie per aver condiviso la tua opinione."})
-        }catch(error){
-            console.error(error.response?.data?.error);
-            setAlertError({
-                error: error,
-                title: "Invio recensione fallita"
-            })
-            setTimeout(() => setAlertError(null), 5000);
-        }*/
 
         const success = await submit(rating, comment)
         if (success) {

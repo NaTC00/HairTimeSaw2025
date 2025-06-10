@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 
 export function useAlert() {
   const [alert, setAlert] = useState(null);

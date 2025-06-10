@@ -22,6 +22,7 @@ router.post('/sumbit_review',verifyToken, async (req,res) =>{
 } )
 
 router.get('/', async (req, res) => {
+    console.log("Richiesta recensioni")
     try{
         const result = await getReviews()
         return res.status(200).json(result.rows)

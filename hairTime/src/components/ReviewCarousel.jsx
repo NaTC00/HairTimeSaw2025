@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Image, Carousel } from 'react-bootstrap';
 import './ReviewCarouselStyle.css';
 import {getReviews} from '../httpManager/request'
+import {useReviews} from '../hooks/useReviews'
 
-import Review from '../models/Review';
 
 function ReviewCarousel() {
-  const [reviews, setReviews] = useState([])
+  /*const [reviews, setReviews] = useState([])
   const [error, setError] = useState(false)
   const fetchReviews = async () => {
     try{
@@ -20,7 +20,14 @@ function ReviewCarousel() {
 
   useEffect(() => {
     fetchReviews()
-  }, [])
+  }, [])*/
+
+  const{
+    reviews,
+    refetchReviews,
+    error: reviewError
+
+  } = useReviews({})
 
   const renderStars = (rating) => {
     const starsArray = [];
