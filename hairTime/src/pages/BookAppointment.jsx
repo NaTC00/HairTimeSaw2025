@@ -10,6 +10,7 @@ import useAxiosPrivate from '../httpManager/useAxiosPrivate'
 import MultiSelectDropdown from "../components/MultiSelectDropdown"
 import FailureAlert from "../components/alert/FailureAlert"
 import SuccessAlert from "../components/alert/SuccessAlert"
+import PushNotificationConsent from '../components/PushNotificationConsent'
 function BookAppointment() {
    
 
@@ -241,6 +242,7 @@ function BookAppointment() {
               />
             </Col>
           </Row>
+          <PushNotificationConsent axiosPrivate={axiosPrivate}/>
            <Row className="mb-3">
             <Col xs={12} md={4} lg={4}>
               <Button
