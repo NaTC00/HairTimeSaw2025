@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+require('./cron/reminderJob');
 
 
 const initializeDatabase = require('./db/initDb');
@@ -26,6 +27,9 @@ app.use('/auth', authRouter);
 
 const reviewRouter = require('./routes/reviews');
 app.use('/reviews', reviewRouter);
+
+const pushRouter = require('./routes/push');
+app.use('/push', pushRouter);
 
 app.get('/', (req, res) => {
   res.send('HairTime backend is running!');

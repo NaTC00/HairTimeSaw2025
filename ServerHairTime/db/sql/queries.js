@@ -68,6 +68,42 @@ async function submitReview(user_id, rating, comment) {
       JOIN users ON reviews.user_id = users.id
     `);
   }
+
+  async function existEndpoint(userId, subscription) {
+    return await pool.query(
+      `SELECT 1 FROM user_push_subscriptions
+       WHERE user_id = $1 AND subscription->>'endpoint' = $2
+      `,[userId, subscription.endpoint]
+    );
+    
+  }
+
+  async function addEndpoint(userId, subscription) {
+    return await pool.query(
+      `INSERT INTO user_push_subscriptions (user_id, subscription) VALUES ($1, $2)
+      `,[userId, subscription]
+    );
+  }
+
+  async function selectEndpoint(dateStr){
+    return await pool.query(
+      `SELECT u.username, s.subscription, a.time_slot
+        FROM appointments a
+        JOIN users u ON u.id = a.user_id
+        JOIN user_push_subscriptions s ON u.id = s.user_id
+        WHERE a.date = $1`, [dateStr]
+    )
+  
+  }
+  
+  async function getAllPushSubscriptions() {
+    return await pool.query(`
+      SELECT u.username, s.subscription
+      FROM user_push_subscriptions s
+      JOIN users u ON u.id = s.user_id
+    `);
+  }
+
   
   
 
@@ -77,5 +113,9 @@ module.exports = {
     getAppoinmentByDate,
     deleteAppointmentUser,
     submitReview,
-    getReviews
+    getReviews,
+    existEndpoint,
+    addEndpoint,
+    selectEndpoint,
+    getAllPushSubscriptions
 }

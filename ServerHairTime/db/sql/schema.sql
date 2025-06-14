@@ -38,3 +38,10 @@ CREATE TABLE IF NOT EXISTS appointment_services (
   service_id INTEGER REFERENCES services(id),
   PRIMARY KEY (appointment_id, service_id)
 );
+
+CREATE TABLE IF NOT EXISTS user_push_subscriptions (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  subscription JSONB NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
