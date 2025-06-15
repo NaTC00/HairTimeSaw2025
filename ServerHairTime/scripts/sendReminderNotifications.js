@@ -20,7 +20,8 @@ async function sendReminderNotifications() {
     for (const row of rows){
         const payload = JSON.stringify({
             title: 'Promemoria appuntamento',
-            body: 'Ciao ${row.username}, ti ricordo che domani hai un appuntamento alle ${row.time_slot}.',
+            body: `Ciao ${row.username}, ti ricordo che domani hai un appuntamento alle ${row.time_slot}.`,
+
         })
         try{
             await webPush.sendNotification(row.subscription, payload)
@@ -34,22 +35,6 @@ async function sendReminderNotifications() {
 
 }
 
-async function sendTestNotification() {
-    const { rows } = await getAllPushSubscriptions(); // Recupera tutti gli endpoint registrati
-  
-    for (const row of rows) {
-      const payload = JSON.stringify({
-        title: '🔔 Notifica di test',
-        body: `Ciao ${row.username || 'utente'}, questa è una notifica di test.`,
-      });
-  
-      try {
-        await webPush.sendNotification(row.subscription, payload);
-        console.log(` Notifica inviata a ${row.username || 'utente'}`);
-      } catch (err) {
-        console.error(` Errore per ${row.username || 'utente'}:`, err.body || err.message);
-      }
-    }
-  }
 
-module.exports = { sendReminderNotifications, sendTestNotification };
+
+module.exports = { sendReminderNotifications };

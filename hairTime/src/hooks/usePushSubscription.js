@@ -1,21 +1,23 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { subscribeNotification } from "../httpManager/request";
 
 export function usePushSubscription(enabled, axiosPrivate) {
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     if (!enabled) return;
 
     async function subscribePush() {
       try {
         if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
-          console.warn("Push API non supportata nel browser.");
-          return;
+          throw new Error("Push API non supportata nel browser.");
         }
 
-        const permission = await Notification.requestPermission();
-        if (permission !== "granted") {
-          console.warn("Permesso notifiche negato.");
-          return;
+        if (Notification.permission !== "granted") {
+          const permission = await Notification.requestPermission();
+          if (permission !== "granted") {
+            throw new Error("Permesso notifiche negato dall'utente.");
+          }
         }
 
         const registration = await navigator.serviceWorker.ready;
@@ -28,16 +30,17 @@ export function usePushSubscription(enabled, axiosPrivate) {
         });
 
         await subscribeNotification(axiosPrivate, subscription);
-      } catch (error) {
-        console.error(
-          "Errore nella sottoscrizione push:",
-          error?.response?.data?.error || error.message,
-        );
+        setError(null);
+      } catch (err) {
+        console.error("Errore nella sottoscrizione push:", err);
+        setError(err?.response?.data?.error || err.message);
       }
     }
 
     subscribePush();
   }, [enabled, axiosPrivate]);
+
+  return error;
 }
 
 function urlBase64ToUint8Array(base64String) {

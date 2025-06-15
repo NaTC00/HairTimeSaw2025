@@ -47,6 +47,7 @@ export default defineConfig({
         globDirectory: "dist",
         globPatterns: ["**/*.{js,css,html,ico,png,svg,jpg,jpeg,JPG,webp}"],
         navigateFallback: "index.html",
+        importScripts: ["custom-sw.js"],
         runtimeCaching: [
           {
             urlPattern: /^http:\/\/localhost:3000\/reviews\/?$/, // <-- esattamente l'URL che hai dato

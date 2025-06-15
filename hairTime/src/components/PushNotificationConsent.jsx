@@ -4,50 +4,62 @@ import { usePushSubscription } from '../hooks/usePushSubscription';
 
 export function PushNotificationConsent({ axiosPrivate }) {
   const [showModal, setShowModal] = useState(false);
-  const [enabled, setEnabled] = useState(false); // attiva la sottoscrizione
-  const [checked, setChecked] = useState(false); // controlla visivamente il checkbox
+  const [enabled, setEnabled] = useState(false); 
+  const [checked, setChecked] = useState(false); 
+  
+  const error = usePushSubscription(enabled, axiosPrivate);
 
-  usePushSubscription(enabled, axiosPrivate);
+
+ 
 
   const handleChange = (e) => {
     const isChecked = e.target.checked;
 
     if (isChecked) {
-      setShowModal(true);      // mostro la modale
+      setShowModal(true);      
     } else {
-      setEnabled(false);       // disattivo la sottoscrizione
-      setChecked(false);       // deseleziono il checkbox
+      setEnabled(false);       
+      setChecked(false);
+      setError(null);       
     }
   };
 
   const handleConfirm = () => {
-    setEnabled(true);          // attivo la sottoscrizione
-    setChecked(true);          // visivamente selezionato
+    setEnabled(true);          
+    setChecked(true);          
     setShowModal(false);
   };
 
   const handleCancel = () => {
-    setEnabled(false);         // non attivo la sottoscrizione
-    setChecked(false);         // deseleziono la checkbox
+    setEnabled(false);         
+    setChecked(false);         
     setShowModal(false);
   };
 
   return (
     <>
-      {/* ✅ Checkbox controllato */}
+     
       <Row className="mb-3">
-        <Col>
-          <Form.Check
-            type="checkbox"
-            id="notifiche"
-            label="Abilita notifiche push"
-            onChange={handleChange}
-            checked={checked} // stato controllato
-          />
-        </Col>
+      <Col>
+        <Form.Check
+          className="mb-0"
+          type="checkbox"
+          id="notifiche"
+          label="Abilita notifiche promemoria"
+          onChange={handleChange}
+          checked={checked}
+        />
+
+        {error && (
+          <Form.Text className="text-danger">
+            Errore: {error}
+          </Form.Text>
+        )}
+      </Col>
+
       </Row>
 
-      {/* ✅ Modale di conferma */}
+      
       <Modal show={showModal} onHide={handleCancel} centered backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>Vuoi attivare le notifiche?</Modal.Title>
