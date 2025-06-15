@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { subscribeNotification } from "../httpManager/request";
-
-export function usePushSubscription(enabled, axiosPrivate) {
+import { useAxiosPrivate } from "./useAxiosPrivate";
+export function usePushSubscription(enabled) {
   const [error, setError] = useState(null);
-
+  const axiosPrivate = useAxiosPrivate();
   useEffect(() => {
-    if (!enabled) return;
+    if (!enabled) {
+      setError(null);
+      return;
+    }
 
     async function subscribePush() {
       try {

@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import { submitReview, getReviews } from "../httpManager/request";
-export function useReviews({ useAxiosPrivate }) {
+import { useAxiosPrivate } from "./useAxiosPrivate";
+
+export function useReviews() {
   const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const axiosPrivate = useAxiosPrivate();
   const submit = useCallback(async (rating, comment) => {
     try {
-      await submitReview(useAxiosPrivate, rating, comment);
+      await submitReview(axiosPrivate, rating, comment);
       return true;
     } catch (err) {
       setError(err);

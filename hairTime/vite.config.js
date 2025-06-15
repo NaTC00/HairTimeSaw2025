@@ -50,7 +50,22 @@ export default defineConfig({
         importScripts: ["custom-sw.js"],
         runtimeCaching: [
           {
-            urlPattern: /^http:\/\/localhost:3000\/reviews\/?$/, // <-- esattamente l'URL che hai dato
+            urlPattern:
+              /^https?:\/\/localhost:3000\/appointments\/services\/?$/,
+            handler: "CacheFirst",
+            options: {
+              cacheName: "services-cache",
+              expiration: {
+                maxEntries: 1,
+                maxAgeSeconds: 60 * 60 * 24 * 90,
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+          {
+            urlPattern: /^http:\/\/localhost:3000\/reviews\/?$/,
             handler: "NetworkFirst",
             options: {
               cacheName: "reviews-cache",

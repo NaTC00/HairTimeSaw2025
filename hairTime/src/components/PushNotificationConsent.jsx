@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Row, Col, Form, Modal, Button } from 'react-bootstrap';
 import { usePushSubscription } from '../hooks/usePushSubscription';
-
-export function PushNotificationConsent({ axiosPrivate }) {
+export function PushNotificationConsent() {
   const [showModal, setShowModal] = useState(false);
   const [enabled, setEnabled] = useState(false); 
   const [checked, setChecked] = useState(false); 
   
-  const error = usePushSubscription(enabled, axiosPrivate);
+
+  const error = usePushSubscription(enabled);
 
 
  
@@ -19,8 +19,7 @@ export function PushNotificationConsent({ axiosPrivate }) {
       setShowModal(true);      
     } else {
       setEnabled(false);       
-      setChecked(false);
-      setError(null);       
+      setChecked(false);       
     }
   };
 

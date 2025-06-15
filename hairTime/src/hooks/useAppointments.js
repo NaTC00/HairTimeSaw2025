@@ -1,15 +1,16 @@
 import { useState, useEffect, useCallback } from "react";
 import { getAllAppointments, deleteAppointment } from "../httpManager/request";
-
-export function useAppointments({ useAxiosPrivate }) {
+import { useAxiosPrivate } from "./useAxiosPrivate";
+export function useAppointments() {
   const [appointments, setAppointments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const axiosPrivate = useAxiosPrivate();
 
   const loadAppointments = useCallback(async () => {
     try {
       setIsLoading(true);
-      const data = await getAllAppointments(useAxiosPrivate);
+      const data = await getAllAppointments(axiosPrivate);
       setAppointments(data);
     } catch (err) {
       setError(err);

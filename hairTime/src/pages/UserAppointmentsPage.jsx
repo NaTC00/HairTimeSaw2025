@@ -9,7 +9,7 @@ import { useAppointments } from '../hooks/useAppointments';
 import {useReviews} from '../hooks/useReviews'
 import { useAlert } from '../hooks/useAlert'
 import '../styles/colors.css'
-import useAxiosPrivate from '../httpManager/useAxiosPrivate'
+
 export default function UserAppointmentsPage(){
     const [selectedMonth, setSelectedMonth] = useState( new Date().getMonth());
     const [showSubmitForm, setShowSubmitForm] = useState(false);
@@ -53,20 +53,20 @@ export default function UserAppointmentsPage(){
       ];
   
 
-    const axiosPrivate = useAxiosPrivate();
+   
     const {
         appointments,
         isLoading,
         error: appointmentsError,
         deleteApp,
         refetchAppointments
-    } = useAppointments({ useAxiosPrivate: axiosPrivate });
+    } = useAppointments();
 
     const{
         submit,
         error: reviewError
 
-    } = useReviews({ useAxiosPrivate: axiosPrivate })
+    } = useReviews()
 
    
 
