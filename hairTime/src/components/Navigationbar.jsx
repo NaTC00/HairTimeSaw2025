@@ -6,6 +6,8 @@ import { useAuth } from "contexts/authContext/AuthContext"
 function Navigationbar({onLoginRegisterClick, onMyAppointmentsClick, onAppointmentClick}) {
 
   const { userLoggedIn, username, logout } = useAuth();
+  console.log("userLoggedIn:", userLoggedIn);
+  console.log("username:", username);
 
   const handleLogout = () => {
     logout();

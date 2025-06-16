@@ -6,6 +6,7 @@ import qs from "qs";
 export const getAllServices = async () => {
   try {
     const response = await axiosPublic.get("appointments/services");
+    console.log("Recupero servizi andato a buon fine");
     return response.data;
   } catch (error) {
     console.error(

@@ -57,6 +57,7 @@ function LoginRegister({ onClose }) {
       try {
         await login(email, password);
         console.log(`Login utente ${username} andata a buon fine`);
+        onClose()
       } catch (error) {
         console.error(`Errore login utente ${username}: ${error.message}`);
         setErrorMessage("Le credenziali non sono corrette. Verifica e riprova.");

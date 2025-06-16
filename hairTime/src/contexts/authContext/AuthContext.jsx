@@ -44,15 +44,20 @@ export function AuthProvider({ children }) {
     try {
       const { token, username } = await signInApi(email, password); 
       setToken(token);
-      setUsername(username)
+      setUsername(username);
       setUserLoggedIn(true);
+  
+      const timestamp = Date.now();
+  
       localStorage.setItem("token", token);
       localStorage.setItem("username", username);
+      localStorage.setItem("tokenTimestamp", timestamp.toString());
     } catch (error) {
       console.error("Errore login:", error.response?.data || error.message);
       throw error;
     }
   };
+  
 
 
   const logout = () => {

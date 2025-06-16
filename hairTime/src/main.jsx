@@ -20,9 +20,7 @@ root.render(
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
-      <ServicesProvider>
          <App />
-      </ServicesProvider>
     </AuthProvider>
   </React.StrictMode>,
 );
