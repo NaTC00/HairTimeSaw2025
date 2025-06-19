@@ -1,15 +1,15 @@
-import { useCallback, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export function useAlert() {
   const [alert, setAlert] = useState(null);
 
-  const showAlert = useCallback(({ title, message, error }) => {
+  const showAlert = ({ title, message, error }) => {
     setAlert({ title, message, error });
-  }, []);
+  };
 
-  const hideAlert = useCallback(() => {
+  const hideAlert = () => {
     setAlert(null);
-  }, []);
+  };
 
   useEffect(() => {
     if (alert) {

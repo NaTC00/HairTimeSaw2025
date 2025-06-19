@@ -13,44 +13,10 @@ import '../styles/colors.css'
 export default function UserAppointmentsPage(){
     const [selectedMonth, setSelectedMonth] = useState( new Date().getMonth());
     const [showSubmitForm, setShowSubmitForm] = useState(false);
-    const { alert: alertError, showAlert: showErrorAlert, hideAlert: hideErrorAlert } = useAlert();
-    const { alert: alertSuccess, showAlert: showSuccessAlert, hideAlert: hideSuccessAlert } = useAlert();
 
     const handleToggle = () => {
         setShowSubmitForm(prev => !prev);
     };
-    const mockAppointments = [
-        {
-          id: 1,
-          date: "2025-06-05",
-          time_slot: "09:00 - 10:00",
-          services: ["Taglio", "Piega"]
-        },
-        {
-          id: 2,
-          date: "2025-06-08",
-          time_slot: "14:30 - 15:30",
-          services: ["Colore"]
-        },
-        {
-          id: 3,
-          date: "2025-06-12",
-          time_slot: "11:00 - 12:00",
-          services: ["Taglio", "Schiariture"]
-        },
-        {
-          id: 4,
-          date: "2025-07-01",
-          time_slot: "16:00 - 17:00",
-          services: ["Maschera", "Piega"]
-        },
-        {
-          id: 5,
-          date: "2025-07-15",
-          time_slot: "10:00 - 11:00",
-          services: ["Taglio"]
-        }
-      ];
   
 
    
@@ -58,13 +24,18 @@ export default function UserAppointmentsPage(){
         appointments,
         isLoading,
         error: appointmentsError,
+        alert: appointmentAlert,
+        showAlert: showAppointmentAlert,
+        hideAlert: hideAppointmentAlert,
         deleteApp,
         refetchAppointments
     } = useAppointments();
 
     const{
-        submit,
-        error: reviewError
+        alert: reviewAlert,
+        showAlert: showReviewAlert,
+        hideAlert: hideReviewAlert,
+        submit
 
     } = useReviews()
 
@@ -74,13 +45,21 @@ export default function UserAppointmentsPage(){
 
 
     const handleDeleteAppointment = async (appointmentId) => {
-        const success = await deleteApp(appointmentId)
-        if(success){
-            showSuccessAlert({
+        const result = await deleteApp(appointmentId)
+        if (!result.success) {
+            showAppointmentAlert({
+                title: "Cancellazione fallita!",
+                message: result.error,
+                error: true,
+              });
+        }else{
+            showAppointmentAlert({
                 title: "Cancellazione riuscita",
-                message: "L'appuntamento è stato cancellato correttamente."
+                message: "L'appuntamento è stato cancellato correttamente.",
+                error: false
             })
         }
+    
     }
 
 
@@ -105,24 +84,23 @@ export default function UserAppointmentsPage(){
     const handleSubmitReview = async (rating, comment) => {
       
 
-        const success = await submit(rating, comment)
-        if (success) {
-            showSuccessAlert({
-                title: "Recensione inviata",
-                message: "Grazie per il tuo feedback! La tua recensione è stata registrata correttamente."
-            })
+        const result = await submit(rating, comment)
+        if (!result.success) {
+            showReviewAlert({
+              title: "Recensione non inviata!",
+              message: result.error,
+              error: true,
+            });
+          } else {
+            showReviewAlert({
+              title: "Recensione inviata!",
+              message: "Grazie per il tuo feedback! La tua recensione è stata registrata correttamente.",
+              error: false,
+            });
         }
        
     }
 
-    useEffect(() => {
-        if (reviewError) {
-            showErrorAlert({
-                title: "Errore durante l'invio",
-                error: reviewError
-            });
-        }
-    }, [reviewError]);
 
     
     
@@ -131,23 +109,42 @@ export default function UserAppointmentsPage(){
                 
         <Row className="mb-3">
             <Col xs={12} md={6} lg={6} className="mb-3 mb-md-0">
-            {alertError && alertError.error && (
-            <FailureAlert
-                error={alertError.error}
-                title={alertError.title}
-                onClose={hideErrorAlert}
-            />
-            )}
+            {appointmentAlert?.error ? (
+                <FailureAlert
+                    title={appointmentAlert.title}
+                    error={{ message: appointmentAlert.message }}
+                    onClose={hideAppointmentAlert}
+                />
+                ) : (
+                appointmentAlert && (
+                    <SuccessAlert
+                    content={{
+                        heading: appointmentAlert.title,
+                        message: appointmentAlert.message,
+                    }}
+                    onClose={hideAppointmentAlert}
+                    />
+                )
+                )}
 
-            {alertSuccess && (
-            <SuccessAlert
-                content={{
-                    heading: alertSuccess.title,
-                    message: alertSuccess.message
-                }}
-                onClose={hideSuccessAlert}
-            />
-            )}
+                {reviewAlert?.error ? (
+                <FailureAlert
+                    title={reviewAlert.title}
+                    error={{ message: reviewAlert.message }}
+                    onClose={hideReviewAlert}
+                />
+                ) : (
+                reviewAlert && (
+                    <SuccessAlert
+                    content={{
+                        heading: reviewAlert.title,
+                        message: reviewAlert.message,
+                    }}
+                    onClose={hideReviewAlert}
+                    />
+                )
+                )}
+
             </Col>
 
         </Row>

@@ -4,7 +4,7 @@ import { Container, Row, Col, Figure, Stack } from 'react-bootstrap';
 import './FooterStyle.css';
 export default function Footer() {
     return(
-        <footer className="footer-container">
+        <footer className="footer-container" style={{backgroundcolor: 'f8f9fa'}}>
             <Container fluid>
             <Row className="align-items-center">
                    

@@ -1,7 +1,7 @@
 .carousel-image-container {
     position: relative !important;
     width: 100% !important;
-    height: 400px !important; /* Puoi cambiare l'altezza come preferisci */
+    height: 400px !important; 
     overflow: hidden !important;
   }
   
@@ -11,6 +11,6 @@
     left: 0 !important;
     width: 100% !important;
     height: 100% !important;
-    object-fit: cover !important; /* Questo assicura che l'immagine copra l'intero spazio senza distorsioni */
+    object-fit: cover !important; 
   }
   

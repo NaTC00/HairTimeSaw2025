@@ -1,7 +1,8 @@
-import { useEffect, useState, useCallback } from "react";
+import { useState } from "react";
 import { getSlotAvailable, bookAppointment } from "../httpManager/request";
 import { useServices } from "./useServices";
 import { useAxiosPrivate } from "./useAxiosPrivate";
+import { useAlert } from "./useAlert";
 
 export function useBookAppointment() {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -11,8 +12,7 @@ export function useBookAppointment() {
   const [availableSlots, setAvailableSlots] = useState({});
   const [enabledDates, setEnabledDates] = useState([]);
   const [timeSlots, setTimeSlots] = useState([]);
-  const [alertError, setAlertError] = useState(null);
-  const [alertSuccess, setAlertSuccess] = useState(null);
+  const { alert, showAlert, hideAlert } = useAlert();
   const [showCalendar, setShowCalendar] = useState(false);
 
   const axiosPrivate = useAxiosPrivate();
@@ -23,15 +23,15 @@ export function useBookAppointment() {
     refetch: refetchServices,
   } = useServices();
 
-  const formatDate = useCallback((date) => {
+  const formatDate = (date) => {
     if (!date) return "";
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
     return `${year}-${month}-${day}`;
-  }, []);
+  };
 
-  const handleServiceChange = useCallback(async (selected) => {
+  const handleServiceChange = async (selected) => {
     setSelectedServices(selected);
     setSelectedDate(null);
     setSelectedTimeSlot(null);
@@ -53,24 +53,21 @@ export function useBookAppointment() {
       setAvailableSlots({});
       setEnabledDates([]);
     }
-  }, []);
+  };
 
-  const handleDateChanged = useCallback(
-    (date) => {
-      const formatted = formatDate(date);
-      setSelectedDate(date);
-      const slots = availableSlots[formatted] || [];
-      setTimeSlots(slots);
-      setShowCalendar(false);
-    },
-    [availableSlots, formatDate],
-  );
+  const handleDateChanged = (date) => {
+    const formatted = formatDate(date);
+    setSelectedDate(date);
+    const slots = availableSlots[formatted] || [];
+    setTimeSlots(slots);
+    setShowCalendar(false);
+  };
 
-  const handleTimeSlotChange = useCallback((slot) => {
+  const handleTimeSlotChange = (slot) => {
     setSelectedTimeSlot(slot);
-  }, []);
+  };
 
-  const handleBook = useCallback(async () => {
+  const bookApp = async () => {
     try {
       const selectedIds = selectedServices.map((item) => item.id);
       const date = formatDate(selectedDate);
@@ -82,26 +79,15 @@ export function useBookAppointment() {
         date,
         selectedTimeSlot,
       );
-
-      setAlertSuccess({
-        heading: "Prenotazione appuntamento completata",
-        message: "La tua prenotazione è stata creata con successo.",
-      });
-
-      setTimeout(() => setAlertSuccess(null), 3000);
       resetForm();
+      return { success: true };
     } catch (error) {
-      setAlertError(error);
-      setTimeout(() => setAlertError(null), 3000);
+      return {
+        success: false,
+        error: error,
+      };
     }
-  }, [
-    selectedServices,
-    selectedDate,
-    selectedTimeSlot,
-    phoneNumber,
-    formatDate,
-    axiosPrivate,
-  ]);
+  };
 
   const resetForm = () => {
     setSelectedDate(null);
@@ -125,14 +111,15 @@ export function useBookAppointment() {
     enabledDates,
     formattedDate: formatDate(selectedDate),
     showCalendar,
-    alertError,
-    alertSuccess,
+    alert,
+    showAlert,
+    hideAlert,
     setPhoneNumber,
     setShowCalendar,
     handleServiceChange,
     handleDateChanged,
     handleTimeSlotChange,
-    handleBook,
+    bookApp,
     refetchServices,
   };
 }

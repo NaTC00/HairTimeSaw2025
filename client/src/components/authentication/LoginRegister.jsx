@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+
 
 import React, { useState } from "react" 
 import "./LoginResterStyle.css"
@@ -7,18 +7,26 @@ import EditInputText from "../EditInputText";
 import {signUp} from "../../httpManager/request"
 import FailureAlert from "../alert/FailureAlert"
 import SuccessAlert from "../alert/SuccessAlert"
+import useLoginRegister from "../../hooks/useLoginRegister";
 
 function LoginRegister({ onClose }) {
-    const {userLoggedIn, login} = useAuth()
-
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [username, setUsername] = useState('')
-    const [isSigningIn, setIsSigningIn] = useState(false)
-    const [errorMessage, setErrorMessage] = useState('')
-    const [alertError, setAlertError] = useState(null);
-    const [alertSucces, setAlertSuccess] = useState(null);
-
+   const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    username,
+    setUsername,
+    isSigningIn,
+    alert,
+    showAlert,
+    hideAlert,
+    errorMessage,
+    setErrorMessage,
+    onSubmitSignIn,
+    onSubmitSignUp,
+    resetFormFields,
+  } = useLoginRegister(onClose);
 
     const commonProps = {
       borderColor: "var(--secondary)",
@@ -28,50 +36,41 @@ function LoginRegister({ onClose }) {
       size: "lg",
       onSubmit: {},
     };
-    const onSubmitSignUp = async (e) => {
-      
-      e.preventDefault();
-      try {
-       
-        await signUp(username, email, password)
-        console.log(`Registrazione utente ${username} andata a buon fine`);
-        const content = {heading: "Registrazione completata",  message: "Il tuo account è stato creato con successo. Ora puoi accedere."}
-        setAlertSuccess({...content})
-      } catch (error) {
-        console.error(`Errore registrazione utente ${username}: ${error.message}`);
-        setAlertError({ ...error });
+    
+   
+    const handleSignUp = async (e) => {
+      const result = await onSubmitSignUp(e);
+      if (!result.success) {
+        showAlert({
+          title: "Registrazione fallita!",
+          message: result.error,
+          error: true,
+        });
+      } else {
+        showAlert({
+          title: "Registrazione completata!",
+          message: "Benvenuto nel nostro salone",
+          error: false,
+        });
       }
     };
 
-
-  
-
+    const handleSignIn = async (e) => {
+      const result = await onSubmitSignIn(e);
     
-
-    
-    const onSubmitSignIn = async (e) => {
-    e.preventDefault();
-    if (!isSigningIn) {
-      setIsSigningIn(true);
-      setErrorMessage("");
-      try {
-        await login(email, password);
-        console.log(`Login utente ${username} andata a buon fine`);
-        onClose()
-      } catch (error) {
-        console.error(`Errore login utente ${username}: ${error.message}`);
-        setErrorMessage("Le credenziali non sono corrette. Verifica e riprova.");
-      } finally {
-        setIsSigningIn(false);
+      if (result.success) {
+        setErrorMessage(""); 
+        console.log("Success login")  
+        onClose?.();          
+      } else {
+        console.log("Success login")  
+        const serverMessage =
+          result?.error?.response?.data?.error || "Errore durante il login.";
+        setErrorMessage(serverMessage); 
       }
-    }
-  };
-
-  const resetFormFields = () => {
-    setEmail("");
-    setPassword("");
-    setUsername("");
-  };
+    };
+    
+    
 
   const handleSwitchToLogin = () => {
     document.getElementById("modal_content").classList.remove("active");
@@ -85,15 +84,21 @@ function LoginRegister({ onClose }) {
 
   return (
     <div className="modal_overlay">
-       {alertError && <FailureAlert error={alertError} title = "Registrazione fallita" />}
-       {alertSucces && <SuccessAlert content={alertSucces}/>}
+       {alert && (
+        alert.error ? (
+          <FailureAlert error={alert.message} title={alert.title} onClose={hideAlert} />
+        ) : (
+          <SuccessAlert content={{ heading: alert.title, message: alert.message }} onClose={hideAlert} />
+        )
+      )}
+
       <div className="modal_content d-flex justify-content-center align-items-center" id="modal_content">
         <button className="close-button" onClick={onClose}>×</button>
 
         {/* ----------- Left side - Create Account ----------- */}
         <div className="p-5">
          
-          <form>
+          <form onSubmit={handleSignUp}>
             <div className="header-text mb-4">
               <h1>Crea account</h1>
             </div>
@@ -128,7 +133,7 @@ function LoginRegister({ onClose }) {
               disabled={isSigningIn}
             />
             <div className="input-group mb-3 justify-content-center">
-              <button type="submit" className="btn p-2" onClick={onSubmitSignUp} disabled={isSigningIn}>
+              <button type="submit" className="btn p-2" disabled={isSigningIn}>
                 Register
               </button>
             </div>
@@ -137,7 +142,7 @@ function LoginRegister({ onClose }) {
 
         {/* ----------- Right side - Sign In ----------- */}
         <div className="col-md-6 right-box">
-          <form>
+          <form onSubmit={handleSignIn}>
             <div className="header-text mb-4">
               <h1>Login</h1>
             </div>
@@ -173,7 +178,6 @@ function LoginRegister({ onClose }) {
               <button
                 type="submit"
                 className="btn p-2 d-flex align-items-center justify-content-center"
-                onClick={onSubmitSignIn}
                 disabled={isSigningIn}
                 style={{ minWidth: "100px" }}
               >

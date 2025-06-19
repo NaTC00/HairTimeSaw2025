@@ -13,6 +13,9 @@ function FailureAlert({ error, title, onClose }) {
         typeof error?.response?.data === 'object' && error.response.data?.error
         ? error.response.data.error
         : 'Errore sconosciuto.';
+    
+        console.log(error?.response?.status)
+
 
    
     switch (status) {
@@ -30,7 +33,7 @@ function FailureAlert({ error, title, onClose }) {
         case 401:
         return{
             heading: title,
-            message: "Prima di prenotare un appuntamento devi effettuare l'accesso",
+            message: "Prima devi effettuare l'accesso",
         }
         default:
         return {

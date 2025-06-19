@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import { getAllAppointments, deleteAppointment } from "../httpManager/request";
 import { useAxiosPrivate } from "./useAxiosPrivate";
+import { useAlert } from "./useAlert";
 export function useAppointments() {
   const [appointments, setAppointments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { alert, showAlert, hideAlert } = useAlert();
+  const [error, setError] = useState("");
   const axiosPrivate = useAxiosPrivate();
 
   const loadAppointments = useCallback(async () => {
@@ -12,6 +14,7 @@ export function useAppointments() {
       setIsLoading(true);
       const data = await getAllAppointments(axiosPrivate);
       setAppointments(data);
+      setError("");
     } catch (err) {
       setError(err);
     } finally {
@@ -23,23 +26,28 @@ export function useAppointments() {
     loadAppointments();
   }, [loadAppointments]);
 
-  const deleteApp = useCallback(async (appointmentId) => {
+  const deleteApp = async (appointmentId) => {
     try {
       await deleteAppointment(axiosPrivate, appointmentId);
       setAppointments((prevAppointments) =>
         prevAppointments.filter((app) => app.id !== appointmentId),
       );
-      return true;
+      return { success: true };
     } catch (err) {
-      setError(err);
-      return false;
+      return {
+        success: false,
+        error: err,
+      };
     }
-  }, []);
+  };
 
   return {
     appointments,
     isLoading,
     error,
+    alert,
+    showAlert,
+    hideAlert,
     deleteApp,
     refetchAppointments: loadAppointments,
   };

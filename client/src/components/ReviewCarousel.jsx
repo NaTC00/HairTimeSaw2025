@@ -1,26 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Image, Carousel } from 'react-bootstrap';
-import './ReviewCarouselStyle.css';
 import {getReviews} from '../httpManager/request'
 import {useReviews} from '../hooks/useReviews'
+import "../styles/colors.css"
 
 
 function ReviewCarousel() {
-  /*const [reviews, setReviews] = useState([])
-  const [error, setError] = useState(false)
-  const fetchReviews = async () => {
-    try{
-      const reviesList = await getReviews()
-      setReviews(reviesList)
-      setError(false)
-    }catch(error){
-      setError(true)
-    }
-  }
-
-  useEffect(() => {
-    fetchReviews()
-  }, [])*/
 
   const{
     reviews,
@@ -43,6 +28,14 @@ function ReviewCarousel() {
     }
     return starsArray;
   };
+
+  if (!reviews || reviews.length === 0) {
+    return (
+      <Container className="py-5 text-center">
+        <h5 className="text-muted">Sii il primo a lasciare una recensione!</h5>
+      </Container>
+    );
+  }
    
   return (
     <Carousel>
@@ -53,25 +46,33 @@ function ReviewCarousel() {
               <Container>
                 <Row className="justify-content-center align-items-center" >
                   <Col sm className="d-flex justify-content-center align-items-center"  style={{height: '30vh', width:'90vw' }}>
-                    <div className="review-item text-center">
-                      <blockquote>
+                    <div className="text-center" style={{ textAlign: 'center', padding: '20px' }}>
+                      <blockquote style={{ fontStyle: 'italic' }}>
                         <p>{review.comment}</p>
                       </blockquote>
                       <footer>
-                        <cite>{review.username}</cite>
-                        <div className="star-rating">{renderStars(review.rating)}</div>
+                        <cite style={{ fontWeight: 'bold', color: 'var(--orange)' }}>{review.username}</cite>
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            marginTop: '10px',
+                          }}>{renderStars(review.rating)}</div>
                       </footer>
                     </div>
                   </Col>
                   {reviews[index + 1] && (
                     <Col sm className="d-flex justify-content-center align-items-center" style={{height: '30vh',  width:'90vw' }}>
-                      <div className="review-item text-center">
-                        <blockquote>
+                      <div className="text-center" style={{ textAlign: 'center', padding: '20px' }}>
+                        <blockquote style={{ fontStyle: 'italic' }}>
                           <p>{reviews[index + 1].comment}</p>
                         </blockquote>
                         <footer>
-                          <cite>{reviews[index + 1].username}</cite>
-                          <div className="star-rating">{renderStars(reviews[index + 1].rating)}</div>
+                          <cite style={{ fontWeight: 'bold', color: 'var(--orange)' }}>{reviews[index + 1].username}</cite>
+                          <div style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            marginTop: '10px',
+                          }}>{renderStars(reviews[index + 1].rating)}</div>
                         </footer>
                       </div>
                     </Col>

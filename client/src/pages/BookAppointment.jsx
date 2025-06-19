@@ -18,8 +18,9 @@ function BookAppointment() {
     services,
     timeSlots,
     enabledDates,
-    alertError,
-    alertSuccess,
+    alert,
+    showAlert,
+    hideAlert,
     formattedDate,
     showCalendar,
     setShowCalendar,
@@ -27,7 +28,7 @@ function BookAppointment() {
     handleServiceChange,
     handleDateChanged,
     handleTimeSlotChange,
-    handleBook,
+    bookApp,
   } = useBookAppointment();
 
   const commonProps = {
@@ -44,6 +45,23 @@ function BookAppointment() {
     selectedServices.length > 0 &&
     phoneNumber.trim() !== '';
 
+    const handleBookApp = async () => {
+      const result = await bookApp()
+      if(!result.success){
+        showAlert({
+          title: "Prenotazione fallita",
+          message: result.error || "Si è verificato un errore durante la prenotazione. Riprova più tardi.",
+          error: true,
+        });
+      }else{
+        showAlert({
+          title: "Prenotazione confermata",
+          message: "Il tuo appuntamento è stato prenotato con successo!",
+          error: false,
+        });
+      }
+    }
+
   return (
     <Container fluid className="py-5" style={{ backgroundColor: 'var(--background)' }}>
       <Row className="align-items-center">
@@ -55,8 +73,13 @@ function BookAppointment() {
         <Col xs={12} lg={8} className="d-flex flex-column justify-content-center">
           <Row className="mb-3">
             <Col xs={12} md={6}>
-              {alertError && <FailureAlert error={alertError} title="Prenotazione non riuscita" />}
-              {alertSuccess && <SuccessAlert content={alertSuccess} />}
+            {alert && (
+              alert.error ? (
+                <FailureAlert error={alert.message} title={alert.title} onClose={hideAlert} />
+              ) : (
+                <SuccessAlert content={{ heading: alert.title, message: alert.message }} onClose={hideAlert} />
+              )
+            )}
             </Col>
           </Row>
 
@@ -122,7 +145,7 @@ function BookAppointment() {
               <Button
                 size="lg"
                 disabled={!isFormComplete}
-                onClick={handleBook}
+                onClick={handleBookApp}
                 className="w-100 no-focus"
                 style={{
                   backgroundColor: 'var(--orange)',

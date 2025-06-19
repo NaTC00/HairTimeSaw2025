@@ -1,21 +1,24 @@
 import { useCallback, useEffect, useState } from "react";
 import { submitReview, getReviews } from "../httpManager/request";
 import { useAxiosPrivate } from "./useAxiosPrivate";
+import { useAlert } from "./useAlert";
 
 export function useReviews() {
   const [reviews, setReviews] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { alert, showAlert, hideAlert } = useAlert();
   const axiosPrivate = useAxiosPrivate();
-  const submit = useCallback(async (rating, comment) => {
+  const submit = async (rating, comment) => {
     try {
       await submitReview(axiosPrivate, rating, comment);
-      return true;
+      return { success: true };
     } catch (err) {
-      setError(err);
-      return false;
+      return {
+        success: false,
+        error: error,
+      };
     }
-  }, []);
+  };
 
   const fetchReviews = useCallback(async () => {
     try {
@@ -31,12 +34,15 @@ export function useReviews() {
 
     const interval = setInterval(() => {
       fetchReviews();
-    }, 60 * 1000); // ogni 60 secondi
+    }, 60 * 1000);
 
     return () => clearInterval(interval);
   }, [fetchReviews]);
 
   return {
+    alert,
+    showAlert,
+    hideAlert,
     reviews,
     submit,
     error,
