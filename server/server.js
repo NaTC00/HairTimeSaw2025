@@ -5,36 +5,46 @@ require('./cron/reminderJob');
 
 
 const initializeDatabase = require('./db/initDb');
+const waitForDB = require("./db/dbConnect");
 
-initializeDatabase();
+(async () => {
+  try {
+    // 1. Aspetta che il DB sia disponibile
+    await waitForDB();
 
+    // 2. Inizializza il DB (tabelle, dati iniziali)
+    await initializeDatabase();
 
-const app = express();
-const port = process.env.PORT || 3000;
+    // 3. Avvia il server
+    const app = express();
+    const port = process.env.PORT || 3000;
 
-app.use(cors());
-app.use(express.json());
+    app.use(cors());
+    app.use(express.json());
 
+    // Importa i router
+    const appointmentsRouter = require('./routes/appointments');
+    app.use('/appointments', appointmentsRouter);
 
+    const { authRouter } = require('./routes/auth');
+    app.use('/auth', authRouter);
 
+    const reviewRouter = require('./routes/reviews');
+    app.use('/reviews', reviewRouter);
 
-// Importa il router delle rotte
-const appointmentsRouter = require('./routes/appointments');
-app.use('/appointments', appointmentsRouter);
+    const pushRouter = require('./routes/push');
+    app.use('/push', pushRouter);
 
-const {authRouter} = require('./routes/auth');
-app.use('/auth', authRouter);
+    app.get('/', (req, res) => {
+      res.send('HairTime backend is running!');
+    });
 
-const reviewRouter = require('./routes/reviews');
-app.use('/reviews', reviewRouter);
+    app.listen(port, () => {
+      console.log(`Server in ascolto su http://localhost:${port}`);
+    });
 
-const pushRouter = require('./routes/push');
-app.use('/push', pushRouter);
-
-app.get('/', (req, res) => {
-  res.send('HairTime backend is running!');
-});
-
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
-});
+  } catch (error) {
+    console.error('Errore durante l\'avvio del server:', error);
+    process.exit(1);
+  }
+})();

@@ -69,11 +69,10 @@ async function submitReview(user_id, rating, comment) {
     `);
   }
 
-  async function existEndpoint(userId, subscription) {
+  async function getUserEndpoint(userId) {
     return await pool.query(
-      `SELECT 1 FROM user_push_subscriptions
-       WHERE user_id = $1 AND subscription->>'endpoint' = $2
-      `,[userId, subscription.endpoint]
+      'SELECT id, subscription->>\'endpoint\' AS endpoint, created_at FROM user_push_subscriptions WHERE user_id = $1',
+      [userId]
     );
     
   }
@@ -95,6 +94,14 @@ async function submitReview(user_id, rating, comment) {
     )
   
   }
+
+  async function existEndpoint(userId, subscription) {
+    return await pool.query(
+      `SELECT 1 FROM user_push_subscriptions
+       WHERE user_id = $1 AND subscription->>'endpoint' = $2
+      `,[userId, subscription.endpoint]
+    )
+  }
   
   async function getAllPushSubscriptions() {
     return await pool.query(`
@@ -102,6 +109,13 @@ async function submitReview(user_id, rating, comment) {
       FROM user_push_subscriptions s
       JOIN users u ON u.id = s.user_id
     `);
+  }
+
+  async function deletePushSubscription(id, userId) {
+    return await pool.query(
+      'DELETE FROM user_push_subscriptions WHERE id = $1 AND user_id = $2',
+      [id, userId]
+    );
   }
 
   
@@ -114,8 +128,10 @@ module.exports = {
     deleteAppointmentUser,
     submitReview,
     getReviews,
-    existEndpoint,
+    getUserEndpoint,
     addEndpoint,
     selectEndpoint,
-    getAllPushSubscriptions
+    getAllPushSubscriptions,
+    deletePushSubscription,
+    existEndpoint
 }
