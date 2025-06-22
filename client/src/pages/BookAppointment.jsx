@@ -6,7 +6,7 @@ import EditInputText from "../components/EditInputText";
 import MultiSelectDropdown from "../components/MultiSelectDropdown";
 import FailureAlert from "../components/alert/FailureAlert";
 import SuccessAlert from "../components/alert/SuccessAlert";
-import PushNotificationConsent from '../components/PushNotificationConsent';
+import NotificationToggle from '../components/NotificationToggle';
 import { useBookAppointment } from "../hooks/useBookAppointment"; // <--- tuo nuovo hook
 
 function BookAppointment() {
@@ -138,7 +138,7 @@ function BookAppointment() {
             </Col>
           </Row>
 
-          <PushNotificationConsent />
+          <NotificationToggle />
 
           <Row className="mb-3">
             <Col xs={12} md={4}>

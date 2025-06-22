@@ -143,13 +143,54 @@ export const getReviews = async () => {
 
 export const subscribeNotification = async (axiosPrivate, subscription) => {
   try {
-    const response = await axiosPrivate.post("push/subscribe", {
+    const response = await axiosPrivate.post("push/subscriptions", {
       subscription,
     });
     console.log("Iscrizione al servizio di notifica anadato a buon fine");
     return response.data;
   } catch (error) {
     console.error("Errore durante l'iscrizione al servizio di notifica");
+    throw error;
+  }
+};
+
+export const checkNotificationSubscription = async (
+  axiosPrivate,
+  subscription,
+) => {
+  try {
+    const response = await axiosPrivate.get("push/subscriptions");
+    const subscriptions = response.data;
+
+    const match = subscriptions.find(
+      (s) => s.endpoint === subscription.endpoint,
+    );
+
+    const res = match ? match.id : null;
+    if (res) {
+      console.log("Utente iscritto al servizio di notifica");
+    } else {
+      console.log("Utente non iscritto al servizio di notifica");
+    }
+    return res;
+  } catch (error) {
+    console.error("Errore durante il controllo della sottoscrizione:", error);
+    throw error;
+  }
+};
+
+export const unsubscribeNotificationById = async (
+  axiosPrivate,
+  subscriptionId,
+) => {
+  try {
+    const response = await axiosPrivate.delete(
+      `push/subscriptions/${subscriptionId}`,
+    );
+    console.log("Sottoscrizione rimossa con successo");
+    return response.data;
+  } catch (error) {
+    console.error("Errore durante la disiscrizione:", error);
     throw error;
   }
 };

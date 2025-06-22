@@ -44,6 +44,7 @@ export default defineConfig({
         ],
       },
       workbox: {
+        cleanupOutdatedCaches: true,
         globDirectory: "dist",
         globPatterns: ["**/*.{js,css,html,ico,png,svg,jpg,jpeg,JPG,webp}"],
         navigateFallback: "index.html",
@@ -74,6 +75,20 @@ export default defineConfig({
                 maxAgeSeconds: 60 * 60, // 1 ora
               },
               networkTimeoutSeconds: 3,
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+          {
+            urlPattern: /^http:\/\/localhost:3000\/push\/?$/,
+            handler: "CacheFirst",
+            options: {
+              cacheName: "push-cache",
+              expiration: {
+                maxEntries: 20,
+                maxAgeSeconds: 60 * 60,
+              },
               cacheableResponse: {
                 statuses: [0, 200],
               },
