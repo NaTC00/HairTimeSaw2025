@@ -17,7 +17,7 @@ const waitForDB = async () => {
       console.log("Database pronto");
       return pool;
     } catch (e) {
-      console.log(`⏳ Connessione DB fallita. Tentativo ${i + 1}`);
+      console.log(`Connessione DB fallita. Tentativo ${i + 1}`);
       await new Promise(r => setTimeout(r, INTERVAL));
     }
   }

@@ -27,7 +27,7 @@
 }
 
 #nav_conteiner{
-  background-color: #C7B299 !important;
+  background-color: var(--primary_opacity) !important;
   width: 100vw !important;
   position: 'fixed' !important;
   z-Index: 10 !important;

@@ -28,7 +28,7 @@ export default function SubmitReviews({onSubmitReview}){
       };
     return(
         <Container fluid>
-            <h1>
+            <h1 style={{ fontWeight: 'bold', fontStyle: 'italic', color: 'var(--secondary)'}}>
                 Condividi la tua esperienza
             </h1>
            <Row>

@@ -154,7 +154,7 @@ export default function UserAppointmentsPage(){
             
             <Col xs="auto" className="text-center">
                 <i className="bi bi-calendar-check fs-1 " style={{ color: 'var(--secondary)' }}/>
-            <h2 className="mb-0" style={{color: 'var(--secondary)'}}>Le mie prenotazioni</h2>
+            <h2 className="mb-0" style={{ fontWeight: 'bold', fontStyle: 'italic', color: 'var(--secondary)'}}>Le mie prenotazioni</h2>
             <small className="text-muted">Consulta e gestisci i tuoi appuntamenti</small>
             </Col>
         </Row>

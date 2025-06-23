@@ -49,7 +49,7 @@ export function usePushSubscription(checkOnly = false) {
       setError(null);
     } catch (err) {
       console.error("Errore nel check sottoscrizione:", err);
-      setError(err?.response?.data?.error || err.message);
+      //setError(err?.response?.data?.error || err.message);
     }
   };
 
@@ -98,9 +98,11 @@ export function usePushSubscription(checkOnly = false) {
       setSubscribed(true);
       setSubscriptionId(id);
       setError(null);
+      return true;
     } catch (err) {
       console.error("Errore nella sottoscrizione:", err);
       setError(err?.response?.data?.error || err.message);
+      return false;
     }
   };
 
@@ -120,9 +122,11 @@ export function usePushSubscription(checkOnly = false) {
       setSubscribed(false);
       setSubscriptionId(null);
       setError(null);
+      return true;
     } catch (err) {
       console.error("Errore disiscrizione:", err);
       setError(err?.response?.data?.error || err.message);
+      return false;
     }
   };
 

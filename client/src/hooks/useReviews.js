@@ -5,6 +5,7 @@ import { useAlert } from "./useAlert";
 
 export function useReviews() {
   const [reviews, setReviews] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const { alert, showAlert, hideAlert } = useAlert();
   const axiosPrivate = useAxiosPrivate();
@@ -22,10 +23,13 @@ export function useReviews() {
 
   const fetchReviews = useCallback(async () => {
     try {
+      setIsLoading(true);
       const data = await getReviews();
       setReviews(data);
     } catch (err) {
       setError(err);
+    }finally{
+      setIsLoading(false);
     }
   }, []);
 
@@ -47,5 +51,6 @@ export function useReviews() {
     submit,
     error,
     refetchReviews: fetchReviews,
+    isLoading
   };
 }

@@ -9,23 +9,23 @@ export default function NotificationToggle() {
   const [showDisableModal, setShowDisableModal] = useState(false);
   const { userLoggedIn } = useAuth();
 
-  // 🔎 Solo verifica iniziale (non attiva/disattiva nulla)
+  
   const {
     subscribed,
     subscriptionId,
     error,
     subscribePush, unsubscribePush 
-  } = usePushSubscription(userLoggedIn); // checkOnly = true
+  } = usePushSubscription(userLoggedIn); 
 
-  // ✅ All'avvio: imposta lo stato visivo della checkbox
+ 
   useEffect(() => {
     setChecked(subscribed);
   }, [subscribed]);
 
   const handleChange = (e) => {
     const isChecked = e.target.checked;
-
     if (!isChecked && subscribed) {
+    
       setShowDisableModal(true);
       return;
     }
@@ -40,24 +40,28 @@ export default function NotificationToggle() {
 
   const handleConfirm = async () => {
     setShowModal(false);
-    setChecked(true);
-    await subscribePush()
    
+    const success = await subscribePush();
+
+    if (success) {
+      setChecked(true); 
+    }
   };
 
   const handleCancel = () => setShowModal(false);
 
   const handleDisableConfirm = async () => {
+
     setShowDisableModal(false);
-    setChecked(false);
-    await unsubscribePush()
+    const success = await unsubscribePush()
+    if(success) setChecked(false);
   };
 
   const handleDisableCancel = () => setShowDisableModal(false);
 
   return (
     <>
-      <Row className="mb-3">
+      <Row className="mb-3 ms-5">
         <Col>
           <Form.Check
             className="mb-0"

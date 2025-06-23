@@ -19,7 +19,7 @@ function MonthCarousel({ selectedMonth, onSelectMonth }) {
       {months.map((month, index) => (
         <Carousel.Item key={index}>
           <div className="d-flex justify-content-center align-items-center" style={{ height: 100 }}>
-            <h3 style={{color: 'var(--secondary)'}}>{month}</h3>
+            <h3 style={{ fontWeight: 'bold', fontStyle: 'italic', color: 'var(--secondary)'}}>{month}</h3>
           </div>
         </Carousel.Item>
       ))}

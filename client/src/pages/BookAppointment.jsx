@@ -64,10 +64,10 @@ function BookAppointment() {
 
   return (
     <Container fluid className="py-5" style={{ backgroundColor: 'var(--background)' }}>
-      <Row className="align-items-center">
+      <Row className="align-items-center ms-5">
         <Col xs={12} lg={4} className="d-flex flex-column justify-content-start text-start mb-4 mb-lg-0">
-          <h1 className="mb-3">Prenota un appuntamento online</h1>
-          <p className="mb-4">Compila i campi per prenotare il tuo servizio.</p>
+          <h1 className="mb-3"  style={{ fontWeight: 'bold', fontStyle: 'italic', color: 'var(--secondary)'}}>Riserva il tuo momento di bellezza</h1>
+          <h3 className="mb-4"  style={{  color: 'var(--secondary)'}}>Scegli i servizi, la data e rilassati: pensiamo noi al resto.</h3>
         </Col>
 
         <Col xs={12} lg={8} className="d-flex flex-column justify-content-center">
@@ -83,7 +83,7 @@ function BookAppointment() {
             </Col>
           </Row>
 
-          <Row className="mb-3">
+          <Row className="mb-3  ms-5">
             <Col xs={12} md={4}>
               <MultiSelectDropdown
                 {...commonProps}
@@ -106,7 +106,7 @@ function BookAppointment() {
             </Col>
           </Row>
 
-          <Row className="mb-3">
+          <Row className="mb-3 ms-5">
             <Col xs={12} md={4}>
               <EditInputText
                 {...commonProps}
@@ -138,9 +138,9 @@ function BookAppointment() {
             </Col>
           </Row>
 
-          <NotificationToggle />
+          <NotificationToggle  />
 
-          <Row className="mb-3">
+          <Row className="mb-3 ms-5">
             <Col xs={12} md={4}>
               <Button
                 size="lg"
