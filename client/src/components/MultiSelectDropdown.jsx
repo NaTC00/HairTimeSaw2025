@@ -65,6 +65,7 @@ function MultiSelectDropdown({
       <Dropdown autoClose={false}  onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}>
         <Dropdown.Toggle
+          
           variant="outline-primary"
           className="w-100 text-start d-flex align-items-center justify-between dropdown-toggle no-caret"
           style={{

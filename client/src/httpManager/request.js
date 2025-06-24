@@ -5,7 +5,7 @@ import qs from "qs";
 
 export const getAllServices = async () => {
   try {
-    const response = await axiosPublic.get("appointments/services");
+    const response = await axiosPublic.get("services");
     console.log("Recupero servizi andato a buon fine");
     return response.data;
   } catch (error) {
@@ -20,10 +20,10 @@ export const getAllServices = async () => {
 export const getSlotAvailable = async (services) => {
   try {
     console.log("Servizi selezionati (client):", services);
-    const response = await axiosPublic.get("appointments/availability", {
+    const response = await axiosPublic.get("slots", {
       params: { services },
       paramsSerializer: (params) =>
-        qs.stringify(params, { arrayFormat: "repeat" }), // ✅ questo evita services[]
+        qs.stringify(params, { arrayFormat: "repeat" }),
     });
 
     return response.data;
@@ -38,7 +38,7 @@ export const getSlotAvailable = async (services) => {
 
 export const signUp = async (username, email, password) => {
   try {
-    const response = await axiosPublic.post("auth/register", {
+    const response = await axiosPublic.post("auth/users", {
       username,
       email,
       password,
@@ -56,7 +56,7 @@ export const signUp = async (username, email, password) => {
 };
 
 export const signInApi = async (email, password) => {
-  const response = await axiosPublic.post("/auth/login", {
+  const response = await axiosPublic.post("auth/tokens", {
     email,
     password,
   });
@@ -71,7 +71,7 @@ export const bookAppointment = async (
   time_slot,
 ) => {
   try {
-    const response = await axiosPrivate.post("appointments/book", {
+    const response = await axiosPrivate.post("appointments", {
       services,
       phone_number,
       date,
@@ -89,7 +89,7 @@ export const bookAppointment = async (
 
 export const getAllAppointments = async (axiosPrivate) => {
   try {
-    const response = await axiosPrivate.get("appointments/user");
+    const response = await axiosPrivate.get("appointments");
     return response.data;
   } catch (error) {
     console.error(
@@ -115,7 +115,7 @@ export const deleteAppointment = async (axiosPrivate, appointmentId) => {
 
 export const submitReview = async (axiosPrivate, rating, comment) => {
   try {
-    const response = await axiosPrivate.post("reviews/sumbit_review", {
+    const response = await axiosPrivate.post("reviews", {
       rating,
       comment,
     });

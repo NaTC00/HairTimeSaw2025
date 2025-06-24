@@ -13,7 +13,7 @@ export default defineConfig({
       },
       registerType: "autoUpdate",
       devOptions: {
-        enabled: true, // abilita SW anche in dev preview
+        enabled: true,
       },
       includeAssets: ["favicon.svg", "robots.txt", "apple-touch-icon.png"],
       manifest: {
@@ -51,8 +51,7 @@ export default defineConfig({
         importScripts: ["custom-sw.js"],
         runtimeCaching: [
           {
-            urlPattern:
-              /^https?:\/\/localhost:3000\/appointments\/services\/?$/,
+            urlPattern: /^https?:\/\/localhost:3000\/services\/?$/,
             handler: "CacheFirst",
             options: {
               cacheName: "services-cache",
@@ -72,23 +71,9 @@ export default defineConfig({
               cacheName: "reviews-cache",
               expiration: {
                 maxEntries: 20,
-                maxAgeSeconds: 60 * 60, // 1 ora
-              },
-              networkTimeoutSeconds: 3,
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
-          {
-            urlPattern: /^http:\/\/localhost:3000\/push\/?$/,
-            handler: "CacheFirst",
-            options: {
-              cacheName: "push-cache",
-              expiration: {
-                maxEntries: 20,
                 maxAgeSeconds: 60 * 60,
               },
+              networkTimeoutSeconds: 3,
               cacheableResponse: {
                 statuses: [0, 200],
               },

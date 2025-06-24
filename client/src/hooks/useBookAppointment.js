@@ -41,10 +41,16 @@ export function useBookAppointment() {
       try {
         const selectedIds = selected.map((item) => item.id);
         const slotData = await getSlotAvailable(selectedIds);
+        console.log("slotData:", slotData);
         setAvailableSlots(slotData);
         const enabled = Object.keys(slotData).map(
           (dateStr) => new Date(dateStr),
         );
+        /*const enabled = Object.keys(slotData).map((dateStr) => {
+          const [year, month, day] = dateStr.split("-").map(Number);
+          return new Date(year, month - 1, day);
+        });*/
+
         setEnabledDates(enabled);
       } catch (error) {
         console.error("Errore durante il recupero degli slot:", error);

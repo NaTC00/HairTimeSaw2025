@@ -8,13 +8,6 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Importa il JS di Bootstra
 import { AuthProvider } from 'contexts/authContext/AuthContext';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-// Usa createRoot invece di render per React 18
-/*const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);*/
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
