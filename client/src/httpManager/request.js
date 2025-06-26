@@ -1,5 +1,3 @@
-import axios from "axios";
-import axiosPrivate from "./axiosPrivate";
 import axiosPublic from "./axiosPublic";
 import qs from "qs";
 

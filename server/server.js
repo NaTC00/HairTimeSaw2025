@@ -19,7 +19,9 @@ const waitForDB = require("./db/dbConnect");       // Aspetta che il database si
     await initializeDatabase();
 
     const app = express();
-    const port = process.env.PORT || 3000;
+    const PORT = process.env.PORT || 3000;
+
+    
 
     // Abilita CORS per le richieste provenienti da altri domini (es. frontend)
     app.use(cors());
@@ -47,15 +49,13 @@ const waitForDB = require("./db/dbConnect");       // Aspetta che il database si
     const pushRouter = require('./routes/push');
     app.use('/push', pushRouter); // Notifiche push
 
-    // Rotta di test per verificare che il backend sia attivo
-    app.get('/', (req, res) => {
-      res.send('HairTime backend is running!');
-    });
+   
 
     // Avvia il server HTTP sulla porta specificata
-    app.listen(port, () => {
-      console.log(`Server in ascolto su http://localhost:${port}`);
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`Server in ascolto su http://0.0.0.0:${PORT}`);
     });
+    
 
   } catch (error) {
     // In caso di errore all'avvio, stampa l'errore e termina l'app

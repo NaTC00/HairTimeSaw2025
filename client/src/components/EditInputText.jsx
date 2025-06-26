@@ -1,23 +1,26 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { Form } from "react-bootstrap";
+
+// Componente riutilizzabile per un campo di input (testo o textarea)
 function EditInputText({
-    label,
-    placeholder,
-    borderColor,
-    focusColor,
-    backgroundColor,
-    textColor,
-    size,
-    inputType = "text",
-    isTextArea = false,
-    value,
-    onClick,
-    onChange,
-    readOnly = false,
-    customComponent = null,
-    showCustomComponent = false})
+    label, // Etichetta sopra l'input
+    placeholder, // Testo di default
+    borderColor, // Colore del bordo quando non in focus/hover
+    focusColor, // Colore del bordo quando in hover
+    backgroundColor,  // Colore di sfondo del campo
+    textColor, // Colore del testo
+    size, // Dimensione del campo
+    inputType = "text", // Tipo di input
+    isTextArea = false, // Se true, renderizza un <textarea> invece di un <input>
+    value, // Valore dell'input
+    onClick,  // Handler per click sull'input
+    onChange, // Handler per modifiche del testo
+    readOnly = false, // Se true, rende il campo non modificabile
+    customComponent = null, // Un eventuale componente aggiuntivo da mostrare sotto l'input
+    showCustomComponent = false}) // Se true, mostra `customComponent`
     {
+        // Stato locale per sapere se il campo è in hover
         const [isHovered, setIsHovered] = useState(false);
     
        

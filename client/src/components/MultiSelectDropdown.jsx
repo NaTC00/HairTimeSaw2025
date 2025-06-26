@@ -1,33 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
-import CloseButton from 'react-bootstrap/CloseButton';
 
+// Componente personalizzato per selezione multipla
 function MultiSelectDropdown({
-  label,
-  placeholder,
+  label, // Etichetta sopra l'input
+  placeholder, // Testo di default
   borderColor,
   focusColor,
   backgroundColor,
   textColor,
-  size,
-  options,
+  options, // Array di opzioni selezionabili
   onChange,
   value
 }) {
-  const [selected, setSelected] = useState(value);
+  const [selected, setSelected] = useState(value);  // Stato locale della selezione
 
   useEffect(() => {
     setSelected(value || []);
   }, [value]);
 
   
-
+  // Aggiunge o rimuove un'opzione alla selezione
   const toggleItem = (itemId) => {
     const item = options.find((opt) => opt.id === itemId);
     if (!item) return;
 
+    // Controlla se l'elemento con id itemId è già stato selezionato
     const exists = selected.some((i) => i.id === itemId);
+    // Se è già presente, lo rimuove dalla selezione (deseleziona)
+    // Altrimenti lo aggiunge alla selezione
     const newSelected = exists
       ? selected.filter((i) => i.id !== itemId)
       : [...selected, item];
@@ -38,6 +40,7 @@ function MultiSelectDropdown({
     }
   };
 
+  // Rimuove un elemento dalla selezione tramite x
   const removeItem = (item) => {
     const updated = selected.filter((i) => i.id !== item.id);
     setSelected(updated);
@@ -105,14 +108,30 @@ function MultiSelectDropdown({
                   }}
                 >
                   {item.name}
-                  <CloseButton
+                 
+                  <span
                     className="ms-2"
-                    variant="white"
+                    role="button"
+                    tabIndex={0}
                     onClick={(e) => {
                       e.stopPropagation();
                       removeItem(item);
                     }}
-                  />
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.stopPropagation();
+                        removeItem(item);
+                      }
+                    }}
+                    style={{
+                      cursor: 'pointer',
+                      fontWeight: 'bold',
+                      paddingLeft: '4px',
+                      color: 'white'
+                    }}
+                  >
+                    ×
+                  </span>
                 </span>
               ))
             )}

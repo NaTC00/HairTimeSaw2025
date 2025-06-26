@@ -6,11 +6,12 @@ const months = [
   "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"
 ];
 
+// Componente che mostra un carosello di mesi
 function MonthCarousel({ selectedMonth, onSelectMonth }) {
   return (
     <Carousel
-      activeIndex={selectedMonth}
-      onSelect={onSelectMonth}
+      activeIndex={selectedMonth} // Indice del mese attualmente selezionato
+      onSelect={onSelectMonth} // Funzione chiamata quando cambia il mese selezionato
       indicators={false}
       controls={true}
       interval={null}

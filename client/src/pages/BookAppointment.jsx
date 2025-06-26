@@ -63,103 +63,107 @@ function BookAppointment() {
     }
 
   return (
-    <Container fluid className="py-5" style={{ backgroundColor: 'var(--background)' }}>
-      <Row className="align-items-center ms-5">
-        <Col xs={12} lg={4} className="d-flex flex-column justify-content-start text-start mb-4 mb-lg-0">
-          <h1 className="mb-3"  style={{ fontWeight: 'bold', fontStyle: 'italic', color: 'var(--secondary)'}}>Riserva il tuo momento di bellezza</h1>
-          <h3 className="mb-4"  style={{  color: 'var(--secondary)'}}>Scegli i servizi, la data e rilassati: pensiamo noi al resto.</h3>
-        </Col>
-
-        <Col xs={12} lg={8} className="d-flex flex-column justify-content-center">
+    <Container fluid className="py-5 px-4" style={{ backgroundColor: 'var(--background)' }}>
+    <Row className="align-items-start">
+      <Col xs={12} lg={4} className="mb-4">
+        <h1 className="mb-3 text-start fw-bold fst-italic" style={{ color: 'var(--secondary)' }}>
+          Riserva il tuo momento di bellezza
+        </h1>
+        <h3 className="mb-4 text-start" style={{ color: 'var(--secondary)' }}>
+          Scegli i servizi, la data e rilassati: pensiamo noi al resto.
+        </h3>
+      </Col>
+  
+      <Col xs={12} lg={8}>
+        {alert && (
           <Row className="mb-3">
-            <Col xs={12} md={6}>
-            {alert && (
-              alert.error ? (
+            <Col xs={12}>
+              {alert.error ? (
                 <FailureAlert error={alert.message} title={alert.title} onClose={hideAlert} />
               ) : (
                 <SuccessAlert content={{ heading: alert.title, message: alert.message }} onClose={hideAlert} />
-              )
-            )}
+              )}
             </Col>
           </Row>
-
-          <Row className="mb-3  ms-5">
-            <Col xs={12} md={4}>
-              <MultiSelectDropdown
-                {...commonProps}
-                label="Servizi"
-                placeholder="Seleziona servizio"
-                options={services}
-                onChange={handleServiceChange}
-                value={selectedServices}
-              />
-            </Col>
-            <Col xs={12} md={4}>
-              <EditInputText
-                {...commonProps}
-                label="Numero di telefono"
-                placeholder="(083) 632-5556"
-                inputType="tel"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-              />
-            </Col>
-          </Row>
-
-          <Row className="mb-3 ms-5">
-            <Col xs={12} md={4}>
-              <EditInputText
-                {...commonProps}
-                label="Data"
-                placeholder="gg-mm-aaaa"
-                inputType="text"
-                readOnly
-                value={formattedDate}
-                onClick={() => setShowCalendar(prev => !prev)}
-                showCustomComponent={showCalendar}
-                customComponent={
-                  <EditCalendar
-                    value={selectedDate || new Date()}
-                    onChange={handleDateChanged}
-                    enabledDates={enabledDates}
-                  />
-                }
-              />
-            </Col>
-            <Col xs={12} md={4}>
-              <OptionsSelector
-                {...commonProps}
-                label="Orario"
-                placeholder="Seleziona una fascia oraria"
-                values={timeSlots}
-                value={selectedTimeSlot}
-                onSelect={handleTimeSlotChange}
-              />
-            </Col>
-          </Row>
-
-          <NotificationToggle  />
-
-          <Row className="mb-3 ms-5">
-            <Col xs={12} md={4}>
-              <Button
-                size="lg"
-                disabled={!isFormComplete}
-                onClick={handleBookApp}
-                className="w-100 no-focus"
-                style={{
-                  backgroundColor: 'var(--orange)',
-                  borderColor: 'var(--orange)',
-                  outline: 'none',
-                  boxShadow: 'none'
-                }}>
-                PRENOTA
-              </Button>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-    </Container>
+        )}
+  
+        <Row className="g-3">
+          <Col xs={12} md={6}>
+            <MultiSelectDropdown
+              {...commonProps}
+              label="Servizi"
+              placeholder="Seleziona servizio"
+              options={services}
+              onChange={handleServiceChange}
+              value={selectedServices}
+            />
+          </Col>
+          <Col xs={12} md={6}>
+            <EditInputText
+              {...commonProps}
+              label="Numero di telefono"
+              placeholder="(083) 632-5556"
+              inputType="tel"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+            />
+          </Col>
+  
+          <Col xs={12} md={6}>
+            <EditInputText
+              {...commonProps}
+              label="Data"
+              placeholder="gg-mm-aaaa"
+              inputType="text"
+              readOnly
+              value={formattedDate}
+              onClick={() => setShowCalendar(prev => !prev)}
+              showCustomComponent={showCalendar}
+              customComponent={
+                <EditCalendar
+                  value={selectedDate || new Date()}
+                  onChange={handleDateChanged}
+                  enabledDates={enabledDates}
+                />
+              }
+            />
+          </Col>
+  
+          <Col xs={12} md={6}>
+            <OptionsSelector
+              {...commonProps}
+              label="Orario"
+              placeholder="Seleziona una fascia oraria"
+              values={timeSlots}
+              value={selectedTimeSlot}
+              onSelect={handleTimeSlotChange}
+            />
+          </Col>
+  
+          <Col xs={12}>
+            <NotificationToggle />
+          </Col>
+  
+          <Col xs={12} md={6}>
+            <Button
+              size="lg"
+              disabled={!isFormComplete}
+              onClick={handleBookApp}
+              className="w-100 no-focus"
+              style={{
+                backgroundColor: 'var(--orange)',
+                borderColor: 'var(--orange)',
+                outline: 'none',
+                boxShadow: 'none'
+              }}>
+              PRENOTA
+            </Button>
+          </Col>
+        </Row>
+      </Col>
+    </Row>
+  </Container>
+  
   );
 }
 

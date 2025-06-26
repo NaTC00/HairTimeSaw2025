@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, InputGroup, Button } from "react-bootstrap";
+import { Form, InputGroup } from "react-bootstrap";
 
 function OptionsSelector({
   label,
@@ -9,13 +9,14 @@ function OptionsSelector({
   backgroundColor,
   textColor,
   size,
-  values,
+  values, // Array di opzioni disponibili
   onSelect
 }) {
 
    const [selected, setSelected] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
 
+  // Appena cambia l'array delle opzioni, seleziona automaticamente la prima opzione
    useEffect(() => {
     if (values.length > 0) {
       setSelected(values[0]);
@@ -23,6 +24,7 @@ function OptionsSelector({
     }
   }, [values]);
 
+   // Gestore del cambiamento di selezione
   const handleChange = (e) => {
     const value = e.target.value;
     setSelected(value);

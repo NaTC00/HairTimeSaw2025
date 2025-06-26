@@ -1,19 +1,21 @@
 import React, { useContext, useState, useEffect, createContext } from "react";
 import { signInApi } from "../../httpManager/request"; 
 
+// Creazione del contesto di autenticazione
 const AuthContext = createContext();
 
+// Hook custom per accedere facilmente al contesto
 export function useAuth() {
   return useContext(AuthContext);
 }
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(null);
-  const [username, setUsername] = useState(null);
-  const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [token, setToken] = useState(null); // Token JWT dell'utente
+  const [username, setUsername] = useState(null); // Nome utente
+  const [userLoggedIn, setUserLoggedIn] = useState(false); // Flag se utente è loggato
   const [loading, setLoading] = useState(true);
 
-  
+  // Recupera dati dal localStorage all'avvio dell'app
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     const storedUsername = localStorage.getItem("username");
@@ -24,11 +26,13 @@ export function AuthProvider({ children }) {
       const twoHours = 2 * 60 * 60 * 1000; 
   
       if (tokenAge < twoHours) {
+        // Se il token non è scaduto, ripristina lo stato utente
         setToken(storedToken);
         setUsername(storedUsername);
         setUserLoggedIn(true);
       } else {
         // Token scaduto
+        // Cancella i dati
         localStorage.removeItem("token");
         localStorage.removeItem("username");
         localStorage.removeItem("tokenTimestamp");
@@ -40,6 +44,7 @@ export function AuthProvider({ children }) {
   
 
 
+  //Effettua la login
   const login = async (email, password) => {
     try {
       const { token, username } = await signInApi(email, password); 
@@ -47,8 +52,9 @@ export function AuthProvider({ children }) {
       setUsername(username);
       setUserLoggedIn(true);
   
-      const timestamp = Date.now();
+      const timestamp = Date.now();// Salva anche timestamp
   
+      // Salvataggio dati nel localStorage
       localStorage.setItem("token", token);
       localStorage.setItem("username", username);
       localStorage.setItem("tokenTimestamp", timestamp.toString());

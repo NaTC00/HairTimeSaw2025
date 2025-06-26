@@ -3,9 +3,11 @@ import {Row, Col, Container, Image,Button, Stack, Form } from "react-bootstrap";
 import EditInputText from "components/EditInputText";
 import '../../styles/colors.css';
 
+// Componente per inviare una recensione (punteggio + commento)
 export default function SubmitReviews({onSubmitReview}){
-
+    // Stato per il punteggio (numero di stelle selezionate)
     const [rating, setRating] = useState(0);
+    // Stato per il commento dell'utente
     const [comment, setComment] = useState(null) 
     const commonProps = {
         borderColor: "var(--secondary)",
@@ -16,14 +18,16 @@ export default function SubmitReviews({onSubmitReview}){
         isTextArea: true
         };
 
+    // Gestisce il click sul bottone per inviare la recensione
     const handleSubmitClick = () => {
         onSubmitReview(rating, comment);
     };
+     // Gestisce il click sulle stelle
     const handleStarClick = (index) => {
         if (rating === index + 1) {
-          setRating(index);
+          setRating(index); // Toglie una stella se si riclicca la stessa
         } else {
-          setRating(index + 1);
+          setRating(index + 1); // Altrimenti imposta il nuovo punteggio
         }
       };
     return(
@@ -49,10 +53,16 @@ export default function SubmitReviews({onSubmitReview}){
                 </Stack>
                
                 
-                <EditInputText label="Commento" {...commonProps}  value={comment} onChange={(e) => setComment(e.target.value)}></EditInputText>
+                <EditInputText
+                    label="Commento"
+                    {...commonProps}
+                    value={comment ?? ""}
+                    onChange={(e) => setComment(e.target.value)}
+                />
+
 
             </Col>
-            <Col  style={{backgroundColor: 'blu'}}>
+            <Col >
             <p>Raccontaci la tua esperienza nel salone! Hai fatto un taglio, colore o altro?<br />
                 Il tuo feedback può aiutare altri a scegliere con più sicurezza.</p>
             <Button  onClick={handleSubmitClick}>Invia recensione</Button>

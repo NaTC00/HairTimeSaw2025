@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Image, Carousel } from 'react-bootstrap';
-import {getReviews} from '../httpManager/request'
 import {useReviews} from '../hooks/useReviews'
 import "../styles/colors.css"
 

@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
-
+// Componente per mostrare un messaggio di errore in un alert
 function FailureAlert({ error, title, onClose }) {
+  // Stato per controllare la visibilità dell'alert
   const [show, setShow] = useState(true);
+  // Stato per l'intestazione dell'alert
   const [heading, setHeading] = useState('');
+  // Stato per il messaggio dell'alert
   const [message, setMessage] = useState('');
 
-
+  // Funzione che estrae e restituisce il messaggio di errore in base allo status HTTP
   const getErrorMessageFromStatus = () => {
     const status = error?.response?.status || 0;
     const msg =
@@ -14,7 +17,7 @@ function FailureAlert({ error, title, onClose }) {
         ? error.response.data.error
         : 'Errore sconosciuto.';
     
-        console.log(error?.response?.status)
+       
 
 
    
@@ -46,17 +49,19 @@ function FailureAlert({ error, title, onClose }) {
   
   useEffect(() => {
     if (error){
-        const { heading, message } = getErrorMessageFromStatus(error, title);
+        const { heading, message } = getErrorMessageFromStatus();
         setShow(true);
-        setHeading(heading);
-        setMessage(message);
+       setHeading(heading);
+       setMessage(message);
     }else{
+       // Se non c'è errore, nasconde l'alert e resetta heading e message
       setShow(false);
-      setHeading('');
+       setHeading('');
       setMessage('');
     } 
   }, [error, title]);
 
+  // Funzione chiamata quando l'utente chiude manualmente l'alert
   const handleClose = () => {
     setShow(false)
     if (onClose) { 

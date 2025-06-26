@@ -1,10 +1,10 @@
-import axios from 'axios';
+import axios from "axios";
 
 const axiosPrivate = axios.create({
-    baseURL:'http://localhost:3000/',
-    headers:{
-        'Content-Type': 'application/json',
-    }
+  baseURL: "http://192.168.1.20:3000/",
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 export default axiosPrivate;

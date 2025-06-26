@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Row, Col, Figure, Stack } from 'react-bootstrap';
-
 import './FooterStyle.css';
+// Componente Footer che mostra logo, sedi, contatti e social media
 export default function Footer() {
     return(
         <footer className="footer-container" style={{backgroundcolor: 'f8f9fa'}}>

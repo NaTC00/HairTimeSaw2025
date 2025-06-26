@@ -1,6 +1,6 @@
 import React from 'react';
 import Carousel from 'react-bootstrap/Carousel';
-import './FullWidthCarousel.css'; // CSS per immagini full-width
+import './FullWidthCarousel.css'; 
 
 const images = [
     {
@@ -48,8 +48,8 @@ export default function FullWidthCarousel() {
               alt={item.title}
             />
             <Carousel.Caption>
-              <h3>{item.title}</h3>
-              <p>{item.desc}</p>
+              <h3 className="fw-bold fs-2 fs-md-1">{item.title}</h3>
+              <p className="fw-semibold fs-5 fs-md-4 text-white">{item.desc}</p>
             </Carousel.Caption>
           </Carousel.Item>
         ))}

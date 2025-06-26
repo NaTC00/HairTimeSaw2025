@@ -2,14 +2,27 @@ import React from "react";
 import { Row, Col, Figure, Card, Button } from "react-bootstrap";
 import { getServiceIcon } from "../../utils/iconUtils";
 import '../../styles/colors.css';
-export default function AppointmentCard({ appointment, onDeleteAppointment }) {
-  const dateObj = new Date(appointment.date);
-  const day = String(dateObj.getDate()).padStart(2, "0");
-  const weekday = dateObj.toLocaleDateString("it-IT", { weekday: "short" }); // es. Gio
 
+// Componente che rappresenta una card per un appuntamento
+export default function AppointmentCard({ appointment, onDeleteAppointment }) {
+  // Converte la data dell'appuntamento in un oggetto Date
+  const dateObj = new Date(appointment.date);
+  // Ottiene il giorno del mese
+  const day = String(dateObj.getDate()).padStart(2, "0");
+  // Ottiene il giorno della settimana
+  const weekday = dateObj.toLocaleDateString("it-IT", { weekday: "short" });
+
+  // Funzione chiamata quando si clicca sul pulsante "Disdici" per disdire un appuntamento
   const handleClick = () => {
-    onDeleteAppointment(appointment.id); // Passa l'id all'handler
+    onDeleteAppointment(appointment.id);
   };
+
+  // Controlla se l'appuntamento è passato
+  const startTime = appointment.time_slot.split("-")[0];
+  const appointmentDateTime = new Date(`${appointment.date}T${startTime}`);
+  const now = new Date();
+  const isPast = appointmentDateTime < now;
+
 
   return (
     <Card className="shadow-sm" style={{ borderRadius: '12px'}}>
@@ -50,7 +63,7 @@ export default function AppointmentCard({ appointment, onDeleteAppointment }) {
             <div className="text-muted text-start small mt-2">{appointment.time_slot}</div>
           </div>
         </Col>
-        <Col className="p-2 d-flex flex-column justify-content-center align-items-end">
+        {!isPast && <Col className="p-2 d-flex flex-column justify-content-center align-items-end">
             <Button 
             size="sm"
             active 
@@ -60,7 +73,7 @@ export default function AppointmentCard({ appointment, onDeleteAppointment }) {
                   borderColor: 'var(--primary)',
                   outline: 'none',
                   boxShadow: 'none'}}>Disdici</Button>
-        </Col>
+        </Col>}
 
       </Row>
     </Card>

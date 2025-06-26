@@ -12,9 +12,8 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 function App() {
+  // Stato per mostrare/nascondere il modale di login/registrazione
   const [showLoginRegister, setShowLogin] = useState(false);
-  const [currentView, setCurrentView] = useState("home");
-  const [showMyAppointments, setShowMyAppointments] = useState(false)
 
   useEffect(() => {
     AOS.init({ duration: 600, once: true });
@@ -23,6 +22,7 @@ function App() {
   return(
     
     <>
+     {/* Router per gestire la navigazione tra le pagine */}
     <Router>
 
     <header>
@@ -39,7 +39,7 @@ function App() {
       </main>
       <Footer/>
       {showLoginRegister && <LoginRegister onClose = {() => setShowLogin((isVisible) => !isVisible)}/>}
-      {showMyAppointments && <MyAppointments onClose = {() => setShowMyAppointments ((isVisible) => !isVisible)}/>}
+      
 
     </Router>
      

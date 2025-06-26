@@ -42,7 +42,7 @@ router.get('/', async (req, res) => {
         const today = new Date(); // Data di partenza (oggi)
 
         // Itera sui prossimi 32 giorni
-        for (let dayOffset = 0; dayOffset < 32; dayOffset++) {
+        for (let dayOffset = 0; dayOffset < 90; dayOffset++) {
         const date = new Date(today);
         date.setDate(today.getDate() + dayOffset); // Avanza di "dayOffset" giorni
 
@@ -91,7 +91,7 @@ router.get('/', async (req, res) => {
         }
 
         // Risposta finale con gli slot disponibili
-        return res.status(200).json({ data: availability });
+        return res.status(200).json(availability );
     } catch (err) {
         // Gestione errori
         return res.status(500).json({ error: err.message });

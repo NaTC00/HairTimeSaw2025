@@ -3,14 +3,13 @@ import './NavigationbarStyle.css';
 import { Link } from 'react-router-dom';
 import { useAuth } from "contexts/authContext/AuthContext"
 
-function Navigationbar({onLoginRegisterClick, onMyAppointmentsClick, onAppointmentClick}) {
+function Navigationbar({onLoginRegisterClick}) {
 
   const { userLoggedIn, username, logout } = useAuth();
-  console.log("userLoggedIn:", userLoggedIn);
-  console.log("username:", username);
-
+ 
+  // Funzione chiamata quando l’utente clicca su "Logout"
   const handleLogout = () => {
-    logout();
+    logout(); // Esegue logout 
   };
 
   return (
@@ -24,7 +23,6 @@ function Navigationbar({onLoginRegisterClick, onMyAppointmentsClick, onAppointme
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             <Nav.Link as={Link} to="/" >Home</Nav.Link>
-            <Nav.Link href="#link">I nostri lavori</Nav.Link>
             <Nav.Link  as={Link} to="/appuntamenti">Appuntamenti</Nav.Link>
              {userLoggedIn ? (
               <NavDropdown title={`Benvenuta, ${username || "User"}`} id="user-nav-dropdown">

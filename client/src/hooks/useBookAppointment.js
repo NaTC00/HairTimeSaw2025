@@ -4,18 +4,21 @@ import { useServices } from "./useServices";
 import { useAxiosPrivate } from "./useAxiosPrivate";
 import { useAlert } from "./useAlert";
 
+// Hook personalizzato per gestire la prenotazione di appuntamenti
 export function useBookAppointment() {
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
-  const [selectedServices, setSelectedServices] = useState([]);
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [availableSlots, setAvailableSlots] = useState({});
-  const [enabledDates, setEnabledDates] = useState([]);
-  const [timeSlots, setTimeSlots] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null); // Data selezionata
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState(null); // Fascia oraria selezionata
+  const [selectedServices, setSelectedServices] = useState([]); // Servizi selezionati
+  const [phoneNumber, setPhoneNumber] = useState(""); // Numero di telefono inserito
+  const [availableSlots, setAvailableSlots] = useState({}); //Date e fasce disponibili
+  const [enabledDates, setEnabledDates] = useState([]); //Date disponibili
+  const [timeSlots, setTimeSlots] = useState([]); //Fasce dispobili per il giorno selezionato
   const { alert, showAlert, hideAlert } = useAlert();
-  const [showCalendar, setShowCalendar] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false); // Stato per la visibilità del calendario
 
-  const axiosPrivate = useAxiosPrivate();
+  const axiosPrivate = useAxiosPrivate(); // Hook per ottenere l'istanza Axios privata con token
+
+  // Recupera i servizi disponibili
   const {
     services,
     isLoading: isServicesLoading,
@@ -23,6 +26,7 @@ export function useBookAppointment() {
     refetch: refetchServices,
   } = useServices();
 
+  // Funzione per formattare la data in formato "YYYY-MM-DD"
   const formatDate = (date) => {
     if (!date) return "";
     const day = String(date.getDate()).padStart(2, "0");
@@ -31,6 +35,7 @@ export function useBookAppointment() {
     return `${year}-${month}-${day}`;
   };
 
+  // Quando l'utente seleziona o deseleziona dei servizi
   const handleServiceChange = async (selected) => {
     setSelectedServices(selected);
     setSelectedDate(null);
@@ -40,16 +45,16 @@ export function useBookAppointment() {
     if (selected.length > 0) {
       try {
         const selectedIds = selected.map((item) => item.id);
+
+        //recupera le date e le fasce orarie disponibli per i servizi selezionati
         const slotData = await getSlotAvailable(selectedIds);
-        console.log("slotData:", slotData);
+
         setAvailableSlots(slotData);
+
+        //Estrae le date dispobili
         const enabled = Object.keys(slotData).map(
           (dateStr) => new Date(dateStr),
         );
-        /*const enabled = Object.keys(slotData).map((dateStr) => {
-          const [year, month, day] = dateStr.split("-").map(Number);
-          return new Date(year, month - 1, day);
-        });*/
 
         setEnabledDates(enabled);
       } catch (error) {
@@ -61,18 +66,24 @@ export function useBookAppointment() {
     }
   };
 
+  //Quando l'utente seleziona una data
   const handleDateChanged = (date) => {
     const formatted = formatDate(date);
     setSelectedDate(date);
+
+    //recupera le fasce orarie per la data selezionata
     const slots = availableSlots[formatted] || [];
+
     setTimeSlots(slots);
     setShowCalendar(false);
   };
 
+  //Quando l'utente seleziona una fascia oraria
   const handleTimeSlotChange = (slot) => {
     setSelectedTimeSlot(slot);
   };
 
+  //Effettua la prenotazione
   const bookApp = async () => {
     try {
       const selectedIds = selectedServices.map((item) => item.id);
@@ -85,7 +96,9 @@ export function useBookAppointment() {
         date,
         selectedTimeSlot,
       );
-      resetForm();
+
+      resetForm(); //Pulisce tutti i campi dopo la prenotazione
+
       return { success: true };
     } catch (error) {
       return {

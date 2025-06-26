@@ -1,14 +1,13 @@
 
 
-import React, { useState } from "react" 
+import React from "react" 
 import "./LoginResterStyle.css"
-import { useAuth } from "contexts/authContext/AuthContext"
 import EditInputText from "../EditInputText";
-import {signUp} from "../../httpManager/request"
 import FailureAlert from "../alert/FailureAlert"
 import SuccessAlert from "../alert/SuccessAlert"
 import useLoginRegister from "../../hooks/useLoginRegister";
 
+// Componente per login e registrazione utente
 function LoginRegister({ onClose }) {
    const {
     email,
@@ -26,7 +25,7 @@ function LoginRegister({ onClose }) {
     onSubmitSignIn,
     onSubmitSignUp,
     resetFormFields,
-  } = useLoginRegister(onClose);
+  } = useLoginRegister();
 
     const commonProps = {
       borderColor: "var(--secondary)",
@@ -37,7 +36,7 @@ function LoginRegister({ onClose }) {
       onSubmit: {},
     };
     
-   
+   //Funzione chiamata al submit del form per effettuare la registrazione
     const handleSignUp = async (e) => {
       const result = await onSubmitSignUp(e);
       if (!result.success) {
@@ -55,15 +54,16 @@ function LoginRegister({ onClose }) {
       }
     };
 
+    // Funzione chiamata al submit del form di login
     const handleSignIn = async (e) => {
       const result = await onSubmitSignIn(e);
     
       if (result.success) {
-        setErrorMessage(""); 
+        setErrorMessage(""); // Pulisce eventuali messaggi di errore
         console.log("Success login")  
-        onClose?.();          
+        onClose?.(); // Chiude la modale in caso di successo     
       } else {
-        console.log("Success login")  
+        console.log("Error login")  
         const serverMessage =
           result?.error?.response?.data?.error || "Errore durante il login.";
         setErrorMessage(serverMessage); 
@@ -71,12 +71,12 @@ function LoginRegister({ onClose }) {
     };
     
     
-
+  // Passaggio dalla vista di registrazione a login
   const handleSwitchToLogin = () => {
     document.getElementById("modal_content").classList.remove("active");
     resetFormFields();
   };
-
+  // Passaggio dalla vista di login a registrazione
   const handleSwitchToRegister = () => {
     document.getElementById("modal_content").classList.add("active");
     resetFormFields();
@@ -197,15 +197,15 @@ function LoginRegister({ onClose }) {
         <div className="switch-content">
           <div className="switch">
             <div className="switch-panel switch-left">
-              <h1>Hello, Again</h1>
-              <p>We are happy to see you back</p>
+              <h1>Bentornato!</h1>
+              <p>Siamo felici di rivederti. Accedi per continuare.</p>
               <button className="hidden btn border-white text-white p-2" id="login" onClick={handleSwitchToLogin}>
                 Login
               </button>
             </div>
             <div className="switch-panel switch-right">
-              <h1>Welcome</h1>
-              <p>Join Our Platform</p>
+              <h1>Benvenuto!</h1>
+              <p>Unisciti a noi e scopri tutti i vantaggi della nostra piattaforma.</p>
               <button className="hidden btn border-white text-white p-2" id="register" onClick={handleSwitchToRegister}>
                 Register
               </button>

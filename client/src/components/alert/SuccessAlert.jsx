@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
 
+// Componente che mostra un messaggio di successo in un alert
 function SuccessAlert({ content, onClose }) {
+   // Stato per controllare se l'alert è visibile
   const [show, setShow] = useState(true);
 
-  
+  // Funzione chiamata quando l'utente chiude manualmente l'alert
   useEffect(() => {
     if (content) setShow(true);
   }, [content]);

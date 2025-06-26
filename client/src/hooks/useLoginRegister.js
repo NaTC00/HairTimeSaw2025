@@ -2,12 +2,16 @@ import { useState } from "react";
 import { signUp } from "../httpManager/request";
 import { useAuth } from "../contexts/authContext/AuthContext";
 import { useAlert } from "./useAlert";
-export default function useLoginRegister(onClose) {
+
+// Hook custom per gestire login e registrazione
+export default function useLoginRegister() {
   const { login } = useAuth();
 
+  // Hook personalizzato per gestire login e registrazione
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+
   const [isSigningIn, setIsSigningIn] = useState(false);
   const { alert, showAlert, hideAlert } = useAlert();
   const [errorMessage, setErrorMessage] = useState("");
@@ -19,12 +23,13 @@ export default function useLoginRegister(onClose) {
     setErrorMessage("");
   };
 
+  // Funzione per gestire il login
   const onSubmitSignIn = async (e) => {
     e.preventDefault();
     if (!isSigningIn) {
       setIsSigningIn(true);
       try {
-        await login(email, password);
+        await login(email, password); // Effettua il login
         return { success: true };
       } catch (error) {
         return {
@@ -37,10 +42,11 @@ export default function useLoginRegister(onClose) {
     }
   };
 
+  // Funzione per gestire la registrazione
   const onSubmitSignUp = async (e) => {
     e.preventDefault();
     try {
-      await signUp(username, email, password);
+      await signUp(username, email, password); // Chiamata API per registrarsi
       return { success: true };
     } catch (error) {
       return {

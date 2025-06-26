@@ -4,15 +4,18 @@ import { usePushSubscription } from "../hooks/usePushSubscription";
 import { useAuth } from "../contexts/authContext/AuthContext"
 
 export default function NotificationToggle() {
+   // Stato per sapere se la checkbox è selezionata
   const [checked, setChecked] = useState(false);
+  // Stato per mostrare il modale di conferma attivazione notifiche
   const [showModal, setShowModal] = useState(false);
+  // Stato per mostrare il modale di conferma disattivazione notifiche
   const [showDisableModal, setShowDisableModal] = useState(false);
+  // Stato per sapere sell'utente e loggato
   const { userLoggedIn } = useAuth();
 
   
   const {
     subscribed,
-    subscriptionId,
     error,
     subscribePush, unsubscribePush 
   } = usePushSubscription(userLoggedIn); 
@@ -22,14 +25,17 @@ export default function NotificationToggle() {
     setChecked(subscribed);
   }, [subscribed]);
 
+  // Gestisce il cambio della checkbox 
   const handleChange = (e) => {
     const isChecked = e.target.checked;
+    //se l'utente deseleziona la checkbox ed è iscritto, mostra la modale per la conferma della disattivazione delle notifiche
     if (!isChecked && subscribed) {
     
       setShowDisableModal(true);
       return;
     }
-
+    
+    //se l'utente seleziona la checkbox e non è iscritto, mostra la modale di conferma
     if (isChecked && !subscribed) {
       setShowModal(true);
       return;
@@ -38,30 +44,32 @@ export default function NotificationToggle() {
     setChecked(isChecked);
   };
 
+  // Conferma attivazione notifiche
   const handleConfirm = async () => {
     setShowModal(false);
    
-    const success = await subscribePush();
+    const success = await subscribePush(); // Prova a iscrivere l’utente
 
     if (success) {
-      setChecked(true); 
+      setChecked(true); // Aggiorna la checkbox
     }
   };
 
   const handleCancel = () => setShowModal(false);
 
+  // Conferma disattivazione notifiche
   const handleDisableConfirm = async () => {
 
     setShowDisableModal(false);
-    const success = await unsubscribePush()
-    if(success) setChecked(false);
+    const success = await unsubscribePush() // Prova a disiscrivere l'utente
+    if(success) setChecked(false); // Aggiorna la checkbox
   };
 
   const handleDisableCancel = () => setShowDisableModal(false);
 
   return (
     <>
-      <Row className="mb-3 ms-5">
+      <Row className="mb-3">
         <Col>
           <Form.Check
             className="mb-0"

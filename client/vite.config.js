@@ -47,11 +47,12 @@ export default defineConfig({
         cleanupOutdatedCaches: true,
         globDirectory: "dist",
         globPatterns: ["**/*.{js,css,html,ico,png,svg,jpg,jpeg,JPG,webp}"],
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         navigateFallback: "index.html",
         importScripts: ["custom-sw.js"],
         runtimeCaching: [
           {
-            urlPattern: /^https?:\/\/localhost:3000\/services\/?$/,
+            urlPattern: /^https?:\/\/192.168.1.20:3000\/services\/?$/,
             handler: "CacheFirst",
             options: {
               cacheName: "services-cache",
@@ -65,7 +66,7 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /^http:\/\/localhost:3000\/reviews\/?$/,
+            urlPattern: /^http:\/\/192.168.1.20:3000\/reviews\/?$/,
             handler: "NetworkFirst",
             options: {
               cacheName: "reviews-cache",

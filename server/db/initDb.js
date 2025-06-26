@@ -24,8 +24,7 @@ async function initializeDatabase() {
         ('Colore', 50.00, 60),
         ('Tonalizzante', 30.00, 20),
         ('Maschera', 10.00, 10),
-        ('Schiariture', 100.00, 180)
-         ON CONFLICT (name) DO NOTHING;
+        ('Schiariture', 100.00, 180);
       `);      
       console.log('Servizi iniziali inseriti.');
     } else {

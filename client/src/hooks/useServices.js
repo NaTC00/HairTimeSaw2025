@@ -2,15 +2,13 @@
 import { useState, useEffect, useCallback } from "react";
 import { getAllServices } from "../httpManager/request";
 
-/**
- * Hook per ottenere i servizi.
- * Usa axios e sfrutta Workbox (CacheFirst) in background.
- */
+// Hook custom per ottenere i servizi.
 export function useServices() {
-  const [services, setServices] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [services, setServices] = useState([]); // Stato per contenere la lista dei servizi
+  const [isLoading, setIsLoading] = useState(true); // Stato per indicare se i dati sono in fase di caricamento
   const [error, setError] = useState(null);
 
+  // Funzione per recuperare i servizi
   const fetchServices = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -25,6 +23,8 @@ export function useServices() {
     }
   }, []);
 
+  // Effettua il fetch dei servizi al primo render del componente
+  //Utilizza la strategia CacheFirst
   useEffect(() => {
     fetchServices();
   }, [fetchServices]);

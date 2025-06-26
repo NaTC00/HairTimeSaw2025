@@ -3,12 +3,15 @@ import { submitReview, getReviews } from "../httpManager/request";
 import { useAxiosPrivate } from "./useAxiosPrivate";
 import { useAlert } from "./useAlert";
 
+// Hook custom per gestire le recensioni degli utenti
 export function useReviews() {
-  const [reviews, setReviews] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [reviews, setReviews] = useState([]); // Stato che contiene tutte le recensioni caricate
+  const [isLoading, setIsLoading] = useState(true); // Stato per indicare se i dati sono in fase di caricamento
   const [error, setError] = useState(null);
-  const { alert, showAlert, hideAlert } = useAlert();
+  const { alert, showAlert, hideAlert } = useAlert(); // Hook per la gestione degli alert
   const axiosPrivate = useAxiosPrivate();
+
+  // Funzione per inviare una nuova recensione
   const submit = async (rating, comment) => {
     try {
       await submitReview(axiosPrivate, rating, comment);
@@ -21,6 +24,7 @@ export function useReviews() {
     }
   };
 
+  // Funzione per recuperare tutte le recensioni
   const fetchReviews = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -28,11 +32,12 @@ export function useReviews() {
       setReviews(data);
     } catch (err) {
       setError(err);
-    }finally{
+    } finally {
       setIsLoading(false);
     }
   }, []);
 
+  // Recupera le recensioni all'avvio e imposta un aggiornamento ogni 60 secondi
   useEffect(() => {
     fetchReviews();
 
@@ -51,6 +56,6 @@ export function useReviews() {
     submit,
     error,
     refetchReviews: fetchReviews,
-    isLoading
+    isLoading,
   };
 }
