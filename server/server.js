@@ -53,7 +53,7 @@ const waitForDB = require("./db/dbConnect");       // Aspetta che il database si
    
 
     // Avvia il server HTTP sulla porta specificata
-    app.listen(PORT, '192.168.1.20', () => {
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`Server in ascolto su http://0.0.0.0:${PORT}`);
     });
     

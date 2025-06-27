@@ -55,7 +55,7 @@ export default defineConfig(({ mode }) => {
           importScripts: ["custom-sw.js"],
           runtimeCaching: [
             {
-              urlPattern: /^http?:\/\/192.168.1.20:3000\/services\/?$/,
+              urlPattern: /^http?:\/\/localhost:3000\/services\/?$/,
               handler: "CacheFirst",
               options: {
                 cacheName: "services-cache",
@@ -69,7 +69,7 @@ export default defineConfig(({ mode }) => {
               },
             },
             {
-              urlPattern: /^http:\/\/192.168.1.20:3000\/reviews\/?$/,
+              urlPattern: /^http:\/\/localhost:3000\/reviews\/?$/,
               handler: "NetworkFirst",
               options: {
                 cacheName: "reviews-cache",
