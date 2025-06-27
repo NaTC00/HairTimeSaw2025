@@ -41,6 +41,25 @@ export function AuthProvider({ children }) {
   
     setLoading(false);
   }, []);
+
+  // Controlla ogni minuto se il token è scaduto
+  useEffect(() => {
+    const checkTokenExpiration = () => {
+      const storedTimestamp = localStorage.getItem("tokenTimestamp");
+      const twoHours = 2 * 60 * 60 * 1000;
+
+      if (storedTimestamp) {
+        const tokenAge = Date.now() - parseInt(storedTimestamp, 10);
+        if (tokenAge >= twoHours) {
+          logout();
+        }
+      }
+    };
+
+    const intervalId = setInterval(checkTokenExpiration, 60 * 1000); // Ogni minuto
+
+    return () => clearInterval(intervalId); // Pulisce l’intervallo al dismount
+  }, []);
   
 
 
@@ -71,6 +90,7 @@ export function AuthProvider({ children }) {
     setUserLoggedIn(false);
     localStorage.removeItem("token");
     localStorage.removeItem("username");
+    localStorage.removeItem("tokenTimestamp");
   };
 
   const value = {

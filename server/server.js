@@ -21,6 +21,7 @@ const waitForDB = require("./db/dbConnect");       // Aspetta che il database si
     const app = express();
     const PORT = process.env.PORT || 3000;
 
+
     
 
     // Abilita CORS per le richieste provenienti da altri domini (es. frontend)

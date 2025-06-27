@@ -31,6 +31,8 @@ export function ServicesGrid() {
         refetch: refetchServices,
       } = useServices();
 
+      console.log(services)
+
       if (isServicesLoading) {
         return (
           <div className="text-center my-5">

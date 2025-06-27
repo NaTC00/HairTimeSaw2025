@@ -1,33 +1,44 @@
 version: "3.8"
 
 services:
-  db:
-    image: postgres:latest
-    restart: always
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: nataliaceccarini
-      POSTGRES_PASSWORD: 000114
-      POSTGRES_DB: hairtimedb
-    volumes:
-      - db_data:/var/lib/postgresql/data
-
-  server:
-    build: ./server
+  hairtime-server:
+    build:
+      context: ./server
+    container_name: hairtime-server
     ports:
       - "3000:3000"
-    env_file:
-      - ./server/.env
+    networks:
+      - hairtime-net
     depends_on:
-      - db
+      - postgres
 
-  client:
-    build: ./client
+  hairtime-client:
+    build:
+      context: ./client
+      args:
+        API_BASE_URL: http://hairtime-server:3000
+    container_name: hairtime-client
     ports:
-      - "3000:80"
+      - "4173:80"
+    networks:
+      - hairtime-net
     depends_on:
-      - server
+      - hairtime-server
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: natalia
+      POSTGRES_PASSWORD: natalia
+      POSTGRES_DB: hairtimedb
+    volumes:
+      - postgresqldata:/var/lib/postgresql/data
+    networks:
+      - hairtime-net
 
 volumes:
-  db_data:
+  postgresqldata:
+
+networks:
+  hairtime-net:

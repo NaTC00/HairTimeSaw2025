@@ -126,7 +126,6 @@ export function usePushSubscription(checkOnly = false) {
         await unsubscribeNotificationById(axiosPrivate, subscriptionId);
       }
 
-      // Rimuove la subscription dal server (se registrata)
       if (subscription) {
         await subscription.unsubscribe();
       }
