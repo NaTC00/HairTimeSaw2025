@@ -35,7 +35,7 @@ export function useReviews() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, []); //Se non uso useCallback, la funzione cambia ad ogni render e il useEffect si attiva ogni volta.
 
   // Recupera le recensioni all'avvio e imposta un aggiornamento ogni 60 secondi
   useEffect(() => {
